@@ -1,0 +1,17 @@
+%# One way to stop a runaway horse is to bet on him.
+<%INIT>
+my $Action = (
+    grep defined, map { /^Action-(.+?)(?:\.[xyXY])?$/ ? $1 : undef }
+    grep $ARGS{$_}, keys %ARGS
+)[0] || 'Save';
+
+@RT::Tabs = (
+    'Tracker'		=> '/Foundry/Search/',
+    'Documentation'	=> '/Foundry/Search/?',
+    'News'		=> '/Foundry/Search/?',
+    'User'		=> '/Foundry/Search/?',
+);
+
+eval { $m->call_next(%ARGS, Action => $Action) };
+
+</%INIT>

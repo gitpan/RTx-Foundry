@@ -1,0 +1,5 @@
+% use Encode;
+% my $x = Encode::encode('latin1', Encode::decode_utf8($m->content), 512);
+% $x =~ s/\n/<br>/g;
+% $m->print($x);
+% return(1);

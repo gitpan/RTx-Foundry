@@ -1,0 +1,9 @@
+%# Nobody said computers were going to be polite.
+<select name="SearchType">
+    <option><&|/l&>Project</&></option>
+    <option><&|/l&>User</&></option>
+%#  <option><&|/l&>News</&></option>
+    <option><&|/l&>Ticket</&></option>
+</select>
+<input name="Query" size="10" accesskey="0">
+<input type="image" border="0" name="Action-Search" src="/img/Go.png" width="23" height="19" align="middle">

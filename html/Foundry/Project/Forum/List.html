@@ -1,0 +1,29 @@
+% if ($out =~ /empty_archives/) {
+<&|/l&>The archive is currently empty.</&>
+<BR>
+<A HREF="<% $PostURL %>"><&|/l&>Post an article</&></A>
+% } else {
+% $m->print($out);
+% }
+<%INIT>
+our ($Get, $Post, $ua, $wws);
+my $args = { map { $_ => $ARGS{$_} } grep /^[_a-z]/, keys %ARGS };
+$args->{quiet} = 1;
+
+$RT::BaseURL = "/Foundry/Project/Forum/List.html";
+my $out;
+if ($r->path_info =~ m{^/wws(.*)}) {
+    require URI;
+    my $url = URI->new('http:');
+    $url->query_form(%$args);
+    $out = $Get->("$1?" . $url->query);
+}
+else {
+    $out = $Post->( "", scalar $m->request_args );
+}
+
+my $PostURL = $1 if ($out =~ m{HREF="([^"]+/compose_mail/[^"]+)"});
+unless ($out =~ s/.*<!-- end list_menu.tt2 -->//s) {
+    $m->comp('/Foundry/Project/Forum/index.html', Queue => 1, %ARGS);
+}
+</%INIT>

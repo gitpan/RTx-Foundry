@@ -1,0 +1,37 @@
+%# You can make it illegal, but you can't make it unpopular.
+
+%if ($Members->Count == 0 ) {
+<ul>
+<li><i><&|/l&>none</&></i>
+% } else {
+
+% if (!$Nonempty or $Members->Count > 1) {
+<i><&|/l&>(Check box to delete)</&></i><br><BR>
+% }
+<ul>
+% while (my $watcher = $Members->Next) {
+% my $IsMe = $watcher->MemberObj->Object->Id == $session{CurrentUser}->UserObj->Id;
+<li>
+% if ((!$Nonempty or $Members->Count > 1) and (!$ReadOnly or $IsMe)) {
+<INPUT  TYPE=CHECKBOX 
+        NAME="Queue-<%$QueueObj->Id%>-DelWatcher-Type-<%$Watchers->Type%>-Principal-<%$watcher->MemberId%>" 
+        UNCHECKED>
+% }
+<%$watcher->MemberObj->Object->Name%>
+% }
+% }
+</ul>
+
+<%INIT>
+my $Members = $Watchers->MembersObj;
+</%INIT>
+
+<%ARGS>
+$QueueObj => undef
+$Watchers => undef
+$Nonempty => undef
+$ReadOnly => undef
+</%ARGS>
+
+
+

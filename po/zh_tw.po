@@ -1,0 +1,753 @@
+# Chinese localization catalog for OpenFoundry
+
+msgid ""
+msgstr ""
+"Last-Translator: Autrijus Tang <autrijus@autrijus.org>\n"
+"Language-Team: Chinese <members@ourinet.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "%1 Total"
+msgstr "共 %1 筆"
+
+msgid "%1 highest priority tickets I own..."
+msgstr "最新 %1 份待處理申請單..."
+
+msgid "%1 highest priority tickets I requested..."
+msgstr "最新 %1 份送出的申請單..."
+
+msgid "%quant(%1,day)"
+msgstr "%1 天"
+
+msgid "%quant(%1,month)"
+msgstr "%1 個月"
+
+msgid "%quant(%1,week)"
+msgstr "%1 星期"
+
+msgid "%quant(%1,year)"
+msgstr "%1 年"
+
+msgid "(download)"
+msgstr "(下載)"
+
+msgid "(view)"
+msgstr "(檢視)"
+
+msgid "--the %1 staff."
+msgstr "--%1 工作人員敬上"
+
+msgid "Admin"
+msgstr "專案管理"
+
+msgid "Admins"
+msgstr "專案管理員"
+
+msgid "Affected files"
+msgstr "更動檔案一覽"
+
+msgid "All"
+msgstr "全部"
+
+msgid "All Platforms"
+msgstr "所有平台"
+
+msgid "Alpha"
+msgstr "測試"
+
+msgid "Architecture"
+msgstr "硬體"
+
+msgid ""
+"As a registered user, you can participate fully in the activities on the "
+"site. You may now post messages to the project message forums, post bugs for "
+"software in %1, sign on as a project developer, or even start your own "
+"project."
+msgstr ""
+"作為已註冊的使用者，您可以完整參與 %1 的活動，包括在專案討論區發表留言、提出"
+"瑕疵回報、登錄成為開發者，甚至開始您自己的專案。"
+
+msgid "Author"
+msgstr "作者"
+
+msgid "Beta"
+msgstr "試用"
+
+msgid "Changelist"
+msgstr "更動編號"
+
+msgid "Changes"
+msgstr "更動紀錄"
+
+msgid "Completing first-time registration"
+msgstr "初步完成註冊手續"
+
+msgid "Confirm Login"
+msgstr "確認登入"
+
+msgid "Congratulations. You have registered on %1."
+msgstr "恭喜您成功註冊 %1 的帳號。"
+
+msgid "Contact Info"
+msgstr "聯絡方式"
+
+msgid "Current directory"
+msgstr "現行目錄"
+
+msgid "Current mailing lists"
+msgstr "現有通信論壇"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Date format invalid."
+msgstr "日期格式錯誤。"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Diary"
+msgstr "日記"
+
+msgid "Documentation"
+msgstr "文件"
+
+msgid "Download #"
+msgstr "下載數"
+
+msgid "Downloads"
+msgstr "下載區"
+
+msgid "Edit this document"
+msgstr "編輯這份文件"
+
+msgid "Education"
+msgstr "教育"
+
+msgid ""
+"Enjoy the site, and please provide us with feedback on ways that we can "
+"improve %1."
+msgstr "歡迎您的使用，並請不吝賜教。"
+
+msgid "Existing Files"
+msgstr "此版本現有檔案"
+
+msgid "Existing Releases"
+msgstr "現有版本"
+
+msgid "FIXED"
+msgstr "已完成"
+
+msgid "File"
+msgstr "檔案"
+
+msgid "File %1:%2"
+msgstr "檔案 %1:%2"
+
+msgid "File Name"
+msgstr "檔名"
+
+msgid "Filelog"
+msgstr "更動紀錄"
+
+msgid "Files"
+msgstr "檔案"
+
+msgid "Files shown"
+msgstr "顯示檔案數"
+
+msgid "Forums"
+msgstr "通信論壇"
+
+msgid "Foundry News"
+msgstr "Foundry 新聞"
+
+msgid "FreeformPassword"
+msgstr "密碼輸入"
+
+msgid "Full Name"
+msgstr "真實姓名"
+
+msgid "FullName"
+msgstr "真實姓名"
+
+msgid "General Use"
+msgstr "一般用途"
+
+msgid "Go"
+msgstr "送出"
+
+msgid "Head"
+msgstr "目前版本"
+
+msgid "Homepage"
+msgstr "首頁"
+
+msgid "I Agree"
+msgstr "我同意"
+
+msgid "I Do Not Agree"
+msgstr "不同意"
+
+msgid ""
+"ID must be 3-15 characters of lower-case letters or digits, beginning with a "
+"letter"
+msgstr "ID 必須為 3-15 個小寫英文字母或數字，並以字母開頭"
+
+msgid "INVALID"
+msgstr "不合理"
+
+msgid "Idea"
+msgstr "概念"
+
+msgid "If you've forgotten your password, we can"
+msgstr "如果您忘記了密碼，我們可以"
+
+msgid "Important"
+msgstr "很嚴重"
+
+msgid ""
+"In order to complete your registration, login now. Your account will then be "
+"activated for normal logins."
+msgstr "請現在登入一次，以完成註冊程序。登入後，您的帳號即可如常使用。"
+
+msgid "Intended Audience"
+msgstr "適用對象"
+
+msgid "Interface"
+msgstr "介面"
+
+msgid "Intro"
+msgstr "自我描述"
+
+msgid "Invalid email address"
+msgstr "無效的電子郵件帳號"
+
+msgid "Invalid login."
+msgstr "登入失敗。"
+
+msgid "Jump to directory revision"
+msgstr "跳到目錄更動編號"
+
+msgid "LATER"
+msgstr "待處理"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "Last log entry"
+msgstr "前次修訂紀錄"
+
+msgid "Latest Release"
+msgstr "最新釋出版本"
+
+msgid "Least Important"
+msgstr "非常不嚴重"
+
+msgid "Less Important"
+msgstr "不嚴重"
+
+msgid "License"
+msgstr "授權"
+
+msgid "Login"
+msgstr "登入"
+
+msgid "Login Name"
+msgstr "登入名"
+
+msgid "Logout"
+msgstr "登出"
+
+msgid "LostPassword"
+msgstr "使用者忘記密碼"
+
+msgid "M"
+msgstr "成熟"
+
+msgid "Mandatory"
+msgstr "必填"
+
+msgid "Mature"
+msgstr "成熟"
+
+msgid "Maturity"
+msgstr "成熟度"
+
+msgid "Member"
+msgstr "成員"
+
+msgid "Member Login"
+msgstr "會員登入"
+
+msgid "Member since"
+msgstr "註冊日期"
+
+msgid "Members"
+msgstr "成員"
+
+msgid "Missing mandatory fields"
+msgstr "缺少必要的欄位"
+
+msgid "More"
+msgstr "更多"
+
+msgid "Most Important"
+msgstr "非常嚴重"
+
+msgid "My Page"
+msgstr "個人頁面"
+
+msgid "My Projects"
+msgstr "我的專案"
+
+msgid ""
+"Name must be 3-15 characters of digits, letters or underscore, beginning "
+"with a letter"
+msgstr "請使用 3-15 個由英文字母開頭的數字、字母或底線作為登入名"
+
+msgid "New"
+msgstr "新建立"
+
+msgid "New File"
+msgstr "新增檔案"
+
+msgid "New Release"
+msgstr "新增版本"
+
+msgid "New Staff"
+msgstr "新增團隊成員"
+
+msgid "New mailing list"
+msgstr "新增通信論壇"
+
+msgid "NewProject"
+msgstr "註冊新專案"
+
+msgid "NewProject email templates and Term-of-use"
+msgstr "「專案註冊」通知範本及使用條款"
+
+msgid "NewUser"
+msgstr "註冊新使用者"
+
+msgid "NewUser email templates and Term-of-use"
+msgstr "「用戶註冊」通知範本及使用條款"
+
+msgid "News"
+msgstr "新聞"
+
+msgid "No default branch"
+msgstr "沒有預設的 branch"
+
+msgid "Normal"
+msgstr "嚴重"
+
+msgid "Notes"
+msgstr "描述"
+
+msgid "OS"
+msgstr "作業系統"
+
+msgid "Open"
+msgstr "開啟"
+
+msgid "Operating System"
+msgstr "作業系統"
+
+msgid "Optional; fill in an email address or URL"
+msgstr "非必填; 可為 email 信箱或網址"
+
+msgid "Other"
+msgstr "其他"
+
+msgid "Owner"
+msgstr "負責人"
+
+msgid "Owner changed from %1 to %2"
+msgstr "負責人已從 %1 改為 %2"
+
+msgid "Owner forcibly changed from %1 to %2"
+msgstr "強制將負責人從 %1 改為 %2"
+
+msgid "Owner is"
+msgstr "負責人"
+
+msgid "Owner's Phone"
+msgstr "負責人電話"
+
+msgid "Password"
+msgstr "密碼"
+
+msgid "Password (repeat)"
+msgstr "確認密碼"
+
+msgid "Password must be at least %1 letters"
+msgstr "密碼長度至少需為 %1 個字符"
+
+msgid "Password must be at least 6 letters"
+msgstr "密碼長度至少需為 6 個字符"
+
+msgid "PasswordCheck"
+msgstr "確認密碼"
+
+msgid "Passwords do not match"
+msgstr "密碼檢查不符"
+
+msgid "Perl"
+msgstr "Perl"
+
+msgid "Perl License"
+msgstr "Perl 授權"
+
+msgid "Permission defined is permission denied!"
+msgstr "權限不足。"
+
+msgid "Personal Homepage"
+msgstr "個人首頁"
+
+msgid "PersonalHomepage"
+msgstr "個人首頁"
+
+msgid "Post an article"
+msgstr "發表新文章"
+
+msgid "Pre-Alpha"
+msgstr "雛形"
+
+msgid "Preferences"
+msgstr "偏好"
+
+msgid "Programmer"
+msgstr "程式員"
+
+msgid "Programming Language"
+msgstr "程式語言"
+
+msgid "Project"
+msgstr "專案"
+
+msgid "Project Directory"
+msgstr "專案一覽"
+
+msgid "Project ID"
+msgstr "專案名稱"
+
+msgid "Project Name"
+msgstr "專案標題"
+
+msgid "Project Name has been modified.  Please reload page to see the change."
+msgstr "專案名稱已更改。請重新載入頁面，方能看見變更。"
+
+msgid "Project Name must be at most 40 charaters"
+msgstr "專案標題長度必須為 40 個字元以下"
+
+msgid "Project Staff"
+msgstr "專案團隊"
+
+msgid "Project Type"
+msgstr "專案類別"
+
+msgid "Project metadata fields"
+msgstr "「專案資訊」欄位"
+
+msgid "Projects"
+msgstr "專案"
+
+msgid "Public Description"
+msgstr "公開描述"
+
+msgid "Public Description must be at most 255 charaters"
+msgstr "公開描述長度必須為 255 個字元以下"
+
+msgid "Public Exposures"
+msgstr "相關討論群或網站"
+
+msgid "Public Info"
+msgstr "公開資訊"
+
+msgid "Queue Setup"
+msgstr "功能設定"
+
+msgid "Quick links"
+msgstr "常用鏈結"
+
+msgid "R"
+msgstr "釋出"
+
+msgid "Rationale"
+msgstr "註冊原因"
+
+msgid "Real Name"
+msgstr "真實姓名"
+
+msgid "RealName"
+msgstr "真實姓名"
+
+msgid "Refresh"
+msgstr "更新"
+
+msgid "Register"
+msgstr "註冊新帳號"
+
+msgid "Register Project"
+msgstr "註冊新專案"
+
+msgid "Registration Date"
+msgstr "註冊日期"
+
+msgid "Registration Info"
+msgstr "填寫註冊資訊"
+
+msgid "Registration Successful"
+msgstr "註冊完成"
+
+msgid "Release Date"
+msgstr "釋出日期"
+
+msgid "Release Files"
+msgstr "釋出檔案"
+
+msgid "Release Name"
+msgstr "版本號"
+
+msgid "Released"
+msgstr "釋出"
+
+msgid "Request diff between arbitrary revisions"
+msgstr "顯示任意兩次更動之間的差異"
+
+msgid "Requested issues"
+msgstr "提出事項數"
+
+msgid "Researcher"
+msgstr "研究人員"
+
+msgid "Reset password email template"
+msgstr "「重設密碼」通知範本"
+
+msgid "Resolved issues"
+msgstr "解決事項數"
+
+msgid "Rev."
+msgstr "前次更動"
+
+msgid "Revision #%1"
+msgstr "更動編號 #%1"
+
+msgid "Revision <b>%1</b> -"
+msgstr "第 <b>%1</b> 號更動 -"
+
+msgid "Revisions"
+msgstr "更動紀錄"
+
+msgid "S"
+msgstr "標準"
+
+msgid "Search"
+msgstr "搜尋"
+
+msgid "SelectResolution"
+msgstr "解決選項"
+
+msgid "SelectVersion"
+msgstr "版本選項"
+
+msgid "Self Introduction"
+msgstr "自我描述"
+
+msgid "Services"
+msgstr "服務"
+
+msgid "Severity"
+msgstr "嚴重程度"
+
+msgid "Similar Projects"
+msgstr "同類型的專案"
+
+msgid "Site Admin"
+msgstr "站台管理"
+
+msgid "Size"
+msgstr "大小"
+
+msgid "Source checkin"
+msgstr "源碼簽入筆數"
+
+msgid "Source checkout"
+msgstr "源碼簽出筆數"
+
+msgid "Stalled"
+msgstr "延宕"
+
+msgid "Standard"
+msgstr "標準"
+
+msgid "Statistics"
+msgstr "統計資訊"
+
+msgid "Status"
+msgstr "現況"
+
+msgid "Subcomponent"
+msgstr "子元件"
+
+msgid "Summary"
+msgstr "摘要"
+
+msgid "System Administrator"
+msgstr "系統管理員"
+
+msgid "TargetVersion"
+msgstr "目標版本"
+
+msgid "Term of Use Agreement"
+msgstr "申請同意書"
+
+msgid "Thank you for choosing %1"
+msgstr "感謝您選用 %1"
+
+msgid "The archive is currently empty."
+msgstr "目前本論壇尚無內容。"
+
+msgid "This email address already exists"
+msgstr "此電子郵件帳號已有人使用"
+
+msgid "Ticket"
+msgstr "申請單"
+
+msgid "Ticket #%1"
+msgstr "申請單 #%1"
+
+msgid "Time"
+msgstr "時間"
+
+msgid "Todo"
+msgstr "待辦事項"
+
+msgid "Top Downloads"
+msgstr "熱門下載"
+
+msgid "Tracker"
+msgstr "待辦事項"
+
+msgid "Tracker email templates"
+msgstr "「待辦事項」通知範本"
+
+msgid "Tracker metadata fields"
+msgstr "「待辦事項」資訊欄位"
+
+msgid "UnixName"
+msgstr "專案名稱"
+
+msgid "Unverified account.  Please verify your account first."
+msgstr "此帳號尚未確認。請先確認您的帳號。"
+
+msgid "Up to "
+msgstr "回到 "
+
+msgid "User"
+msgstr "使用者"
+
+msgid "User metadata fields"
+msgstr "「用戶資訊」欄位"
+
+msgid "Username"
+msgstr "登入名"
+
+msgid "Users"
+msgstr "使用者"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "Version Control"
+msgstr "版本控制"
+
+msgid ""
+"Version number must start with digit and consist of only digits, letters, "
+"dot and underscores, and does not end with a dot."
+msgstr ""
+"版本號開頭須為「數字」，以「數字」加「點」加「英文字母」為組合，「點」不可為"
+"結尾。"
+
+msgid "View document history"
+msgstr "檢視文件沿革"
+
+msgid "WONTFIX"
+msgstr "毋需處理"
+
+msgid "WORKSFORME"
+msgstr "無法重現"
+
+msgid "Wiki"
+msgstr "共同筆記"
+
+msgid ""
+"You are now a registered user on %1, the online development environment for "
+"Open Source projects."
+msgstr "您已成功註冊為開放源碼發展平台「%1」的使用者。"
+
+msgid "You are now being sent a confirmation email to reset your password."
+msgstr "您將會收到一封確認郵件。請到其中的網址設定您的新密碼。"
+
+msgid ""
+"You are now being sent a confirmation email to verify your email address.  "
+"Activate your account by either visiting the link sent to you in this email, "
+"or replying to that email."
+msgstr "您將會收到一封確認郵件。請到其中的網址完成註冊手續，或直接回信即可。"
+
+msgid ""
+"You should take some time to read through the Site Documentation so that you "
+"may take full advantage of %1."
+msgstr "請詳讀 %1 的說明手冊，以進一步瞭解 %1 的服務。"
+
+msgid ""
+"Your project has been submitted to the %1 administrators. Within 72 hours, "
+"you will receive notification of their decision and further instructions."
+msgstr "您的專案已送交 %1 管理員處理。在 72 小時之內，您將會收到結果通知。"
+
+msgid "a"
+msgstr "測試"
+
+msgid "all"
+msgstr "全部顯示"
+
+msgid "b"
+msgstr "試用"
+
+msgid "c"
+msgstr "雛形"
+
+msgid "defect"
+msgstr "瑕疵(Bug)"
+
+msgid "enhancement"
+msgstr "改進"
+
+msgid "feature"
+msgstr "新功能"
+
+msgid "i"
+msgstr "概念"
+
+msgid "n/a"
+msgstr "尚無資訊"
+
+msgid "open"
+msgstr "開啟"
+
+msgid "patch"
+msgstr "修正建議"
+
+msgid "reopened"
+msgstr "重新開啟"
+
+msgid "select for diffs"
+msgstr "選為差異比較目標"
+
+msgid "send you a reminder"
+msgstr "送出提示信"
+
+msgid "task"
+msgstr "工作事項"

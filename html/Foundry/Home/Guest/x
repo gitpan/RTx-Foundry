@@ -1,0 +1,26 @@
+my $Ticket = $self->TicketObj;
+my ($Name, $Password, $RealName, $Email)
+    = map $Ticket->CustomFieldValues($_)->First->Content,
+        qw(Name Password RealName Email);
+
+my $Root = RT::CurrentUser->new;
+$Root->Load('root');
+my $UserObj = RT::User->new($Root);
+my ($val, $msg) = $UserObj->Create(
+    Name => $Name,
+);
+
+if (!$val) {
+    # die $msg;
+    $UserObj->Load($Name);
+    die $msg unless $UserObj->Id;
+}
+
+$UserObj->SetPassword($Password);
+$UserObj->SetRealName($RealName);
+$UserObj->SetEmailAddress($Email);
+$UserObj->SetPrivileged(1);
+
+open my $file, ">/var/spool/openfoundry/newuser.$$." . rand() or die $!;
+print $file $Name, $/, crypt($Password, int(rand(100)));
+

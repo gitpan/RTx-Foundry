@@ -1,0 +1,57 @@
+%# Zounds!  I was never so bethumped with words
+%# since I first called my brother's father dad.
+%# 		-- William Shakespeare, "King John"
+
+<& /Edit/Elements/104Header,
+    Buttons => [
+	Add => '',
+	Save => '',
+	Delete => '',
+	Copy => '',
+	Search => '',
+	Help => '/NoAuth/docs/',
+    ],
+    Method => 'Post',
+&>
+
+<table width="97%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr> 
+    <td><& /Edit/Elements/Tab, Text => 'Site Admin' &></td>
+  </tr>
+  <tr> 
+    <td valign="top"> 
+      <table border="0" cellspacing="4" cellpadding="4" class="poptable" width="100%">
+        <tr> 
+          <td valign="top" align="center" class="tableEmboss"> 
+            <table border="0" cellspacing="0" cellpadding="0">
+              
+              <tr> 
+                <td height="400" align="left">
+<&|/l&>Edit</&>:
+<ul>
+<li><a href="/Edit/Queues/CustomField/?Queue=3"><&|/l&>User metadata fields</&></a></li>
+<li><a href="/Edit/Queues/Template/?Queue=3"><&|/l&>NewUser email templates and Term-of-use</&></a></li>
+<li><a href="/Edit/Queues/CustomField/?Queue=4"><&|/l&>Project metadata fields</&></a></li>
+<li><a href="/Edit/Queues/Template/?Queue=4"><&|/l&>NewProject email templates and Term-of-use</&></a></li>
+<li><a href="/Edit/Queues/Template/?Queue=22"><&|/l&>Reset password email template</&></a></li>
+<li><a href="/Edit/Global/CustomField/"><&|/l&>Tracker metadata fields</&></a></li>
+<li><a href="/Edit/Global/Template/"><&|/l&>Tracker email templates</&></a></li>
+</ul>
+<&|/l&>Help</&>:
+<ul>
+<li><a href="/NoAuth/docs/"><&|/l&>OpenFoundry Manual</&></a></li>
+<li><a href="http://infosoc.iis.sinica.edu.tw/~jihuang/WebPerfStation.html"><&|/l&>Benchmark</&></a></li>
+</ul>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<%INIT>
+</%INIT>
+<%ARGS>
+</%ARGS>

@@ -1,0 +1,25 @@
+%# Conscience is a mother-in-law whose visit never ends.
+%# 		-- H. L. Mencken
+<%INIT>
+$RT::Guest = 0;
+
+if ($user and !$no_login) {
+    delete $session{'CurrentUser'};
+}
+elsif (
+    $no_login or
+    !((defined $session{'CurrentUser'}) and ( $session{'CurrentUser'}->Id))
+) {
+    $session{'CurrentUser'} = RT::CurrentUser->new;
+    $session{'CurrentUser'}->Load('guest');
+}
+
+$RT::Guest = 1 if $session{CurrentUser}
+    and $session{CurrentUser}->UserObj->Name eq 'guest';
+
+$m->notes(error => $ARGS{Error});
+</%INIT>
+<%ARGS>
+$user => undef
+$no_login => undef
+</%ARGS>

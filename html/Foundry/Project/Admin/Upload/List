@@ -1,0 +1,59 @@
+%# What this world needs is a good five-dollar plasma weapon.
+
+  <table width="100%" border="0" cellspacing="1" cellpadding="2" class="poptable" bgcolor="#AAE3DE">
+    <tr> 
+      <td colspan="4" class="tableTitle"><nobr><&|/l&>New Release</&></nobr></td>
+    </tr>
+    <tr><td align="center" colspan="4">
+	<&|/l&>Release Name</&>: <input name="Subject">
+% my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
+	<&|/l&>Release Date</&>: <input name="Starts" style="cursor: hand" size=10 value="<% $Now->AsDate %>" <& /Work/Elements/Date &> >
+	<input type="submit" value="<&|/l&>Submit</&>">
+    </td></tr>
+    <tr> 
+      <td colspan="4" class="tableTitle"><nobr><&|/l&>Existing Releases</&></nobr></td>
+    </tr>
+    <tr> 
+      <td class="tableTitle" width="40"><nobr><&|/l&>Release Name</&></nobr></td>
+      <td class="tableTitle" width="120"><nobr><&|/l&>Release Date</&></nobr></td>
+      <td class="tableTitle" width="100"><nobr><&|/l&>Status</&></nobr></td>
+    </tr>
+% foreach my $item (@{$List}[$Begin .. $Begin + $Size - 1]) {
+%     my $bg = (($Item and $item and $item->Id == $Item->Id) ? '#ffffcc' : 'ffffff');
+    <tr bgcolor='<% $bg %>'
+%     if ($item) {
+	onMouseOver="this.style.backgroundColor='#D1FAFC'" 
+        onMouseOut="this.style.backgroundColor='<% $bg %>'"
+	style="cursor:hand" 
+	onClick="MM_goToURL('self','<% $URL %>?Queue=<% $Queue %>&id=<% $IDMap->{$item->Id} || $item->Id %>');return document.MM_returnValue"
+%     } else { $item = $RT::Nothing }
+    > 
+      <td height="20" align="right"><% $item->Subject %>&nbsp;</td>
+      <td height="20"><% eval { $item->StartsObj->AsDate } %></td>
+      <td height="20"><% loc($item->Status) %></td>
+    </tr>
+% }
+  </table>
+<%INIT>
+if (UNIVERSAL::isa($List, 'DBIx::SearchBuilder')) {
+    my $Count = $List->Count;
+    $List->FirstRow($Begin + 1);
+    $List->RowsPerPage($Size);
+    $List->RedoSearch;
+    my $CurList = $List->ItemsArrayRef || [];
+    $List = [ ((undef) x $Begin ), @$CurList, ((undef) x ($Count - @$CurList - $Begin )) ];
+}
+$List ||= [];
+$Size = @$List if @$List > $Size;
+</%INIT>
+<%ARGS>
+$Size	=> 14
+$List	=> []
+$Role	=> ''
+$Begin	=> 0
+$IDMap	=> {}
+$URL	=> ''
+$ARGS	=> {}
+$Item	=> $RT::Nothing
+$Queue
+</%ARGS>

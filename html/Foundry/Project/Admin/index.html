@@ -1,0 +1,52 @@
+%# Never call a man a fool; borrow from him.
+
+% return unless $QueueObj->OriginObj;
+% if (@Error) {
+<tr><td colspan="3">
+%	    foreach my $error (@Error) {
+		&nbsp;* <font color="red"><% $error %></font><br>
+%	    }
+<br><br>
+</td></tr>
+% }
+<table><tr><td>
+<& /Work/Tickets/Elements/EditCustomFields, Ticket => $QueueObj->OriginObj, Loc => 1  &>
+</td></tr></table>
+</td></tr>
+<tr><td align="center">
+<br>
+<input type="submit" value="<&|/l&>Submit</&>" name="Action-Submit">
+</td></tr>
+
+<%INIT>
+my @Error;
+
+if ($ARGS{'Action-Submit'}) {
+    my $id = $QueueObj->OriginObj->Id;
+    $ARGS{"Ticket-$id-CustomField-9-Values"}
+	= $QueueObj->OriginObj->CustomFieldValue('UnixName');
+    my ($Name, $UnixName, $Rationale, $Description, $Platform, $License, $Language, $Audience)
+	= map { $_ } @ARGS{map "Ticket-$id-CustomField-$_-Values", qw(6 9 29 30 31 8 11 13)};
+
+    push @Error, loc('Missing mandatory fields')
+	unless $Name and $Description and $Platform and $License and $Language and $Audience;
+
+    push @Error, loc(
+	'ID must be 3-15 characters of lower-case letters or digits, beginning with a letter'
+    ) unless !$UnixName or $UnixName =~ /^[a-z][0-9a-z]{2,14}$/;
+    push @Error, loc(
+	'Project Name must be at most 40 charaters'
+    ) unless !$Name or length($Name) <= 40;
+
+    if (!@Error) {
+	ProcessTicketCustomFieldUpdates( ARGSRef => \%ARGS );
+	if ($Name ne $QueueObj->Name) {
+	    $QueueObj->SetName($Name);
+	    push @Error, loc("Project Name has been modified.  Please reload page to see the change.");
+	}
+    }
+}
+</%INIT>
+<%ARGS>
+$QueueObj
+</%ARGS>

@@ -1,0 +1,13 @@
+%# Never underestimate the bandwidth of a station wagon full of tapes.
+%# 		-- Dr. Warren Jackson, Director, UTCS
+<%PERL>
+delete $INC{'CGI/Kwiki/Blog.pm'};
+require CGI::Kwiki::Blog;
+{
+    local $0 = "index.html";
+    CGI::Kwiki::Blog::run_cgi();
+}
+</%PERL>
+<%ARGS>
+$QueueObj
+</%ARGS>

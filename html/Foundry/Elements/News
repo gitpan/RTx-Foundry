@@ -1,0 +1,26 @@
+%# Science is what happens when preconception meets verification.
+
+<table border="0" cellspacing="1" cellpadding="2" width=100%>
+<tr><td class="tableTitle"><&|/l&>Foundry News</&></td></tr>
+% foreach my $item (@{ $rss->items }) {
+<tr bgcolor="white"><td><nobr>
+<a href="<% $item->{link} %>"><% $item->{title} %></a>
+</nobr></td></tr>
+% }
+</table>
+<%INIT>
+require XML::RSS;
+require LWP::Simple;
+
+%::escapes = map { chr($_) => sprintf("%%%02X", $_) } 0..255 unless %::escapes;
+
+my $file = $URL;
+$file =~ s/([^\w\.])/$::escapes{$1}/g;
+$file = File::Spec->catfile( ($ENV{TEMP} || '/tmp'), $file);
+my $rc = eval { LWP::Simple::mirror( $URL, $file ) };
+my $rss = XML::RSS->new;
+$rss->parsefile($file);
+</%INIT>
+<%ARGS>
+$URL => 'http://ossf.iis.sinica.edu.tw/index.rdf'
+</%ARGS>

@@ -1,0 +1,89 @@
+%# Started = release date
+
+<table width="100%" cellpadding=2><tr valign="top">
+    <td width="50%" class="poptable">
+	<& List, Item => $Item, List => $Tickets, Queue => $QueueObj->Id &>
+    </td>
+    <td width="3%" align="center" valign="middle">
+	<img src="/img/ArrowLevelGreen.png" width="13" height="25">
+    </td>
+    <td width="47%" class="poptable" valign="top">
+	<& Info, Item => $Item, Queue => $QueueObj->Id &>
+    </td>
+</tr></table>
+
+<%INIT>
+my $Item;
+if ($id) {
+    $Item = RT::Ticket->new( $session{'CurrentUser'} );
+    $Item->Load($id);
+}
+
+if ($ARGS{'Action-Upload'} and $Item) {
+    $session{'Attachments'} = {} unless defined $session{'Attachments'};
+
+    # strip leading directories
+    my $subject = "$ARGS{'Attach'}";
+    Encode::_utf8_on($subject);
+
+    my $attachment = MakeMIMEEntity(
+        Subject             => "$ARGS{'Attach'}",
+        Body                => "",
+        AttachmentFieldName => 'Attach'
+    );
+
+    $session{'Attachments'} = { %{$session{'Attachments'} || {}},
+                                $ARGS{'Attach'} => $attachment };
+
+    my $Message = MakeMIMEEntity(
+	Subject  => $Description,
+	Body     => "",
+    );
+    $Message->make_multipart;
+    $Message->add_part($attachment);
+
+    $Item->Comment( MIMEObj => $Message );
+    $Item->SetStatus('open');
+}
+elsif ($Subject and $Starts) {
+    if ($Subject !~ /^(?=\d)[.\w]*\w$/) {
+	$m->print("<font color='red'>" . loc("Version number must start with digit and consist of only digits, letters, dot and underscores, and does not end with a dot."). "</font>");
+    }
+    elsif ($Starts !~ m{^(\d\d\d\d+)/(\d?\d)/(\d?\d)} or !$1 or !$2 or !$3 or $2 > 12 or $3 > 31) {
+	$m->print("<font color='red'>" . loc("Date format invalid."). "</font>");
+    }
+    else {
+	# ok, let's new a release.
+	$Starts = sprintf("%04s-%02s-%02s", $1, $2, $3);
+
+	my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+	$Tickets->LimitType( VALUE => 'release' );
+	$Tickets->LimitQueue( VALUE => $QueueObj->Id );
+	$Tickets->LimitSubject( VALUE => $Subject, OPERATOR => '=' );
+
+	$Item = eval { $Tickets->First };
+
+	if (!$Item) {
+	    $Item  = RT::Ticket->new( $session{'CurrentUser'} );
+	    $Item->Create(
+		Queue	    => $QueueObj->Id,
+		Subject	    => $Subject,
+		Type	    => 'release',
+	    );
+	}
+
+	$Item->SetStarts($Starts);
+    }
+}
+
+my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+$Tickets->LimitQueue( VALUE => $QueueObj->Id );
+$Tickets->LimitType( VALUE => 'release' );
+</%INIT>
+<%ARGS>
+$QueueObj
+$Description	=> ''
+$Subject	=> ''
+$Starts		=> ''
+$id		=> ''
+</%ARGS>

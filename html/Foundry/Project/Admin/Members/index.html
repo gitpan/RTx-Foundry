@@ -1,0 +1,158 @@
+ 
+<FORM METHOD=POST ACTION="index.html">
+<INPUT TYPE=HIDDEN NAME=Queue VALUE="<%$QueueObj->Id%>">
+
+<TABLE WIDTH=100%>
+<TR>
+<TD VALIGN=TOP >
+
+<h3><&|/l&>Project Staff</&></h3>
+
+
+<&|/l&>Members</&>:
+
+<& EditQueueWatchers, QueueObj => $QueueObj, Watchers => $QueueObj->Cc, ReadOnly => !$IsAdmin &>
+
+<&|/l&>Admins</&>:
+
+<& EditQueueWatchers, QueueObj => $QueueObj, Watchers => $QueueObj->AdminCc, Nonempty => 1, ReadOnly => !$IsAdmin &>
+
+
+</TD>
+% if ($IsAdmin) {
+<TD VALIGN=TOP>
+<h3><&|/l&>New Staff</&></h3>
+
+<&|/l&>Find people whose</&>
+<& SelectUsers &>
+<input type=submit name="OnlySearchForPeople" value="<&|/l&>Go!</&>">
+<BR>
+
+% if ($Users) {
+<p>
+<&|/l&>Add</&>:<br>
+<p>
+<table border=0>
+% while (my $u = $Users->Next ) {
+<tr><td><%$u->Name%> (<%$u->RealName%>)</td><td><nobr>
+<& SelectWatcherType,
+   Name => "Queue-AddWatcher-Principal-".$u->PrincipalId,
+   Scope => 'queue',
+   Disabled => ($u->Id == $MyPrincipalId),
+&>
+</nobr></td></tr>
+% }
+</table>
+% }
+
+</TD>
+% }
+</TR>
+</TABLE>
+
+
+
+
+<p align="right">
+<input type="submit" value="<&|/l&>Save</&>">
+</form>
+<p>
+
+<%INIT>
+
+my $current_tab;
+my ($field, @results, $User, $Users, $Groups, $watcher, $user_msg, $group_msg);
+
+# {{{ Load the queue
+#If we get handed two ids, mason will make them an array. bleck.
+# We want teh first one. Just because there's no other sensible way
+# to deal
+
+my $IsAdmin = $QueueObj->HasAdminCc($session{CurrentUser}->UserObj);
+
+
+# }}}
+
+$QueueObj->CurrentUser($RT::SystemUser); # instant priv escalation!
+
+my $MyPrincipalId = $session{CurrentUser}->UserObj->PrincipalObj->Id;
+
+if ($IsAdmin) {
+    my ($code, $msg);
+
+    # Delete deletable watchers
+    foreach my $key (keys %ARGS) {
+        my $id = $QueueObj->Id;
+	if (($key =~ /^Queue-$id-DelWatcher-Type-(.*?)-Principal-(\d*)$/)) {;
+	    next if $2 == $MyPrincipalId;
+	    ($code, $msg) = $QueueObj->DeleteWatcher(
+		Type => $1,
+		PrincipalId => $2
+	    );
+	    push @results, $msg;
+	}
+    }
+
+    # Add new watchers
+    foreach my $key (keys %ARGS) {
+	# They're in this order because otherwise $1 gets clobbered :/
+	next unless $ARGS{$key} =~ /^(AdminCc|Cc)$/
+		and $key =~ /^Queue-AddWatcher-Principal-(\d*)$/
+		and $1 != $MyPrincipalId; 
+
+	$RT::Logger->debug("Adding a watcher $1 to ".$ARGS{$key}."\n");
+
+	# First, clear away the other status
+	($code, $msg) = $QueueObj->DeleteWatcher(
+	    Type => ( ($ARGS{$key} eq 'AdminCc') ? 'Cc' : 'AdminCc' ),
+	    PrincipalId => $1
+	);
+	($code, $msg) = $QueueObj->AddWatcher(
+	    Type => $ARGS{$key},
+	    PrincipalId => $1
+	);
+	push @results, $msg;
+    }
+}
+
+# }}}
+
+ 
+
+if (!length $ARGS{'UserString'}) {
+$user_msg = loc("No principals selected.");
+ }
+else {
+    $Users = new RT::Users($session{'CurrentUser'});
+    $Users->LimitToPrivileged;
+    $Users->Limit(FIELD => $ARGS{'UserField'},
+                 VALUE => $ARGS{'UserString'},
+                 OPERATOR => $ARGS{'UserOp'});
+     }
+
+if (!length $ARGS{'GroupString'}) {
+$group_msg = loc("No principals selected.");
+ }
+else {
+$Groups = new RT::Groups($session{'CurrentUser'});
+$Groups->Limit(FIELD => 'Domain', OPERATOR => '=', VALUE => 'UserDefined');
+$Groups->Limit(FIELD => $ARGS{'GroupField'},
+		VALUE => $ARGS{'GroupString'},
+		OPERATOR => $ARGS{'GroupOp'});
+     }
+
+$current_tab = 'Admin/Queues/People.html?id='.$QueueObj->id;
+
+</%INIT>
+
+<%ARGS>
+$UserField => 'Name'
+$UserOp => '='
+$UserString => undef
+$GroupField => 'Name'
+$GroupOp => '='
+$GroupString => undef
+$Type => undef
+$QueueObj
+</%ARGS>
+

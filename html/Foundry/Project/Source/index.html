@@ -1,0 +1,46 @@
+%# Never underestimate the bandwidth of a station wagon full of tapes.
+%# 		-- Dr. Warren Jackson, Director, UTCS
+<%PERL>
+my $basepath = "/usr/depot/rt3/share/html/Foundry/Project/Source";
+
+require lib;
+lib->import("$basepath/lib");
+require SVN::Web;
+require File::Spec;
+
+my $tmpdir = File::Spec->tmpdir . '/svn';
+mkdir $tmpdir unless -d $tmpdir;
+
+my $config = {
+    reposparent	    => '/usr/depot/svn',
+    tmpdir	    => $tmpdir,
+    templatedir	    => "$basepath/template",
+    map ( "\L$_\E_class" => "SVN::Web::$_" ),
+	qw(Branch Branch Checkout Diff Log Revision RSS Template)
+};
+
+my (undef, $repos, $action, $path) = split ('/', ($r->path_info), 4);
+$repos  ||= $QueueObj->OriginObj->CustomFieldValue('UnixName');
+$action ||= 'browse';
+$path   ||= '';
+
+for (1 .. 3) {
+    eval {
+	SVN::Web::run({
+	    repos => $repos,
+	    action => $action,
+	    path => '/'.$path,
+	    cgi => $r,
+	    out	=> sub { $m->print(@_) },
+	    tmpdir => $config->{tmpdir},
+	    params => \%ARGS,
+	    script => 'http://rt.openfoundry.org/Foundry/Project/Source/index.html',
+	}, $config)
+    };
+    last unless $@;
+    sleep 1;
+}
+</%PERL>
+<%ARGS>
+$QueueObj
+</%ARGS>

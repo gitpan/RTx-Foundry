@@ -1,0 +1,10 @@
+%# Osborn's Law:
+%#       Variables won't; constants aren't.
+<%PERL>
+if (my $obj = $m->comp("/Work/Tickets/Attachment", %ARGS, NoUI => 1)) {
+    $obj->SetAttribute('Download', $obj->Attribute('Download') + 1);
+    my $queue = $obj->TransactionObj->TicketObj->QueueObj;
+    $queue->SetFinalPriority($queue->FinalPriority + 1);
+}
+$m->abort;
+</%PERL>

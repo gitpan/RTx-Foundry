@@ -1,0 +1,227 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.35.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It would check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 7c67e343c872ef5a24cb54a72a9a5c2f8851ae40 ChangeLog
+SHA1 42bd74bbde32b1f1bb22c57dacb7d6cd899ccc34 MANIFEST
+SHA1 9e2aa37df7d87a513f2a419135c7d4e0b7a9f16f META.yml
+SHA1 37c342069a00df75f0b7cfbde831d2895dc2dbe1 Makefile.PL
+SHA1 d227e96d080acdfde6aba37f490211f71fd000a6 README
+SHA1 308705df3fb972cdb671a373b08a6bf55bdc4d4c etc/RT_SiteConfig.pm
+SHA1 22fae782cc48469e6a5298a7d2d9c17eea895d19 html/Callbacks/Foundry/Elements/Footer/Default
+SHA1 91c574cd63bfcff1188ddbe647192a0c4eb8319c html/Callbacks/Foundry/Elements/Login/Header
+SHA1 7983fab1614615b9beb2576320ae5e0ca3e61ed7 html/Callbacks/Foundry/autohandler/Auth
+SHA1 3ddbda1148568a365a13dd9dc2c40a9005dc450a html/Callbacks/Foundry/autohandler/Default
+SHA1 661c555cc62e43db46cf8305c1b1ce3ce4eeb4c6 html/Edit/Elements/104Header
+SHA1 ef73dc22e90e165032be55cf3d56ee386a90b6b8 html/Edit/Elements/Tab
+SHA1 6a5d93b75bf9d3e6c8a01d6eba83e607ba885e20 html/Edit/index.html
+SHA1 8524806fa827f03b0d8c7ecd06b9bafc0d47585d html/Foundry/Elements/Footer
+SHA1 4ee557ce7db3cec58dc97fcae7e53f08d3e1f32c html/Foundry/Elements/Header
+SHA1 bb7eaf82cfc7cb6e759b2b2b2549229829d823f2 html/Foundry/Elements/News
+SHA1 97479756c943ba26bf5147930f7e3d63cf0b7462 html/Foundry/Elements/Stats
+SHA1 83f4d4527220422c5ef177cf195cc079e3658f92 html/Foundry/Elements/Tab
+SHA1 c2d76099626f61ec5e41906f0e48eb78f6e0d257 html/Foundry/Elements/Tabs
+SHA1 b9ddb18b181bf44e6ee5a14c0e29c447539b49a7 html/Foundry/Elements/Top
+SHA1 fa16e8242d2786abc45f3b49f573903fe0218a72 html/Foundry/Elements/TopSearch
+SHA1 fcd23b1852e1b983570a7857aa627db6ed5fc27c html/Foundry/Help/index.html
+SHA1 095162d4a808de0902215f3db5971f7ae65abb30 html/Foundry/Home/Diary/index.html
+SHA1 418909dcdf3c0bc583c1d008b86307cc4916409b html/Foundry/Home/Elements/Quicksearch
+SHA1 1453db903fe563a69a04c4576e352e7aedc85764 html/Foundry/Home/Elements/ShowTerm
+SHA1 9736540ea6f6c689f94a6c9ac1214575c1528698 html/Foundry/Home/Guest/Elements/Login
+SHA1 aed312725bceb9c899e8659c19594b1b3411bfb7 html/Foundry/Home/Guest/Elements/NewPassword
+SHA1 85a1bd2a80229a393d676bfb1e8ddeeef57ca710 html/Foundry/Home/Guest/Recover.html
+SHA1 e3b534fc1bae3492274d83d46c5371d6aea30fa5 html/Foundry/Home/Guest/Register.html
+SHA1 4e20bd9dd3c64a77a35ff458bab21e8e543cb09a html/Foundry/Home/Guest/Reminder.html
+SHA1 f38aaf28260c1a20c834f150b6fdc97ae10810ef html/Foundry/Home/Guest/Verify.html
+SHA1 c6350b72df03b717359575907dcf3524be00fe7b html/Foundry/Home/Guest/autohandler
+SHA1 e87cdc6e52455b4a4bf1664eb79db4133e150924 html/Foundry/Home/Guest/index.html
+SHA1 366b539ce0cee775d065f126f80861ac28464b1f html/Foundry/Home/Guest/x
+SHA1 01eff4d264e07ea7f44196777f3558c9b937a782 html/Foundry/Home/MyHints
+SHA1 6ec539bdb674a759438b85acf733de86647b9722 html/Foundry/Home/MyRequests.html
+SHA1 a1b0c5fa1da34eb4c1b23c40ab7839c2a2b066d5 html/Foundry/Home/MyTickets.html
+SHA1 ad460cefda53843d25b24204bddea214f7bd9c5a html/Foundry/Home/NewProject/ShowSteps
+SHA1 7efb81c5183320d44dd40f004c9e74826475638b html/Foundry/Home/NewProject/index.html
+SHA1 44c0feb5ed191446fce0004f9d09e7ee6d1cd0fe html/Foundry/Home/Preferences/index.html
+SHA1 3abb974764e32b29bba347f1cf7f6de498bf4e85 html/Foundry/Home/Todo/index.html
+SHA1 4d2e6c4d10eae4567f29597f7d8ade6dde64b62e html/Foundry/Home/autohandler
+SHA1 caea6f0a0717d807e34868b5566d6971e34e5c46 html/Foundry/Home/index.html
+SHA1 386b5df27a19998cb43fbf60d74e422d4da064ed html/Foundry/Logout.html
+SHA1 365d8ff2e58d9ddecfd871df6e80846af1a23dcd html/Foundry/Project/Admin/Forum/List.html
+SHA1 325909e1ab8fd7a955c2e53df4cb67f12abcf617 html/Foundry/Project/Admin/Forum/autohandler
+SHA1 9ea3684b9a607e912c7175ccd02130c1b1967d97 html/Foundry/Project/Admin/Forum/index.html
+SHA1 6cd0e783009311caf15d2bedd61e68f9cb7b7f72 html/Foundry/Project/Admin/Members/EditQueueWatchers
+SHA1 8612759439396a3c545710c276adcd0af0d59174 html/Foundry/Project/Admin/Members/SelectUsers
+SHA1 c4227691a185b02e198e8b0d021b448525771352 html/Foundry/Project/Admin/Members/SelectWatcherType
+SHA1 dbe49d13b0c5ca778c7ef972fd0e651992297b4c html/Foundry/Project/Admin/Members/index.html
+SHA1 604e0f4145b723f1b7a74776a3cc3b75542317cc html/Foundry/Project/Admin/Stats/index.html
+SHA1 4afda0cc5ad20b1718e160c84a8cecfd135cc6ad html/Foundry/Project/Admin/Upload/Info
+SHA1 6efe4aa0d587d32f1ce8078266407b62daf59b7e html/Foundry/Project/Admin/Upload/List
+SHA1 b102c925a6977738a4e5e5540ec502856420cc68 html/Foundry/Project/Admin/Upload/index.html
+SHA1 872ee42e81ebfb7fc394346428c4bd9bd6172383 html/Foundry/Project/Admin/autohandler
+SHA1 69b2a8d714f7f41ef74904bc5bf77827237cbf21 html/Foundry/Project/Admin/index.html
+SHA1 88e671a77869dc200e73a59302da406480f5a448 html/Foundry/Project/Doc/List.html
+SHA1 61837c3d2d18d2e2fbf5f70202d75dc76a53467f html/Foundry/Project/Doc/autohandler
+SHA1 fd7f3e5002547d97fe6bbf3c0d556dd1bda81c24 html/Foundry/Project/Doc/index.html
+SHA1 af2e489552be0e2d152ec8d14a2da070e13bf8b5 html/Foundry/Project/Download/Attachment
+SHA1 750d51adb1842a9ddfb348bb7e627c119daed353 html/Foundry/Project/Download/List
+SHA1 ac76ee1ab58069bfa46c0177d3f1b1548d081952 html/Foundry/Project/Download/autohandler
+SHA1 8a9c636de8df9c41c053e70136e111a8c3c08343 html/Foundry/Project/Download/index.html
+SHA1 95ee7d807a9476655198919ea47c268b1ef4c17a html/Foundry/Project/Forum/List.html
+SHA1 8d32e69d6581726e4f72c2b0b2fa732c49df668d html/Foundry/Project/Forum/autohandler
+SHA1 92d5993d6caabf18fa9c9f19ab4abfacd7ec37eb html/Foundry/Project/Forum/index.html
+SHA1 9cfe8229d679b30485cb6a046e524642d4d91109 html/Foundry/Project/News/autohandler
+SHA1 26ad301efa38c7dceccf810c7aec6f407bca6b02 html/Foundry/Project/News/index.html
+SHA1 e6e734ed9fa758ffc54649c3838f067e1eae0e94 html/Foundry/Project/Source/P4Web/Changes/index.html
+SHA1 0b348371490fae615886f13f4bb789fdcdbe54cb html/Foundry/Project/Source/P4Web/autohandler
+SHA1 751ba607c0a62668672c3681fbd5e6243594330d html/Foundry/Project/Source/P4Web/index.html
+SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/Revisions/index.html
+SHA1 5140a29c1daacaad36f3f396489bfcc4a347b896 html/Foundry/Project/Source/ViewCVS/List.html
+SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/ViewCVS/Revisions/index.html
+SHA1 ad7a86e72dbc39b369075edbfebb25f5c2dc8068 html/Foundry/Project/Source/ViewCVS/autohandler
+SHA1 6b08ce5c7ae8ae46470f91fd455fc32dec846ad3 html/Foundry/Project/Source/ViewCVS/index.html
+SHA1 86580c174fc247d957dc5c04af191208a86b40fd html/Foundry/Project/Source/autohandler
+SHA1 540c35628a188d4cb4d12127653b434c0ead5d6e html/Foundry/Project/Source/index.html
+SHA1 88b876497fb6c22657db85b90abe2231932e4b03 html/Foundry/Project/Source/lib/SVN/Web.pm
+SHA1 ff7d31497400a9b2413ec740bf6a66164600dbbf html/Foundry/Project/Source/lib/SVN/Web/Branch.pm
+SHA1 406b3269410fdb696173e369ffd7ed883a02f2d8 html/Foundry/Project/Source/lib/SVN/Web/Browse.pm
+SHA1 48987e620f407cf67c4ff7e9b110e45a7db473e3 html/Foundry/Project/Source/lib/SVN/Web/Checkout.pm
+SHA1 5727e5deafced025150918b174b03b410643e7c9 html/Foundry/Project/Source/lib/SVN/Web/Diff.pm
+SHA1 7e8f477ac314f9d033f3ebbf6148ccce2e791943 html/Foundry/Project/Source/lib/SVN/Web/Log.pm
+SHA1 3fcf73e78e9a30a23cdfa0ba3491da9d73954fcb html/Foundry/Project/Source/lib/SVN/Web/RSS.pm
+SHA1 2f1bf22050cc45cd6e96c4d6b5c2305ce9ea0289 html/Foundry/Project/Source/lib/SVN/Web/Revision.pm
+SHA1 81109c2c0bf6cad3d9c579c443f4025414163bd3 html/Foundry/Project/Source/lib/SVN/Web/Template.pm
+SHA1 1e7eeb156d52f7ddedfcb48283a5d26cdb14bd80 html/Foundry/Project/Source/template/browse
+SHA1 da39a3ee5e6b4b0d3255bfef95601890afd80709 html/Foundry/Project/Source/template/footer
+SHA1 fe8f4fc587ca66dcd8fd8eff2888562ee0995e8d html/Foundry/Project/Source/template/header
+SHA1 6bd1f8ebc1be542abcc7a93d6018268873355ae3 html/Foundry/Project/Source/template/log
+SHA1 21c92692474c056c6029bf603f98760a8a79631f html/Foundry/Project/Source/template/revision
+SHA1 1a27778169c437b4f125ffb759077de6fae9a362 html/Foundry/Project/Tracker/Display.html
+SHA1 260d34630a2a1ec6a03fced98db557ac2285a380 html/Foundry/Project/Tracker/DoSearch
+SHA1 aacdc394dc649313e8399217a5a00a6bd75a66ca html/Foundry/Project/Tracker/List
+SHA1 9af046cbaabf797803773225e2f61a5400c78d00 html/Foundry/Project/Tracker/SelectOwner
+SHA1 d5cedc3cf80552f16575cc92e768a58ad2a737eb html/Foundry/Project/Tracker/SelectSearch
+SHA1 bea6c628e1d70c7ed64b53d269118bfba622ec9c html/Foundry/Project/Tracker/SelectStatus
+SHA1 964b3cc94659b55ca14f2c655783d0cce486eab9 html/Foundry/Project/Tracker/TicketRow
+SHA1 71d2ca44b45b81535df67eb287fd44ea050c371e html/Foundry/Project/Tracker/Update.html
+SHA1 e56de9212c2c61bf968b21faff9b29086d368e40 html/Foundry/Project/Tracker/autohandler
+SHA1 5946df8f3f552e49f9fd107cc3a23966ff5cc6c0 html/Foundry/Project/Tracker/index.html
+SHA1 cf79e56cb65c29c81342c79c8a779430c2c9e5da html/Foundry/Project/Wiki/Kwiki/.default/config.yaml
+SHA1 93f84bc5ab700c3adfdbba0d84b8e575dbeeaf30 html/Foundry/Project/Wiki/Kwiki/.default/css/Display.css
+SHA1 c275250a9dc4a6e60073f371a7ebd27bb7eba139 html/Foundry/Project/Wiki/Kwiki/.default/css/Hlb.css
+SHA1 b76cae7be279a785d9d1a7a4d250ef88f6364c70 html/Foundry/Project/Wiki/Kwiki/.default/css/Jedi.css
+SHA1 03db5d3a59cd6475e3c93951a02fc7bf18a78006 html/Foundry/Project/Wiki/Kwiki/.default/css/Kwiki.css
+SHA1 4283fa37497882944e826bd926acac92925151ea html/Foundry/Project/Wiki/Kwiki/.default/css/Plasma.css
+SHA1 f8dbbbeb246e8bd5feadc321a69e62b762d6caee html/Foundry/Project/Wiki/Kwiki/.default/css/SlideShow.css
+SHA1 c2d3b27905e1a1cf3f0aab02e14c2bf2e0f0ded9 html/Foundry/Project/Wiki/Kwiki/.default/template/README
+SHA1 3571c08fd836ed370ff83e7a2473e254dd07d269 html/Foundry/Project/Wiki/Kwiki/.default/template/basic_footer.html
+SHA1 6c2e46a0af3babe221c69fbfad523694825e579c html/Foundry/Project/Wiki/Kwiki/.default/template/blog_entry.html
+SHA1 b17cf8f31525d0266aef632db845405f9e4cb1e9 html/Foundry/Project/Wiki/Kwiki/.default/template/blog_footer.html
+SHA1 76f44501a51e583f543e0404712f3b1071e23c09 html/Foundry/Project/Wiki/Kwiki/.default/template/blog_header.html
+SHA1 5d0f212542f2fefbd9a8960cde4d7c3e73a1a3a2 html/Foundry/Project/Wiki/Kwiki/.default/template/display_body.html
+SHA1 b0b674cf9d5c432bd401b6b8117d25cf1c226678 html/Foundry/Project/Wiki/Kwiki/.default/template/display_footer.html
+SHA1 5ae7366f2f08872fe9583c7fe22e9c1af75be7a6 html/Foundry/Project/Wiki/Kwiki/.default/template/display_header.html
+SHA1 05b72e7e0d6f65046d7667d90ba52e97e8a9619b html/Foundry/Project/Wiki/Kwiki/.default/template/edit_body.html
+SHA1 dca97c088188018e1a9327f47b63f6bfcd9121d4 html/Foundry/Project/Wiki/Kwiki/.default/template/prefs_body.html
+SHA1 c6fa6c8ffaa27ac0d6ca5593a566b443c66a0ed8 html/Foundry/Project/Wiki/Kwiki/.default/template/preview_body.html
+SHA1 bd0daff001e276d7897e015b3bdbecc6be75792c html/Foundry/Project/Wiki/Kwiki/.default/template/protected_edit_body.html
+SHA1 939e7660261159dd485e2edb35f24142170bed3d html/Foundry/Project/Wiki/Kwiki/.default/template/slide_page.html
+SHA1 fbb40e1d7ff47d5969af5f721f554002c424be6e html/Foundry/Project/Wiki/autohandler
+SHA1 480a9017d14544915094e03668f69aee59c93c80 html/Foundry/Project/Wiki/blog.html
+SHA1 99e72a9eb3954bb86aa6a8a2018131dfadbf4a54 html/Foundry/Project/Wiki/config.yaml
+SHA1 59440a9f85c70b7cb6de6e7cf8ca207c0e90911d html/Foundry/Project/Wiki/index.html
+SHA1 a65fef6108e1943c034b87bb55536a9c09ca889f html/Foundry/Project/Wiki/lib/CGI/Kwiki.pm
+SHA1 521988f2e23a6b1fec5ccf5ef5752e288b5c9270 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Backup.pm
+SHA1 e6023677dddb8593315592ab789e844f2f4d1e2c html/Foundry/Project/Wiki/lib/CGI/Kwiki/Backup/Rcs.pm
+SHA1 cc8685f013a4b59195c55458e0e269a3713d4e96 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Backup/SVN.pm
+SHA1 eeb15dc3cea284ac22e7353ef921b2c0bec312bc html/Foundry/Project/Wiki/lib/CGI/Kwiki/Backup/SVNPerl.pm
+SHA1 535600b62cab56decac0666de1f1438a7ed02d0d html/Foundry/Project/Wiki/lib/CGI/Kwiki/Blog.pm
+SHA1 9e1f94f630073929902a9de520a0dfac1ee5d741 html/Foundry/Project/Wiki/lib/CGI/Kwiki/CGI.pm
+SHA1 cc20db25159730a471b73598cda68c80e41e193a html/Foundry/Project/Wiki/lib/CGI/Kwiki/CGI/Mason.pm
+SHA1 52a65e1898f776ac3054efcccff66380307e9b92 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Changes.pm
+SHA1 6d4e16bceb21c18e1079a8092794b3a64e025458 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Config.pm
+SHA1 112750eb49379ad2109393b00890aae1adada1ea html/Foundry/Project/Wiki/lib/CGI/Kwiki/Config_yaml.pm
+SHA1 ff744996917154ba66dd77202658418ea411dded html/Foundry/Project/Wiki/lib/CGI/Kwiki/Cookie.pm
+SHA1 9a1806cb292fa5dfc346c249c501b39b4b13ffad html/Foundry/Project/Wiki/lib/CGI/Kwiki/Database.pm
+SHA1 338481d5a36a5705a3abaaa72002f8793e06b9fc html/Foundry/Project/Wiki/lib/CGI/Kwiki/Display.pm
+SHA1 88d1913f14be5d48d9a553b518426774a65deeed html/Foundry/Project/Wiki/lib/CGI/Kwiki/Driver.pm
+SHA1 be8bd842261a95c86ba6e81b965290826d46ffac html/Foundry/Project/Wiki/lib/CGI/Kwiki/Edit.pm
+SHA1 3bc7b6ac4825c3bf98131737168390c293da82c9 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Formatter.pm
+SHA1 87e4bf5ae416c46e638da33a3938261c9c18442e html/Foundry/Project/Wiki/lib/CGI/Kwiki/Formatter/HLB.pm
+SHA1 a7e60d6be8e09e77f09259ef61da440747b6a075 html/Foundry/Project/Wiki/lib/CGI/Kwiki/I18N.pm
+SHA1 e98d6e92178487996002a12a2da5908bceeaa180 html/Foundry/Project/Wiki/lib/CGI/Kwiki/I18N/Kwiki.pot
+SHA1 f7fbf4e34e994e2679aa41d221ec1cd90de4b3a2 html/Foundry/Project/Wiki/lib/CGI/Kwiki/I18N/i_default.pm
+SHA1 c0929508d25996188a9222457ec25e2cac31a828 html/Foundry/Project/Wiki/lib/CGI/Kwiki/I18N/zh_cn.po
+SHA1 2f0de67e7585794229dc45887c39a6b69c4ee7a4 html/Foundry/Project/Wiki/lib/CGI/Kwiki/I18N/zh_tw.po
+SHA1 3cb14bcb7fbbf61bdf3dbe8b663a38cb128062f1 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Import.pm
+SHA1 1a6864694d0c641538f87e4caca35c3e9e74a509 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Javascript.pm
+SHA1 51835379d0346c503ed1e793539a5a50d8f00fb2 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Metadata.pm
+SHA1 2a195219d4186493769c96e90e6427f098785c0d html/Foundry/Project/Wiki/lib/CGI/Kwiki/New.pm
+SHA1 77f56fa1de2e5d7a994644a633ebb7b02d3b2e94 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Pages.pm
+SHA1 c85cebaea74569685698ef60f905a558f7cf67b4 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Pages/zh_cn.pm
+SHA1 6d1413bd2fcb9e85c4f4759bfdc634914bbd704c html/Foundry/Project/Wiki/lib/CGI/Kwiki/Pages/zh_tw.pm
+SHA1 7a50f770f4e2f38b7bb2ee984db5711749a82cee html/Foundry/Project/Wiki/lib/CGI/Kwiki/Plugin.pm
+SHA1 4b9ac7a3c875a38e591faae2ce6ba9b00d5a30ba html/Foundry/Project/Wiki/lib/CGI/Kwiki/Plugin/Diff.pm
+SHA1 6633057d339a612537bd58327b35293b64b49d83 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Prefs.pm
+SHA1 457cbdeb16477939145fd57d884fbf55c4bf7819 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Privacy.pm
+SHA1 4a755c7dbabe2231829da77fa7908df30748491e html/Foundry/Project/Wiki/lib/CGI/Kwiki/Scripts.pm
+SHA1 20a297df87ed3bbb4380658e4db680674cb3fa34 html/Foundry/Project/Wiki/lib/CGI/Kwiki/Search.pm
+SHA1 4e950f53bfd1c09bd30abb72da7f23a24448b06a html/Foundry/Project/Wiki/lib/CGI/Kwiki/Slides.pm
+SHA1 5a484019eb894d8d63dc3a2373c889b7fbe36f3a html/Foundry/Project/Wiki/lib/CGI/Kwiki/Style.pm
+SHA1 2a45dbf0e8fc0512efcc1c88bdbd5c27b10cfced html/Foundry/Project/Wiki/lib/CGI/Kwiki/Template.pm
+SHA1 c3c8e350208bcdb4ffb77bef299c926682f20bb2 html/Foundry/Project/autohandler
+SHA1 b98ea9684d919c6ead887b9a88bbc05828060b52 html/Foundry/Project/index.html
+SHA1 a4bbde99f7c131cdec16511e6115464a23b99174 html/Foundry/RSS/HotProjects.html
+SHA1 3a275f4348a2a6e7556f4b11b4f97cf034bf06a0 html/Foundry/RSS/NewProjects.html
+SHA1 6c64506a6ec3559cad4e356b9b62547fead5841f html/Foundry/RSS/NewTickets.html
+SHA1 61ba2be18efae85a4c8b6b3af295fbfb2c11a140 html/Foundry/RSS/ProjectCount.html
+SHA1 730cecdc71e81b37ec45d2bd6140cced2e547e42 html/Foundry/RSS/UserCount.html
+SHA1 a926e7c9b5764e69942603b1e4bc5a44881139c4 html/Foundry/Search/autohandler
+SHA1 999beabf1649b3c154b92e2489c9c26fc71d10b0 html/Foundry/Search/index.html
+SHA1 9b891319d1bbbcb1f2a688fcbc801ccbe043f794 html/Foundry/Trove/List
+SHA1 5f58e5e14aef771d2608077c327318bd1cb15e3a html/Foundry/Trove/autohandler
+SHA1 15dbdd9213c3a6085bb17da2da4a6f81838e81c1 html/Foundry/Trove/index.html
+SHA1 d92b5f02c287b561527e2f747228dfc844dc26c7 html/Foundry/autohandler
+SHA1 f64539c41ad2aacc5fac8f4ccc0713deaaaada4f html/Foundry/index.html
+SHA1 f855cb5eba769be4944cfdddb5aacb60f71455bc html/Foundry/layout.txt
+SHA1 512489fd5ccedf39e89c9f2758d67deca358ef54 html/Foundry/rss.html
+SHA1 87ad24ced659497c50d93fd962f6440d090852a3 html/q
+SHA1 0c21630de150661ace3e830cde92cb0ba92578e1 html/sitemap.txt
+SHA1 abbf3d76898901a5bd5127c71f662d44e48977ef inc/Module/Install.pm
+SHA1 0e59a6491b7275cacf070218c862a42e8135f6d8 inc/Module/Install/Base.pm
+SHA1 61eeaa5854c1304f38a78ebfbff972f6cf5e091e inc/Module/Install/Makefile.pm
+SHA1 11072dcb1b0e41323ab8a236b63bd4e1e2003b26 inc/Module/Install/Metadata.pm
+SHA1 a988867615c1c87d319df36d7ce4560aac13b108 lib/RT/CustomField_Local.pm
+SHA1 adf45d95abfeb033cbd128b54916083143b0ee79 lib/RT/CustomFields_Local.pm
+SHA1 ec1391a5f353fa2d764365e2d78bb2413a0afdfd lib/RT/Date_Local.pm
+SHA1 5d83a32f48d755149ace4052db2cba5db057ac66 lib/RT/Queue_Local.pm
+SHA1 e5fa44f2b31c1fb553b6021e7360d07d5d91ff5e lib/RT/Queue_Vendor.pm
+SHA1 d7fb90253b3b62305398381f0c03c7aabafd6538 lib/RT/Ticket_Local.pm
+SHA1 67e9af95389a76cac74fd45b04a19beeec59ba16 lib/RT/User_Local.pm
+SHA1 313d78a8679bd2b81bf9a8aa25638cab65630df9 lib/RTx/Foundry.pm
+SHA1 d1b5bae9b3580cbce6ae2c36e1653d6fcfa8219c po/zh_cn.po
+SHA1 1024b93eb04086989252f135b79b436b13a3609c po/zh_tw.po
+SHA1 b6fe682622d23489dc59a4ab986ecad834c75004 script/adduser.pl
+SHA1 a238ff31ef88aead4142881ea7d08017c8634feb script/cvs2svn_cron
+SHA1 d40d13befa8f7bc8f884f4a9248b0cd906cf0414 script/newproject.pl
+SHA1 504519c842b7202250315ef562069e4ce10da99c script/pre-revprop-change
+SHA1 ce4abc0b515533a6bd7aba377e64d3e0885e4c84 script/start-commit
+SHA1 4eda8f1c8d7a47b8e091a0f36c8b20ea9ba54efb t/0-signature.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (FreeBSD)
+
+iD8DBQE/tVDftLPdNzw1AaARAsssAKCUHnUaEyckHg/2vyUjiw6hvciJ0wCgpvEl
+013XB6GsN6LHXNxzKFcVbI4=
+=+7HC
+-----END PGP SIGNATURE-----

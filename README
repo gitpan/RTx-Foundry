@@ -1,0 +1,35 @@
+# $File: //depot/RT/osf/README $ $Author: autrijus $
+# $Revision: #3 $ $Change: 8874 $ $DateTime: 2003/11/14 21:28:08 $
+
+This is the README file for RTx::Foundry, the base classes for
+the OpenFoundry online collaboration system.
+
+Please type "perldoc RTx::Foundry" after installation to see
+the module usage information.
+
+* Installation
+
+RTx::Foundry the standard perl module install process:
+
+cpansign -v		# see SIGNATURE for details
+perl Makefile.PL
+make			# or 'nmake' on Win32
+make test
+make install
+
+* Copyright
+
+Copyright 2003 by Industrial Development Bureau,
+		  Taiwan Ministry of Economic Affairs
+
+(Except where explicitly superseded by other copyright notices)
+
+This work is made available to you under the terms of Version 2 of
+the GNU General Public License. A copy of that license should have
+been provided with this software, but in any event can be snarfed
+from www.gnu.org.
+
+This work is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.

@@ -1,0 +1,47 @@
+%# ...
+</form>
+% $m->call_next(%ARGS);
+<%SHARED>
+use MIME::Base64;
+use WWW::Mechanize;
+
+my $u = $session{'CurrentUser'}->UserObj;
+my $name = $u->Name;
+my $passwd = eval { $u->OriginObj->CustomFieldValue('Password') } || 'guest';
+$RT::BaseURL = "/Foundry/Project/Admin/Forum/List.html";
+
+our $ua = WWW::Mechanize->new;
+our $wws = "http://$name:$passwd\@lists.openfoundry.org/wws";
+
+our ($Get, $Post) = map {
+    my $method = $_;
+    sub {
+	my $url = shift;
+	$url = $wws . $url unless $url =~ /^\w+:\//;
+	my $rv;
+	if ($method eq 'get') {
+	    $ua->get($url, @_);
+	    Encode::_utf8_on($rv = $ua->content);
+	}
+	else {
+	    Encode::_utf8_on($rv = $ua->post($url, @_)->as_string);
+	}
+	my $base = $1 if $rv =~ m{<BASE HREF=".*?(/wws[^>]+/).*?">};
+	$rv =~ s/(\bACTION=")\/wws(".*>)/$1$RT::BaseURL$2/gi;
+	$rv =~ s{\bHREF="(/wws[^>]*>)}{<A HREF="$RT::BaseURL$1}gi;
+	$rv =~ s{\bACTION="(/wws[^>]*>)}{ACTION="$RT::BaseURL$1}gi;
+	$rv =~ s{\bHREF="(?! )([^/][^>]*>)}{<A HREF="$RT::BaseURL$base$1}gi;
+	$rv =~ s/<input [^>]+"Toggle Selection"[^>]+>//g;
+	$rv =~ s/.*<!-- end menu.tt2 -->//s;
+	$rv =~ s{\s*</TD>\s*</TR>\s*</TABLE></TD></TR></TABLE>.*}{}s;
+	$rv =~ s{<FORM.*?<INPUT NAME="action"  TYPE="hidden" Value="arcsearch">.*?</FORM>}{}s;
+	$rv =~ s{<PRE>\s+(\w+-\w+)\s+</PRE>}{<a href="List.html/wws/arc/$1">$1</a>};
+	$rv;
+    };
+} qw(get post);
+
+my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
+$tag =~ s/.*-//;
+$tag = 'us' if $tag eq 'en';
+$Post->( "/", { action => 'set_lang', lang => $tag } );
+</%SHARED>

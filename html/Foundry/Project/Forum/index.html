@@ -1,0 +1,33 @@
+%# Never call a man a fool; borrow from him.
+
+
+% if (@lists) {
+
+<&|/l&>Current mailing lists</&>:
+<UL>
+% foreach my $list (@lists) {
+<LI><A HREF="List.html/wws/arc/<% $list %>?Queue=<% $Queue %>"><% $list %></A>
+% }
+</UL>
+
+% }
+
+<%INIT>
+my $Queue = $m->request_args->{'Queue'} || $ARGS{Queue};
+my $QueueObj = RT::Queue->new($session{CurrentUser});
+$QueueObj->Load($Queue);
+my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
+
+our ($Get, $Post);
+my $current = $Get->("/lists/$topic");
+my @lists;
+my $admin = "/Foundry/Project/Admin/Forum/List.html/wws/info/";
+while ($current =~ m{<A HREF="$admin([^"]+)}g) {
+    push @lists, $1;
+}
+
+</%INIT>
+<%ATTR>
+Action	=> 'List.html'
+Method	=> 'Post'
+</%ATTR>

@@ -1,0 +1,29 @@
+%# This is your fortune.
+<& /Edit/Elements/List,
+    %ARGS,
+    Data  => [
+	[ '18%', loc('Project Name'),		sub { $_[0]->Name } ],
+	[ '22%', loc('Public Description'),	sub { $_[0]->OriginObj->CustomFieldValue('Public Description') } ],
+	(map {
+	    my $field = $_;
+	    [ (($field =~ /Maturity|License/) ? '7%' : '10%'), loc($field), sub { join(',', map loc($_), sort map { $_->Content } @{$_[0]->OriginObj->CustomFieldValues($field)->ItemsArrayRef}) } ]
+	} @fields),
+	[  '6%', loc('Download #'),		sub { $_[0]->FinalPriority }, 'align=right' ],
+	[ '10%', loc('Registration Date'),	sub { $_[0]->OriginObj->CreatedObj->AsDate } ],
+	[ '15%', loc('Admin'),			sub { join(',', map $_->Name, @{$_[0]->AdminCc->UserMembersObj->ItemsArrayRef} ) } ],
+    ],
+    Link    => sub {
+	"/Foundry/Project/index.html?Queue=" . $_[0]->Id
+    },
+    Size    => 14,
+    Class   => 'tableFixed',
+&>
+<%INIT>
+my @fields = grep {
+    $_ ne $ARGS->{Type}
+} ('Maturity', 'Operating System', 'License', 'Programming Language', 'Intended Audience');
+</%INIT>
+<%ARGS>
+$Begin	=> 0
+$ARGS	=> {}
+</%ARGS>

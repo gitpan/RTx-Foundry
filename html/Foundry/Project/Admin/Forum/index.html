@@ -1,0 +1,45 @@
+%# Spend extra time on hobby.  Get plenty of rolling papers.
+
+% if (@lists) {
+
+<&|/l&>Current mailing lists</&>:
+<UL>
+% foreach my $list (@lists) {
+<LI><A HREF="<% $admin %><% $list %>"><% $list %></A>
+% }
+</UL>
+<HR>
+
+% }
+
+<&|/l&>New mailing list</&>:
+% $m->print($new);
+
+<%INIT>
+my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
+
+our ($Get, $Post);
+my $current = $Get->("/lists/$topic");
+my @lists;
+my $admin = "/Foundry/Project/Admin/Forum/List.html/wws/admin/";
+while ($current =~ m{<A HREF="$admin([^"]+)}g) {
+    push @lists, $1;
+}
+
+my $new = $Get->("/create_list_request");
+$new =~ s/.*<!-- \$Id: create_list_request.tt2 [^>]* -->//s;
+$new =~ s/<\/FORM>.*/<\/FORM>/s;
+$new =~ s/(<TD>)(<INPUT TYPE="text" NAME="listname") SIZE=[\d+]*/$1$topic-$2 SIZE=10/;
+$new =~ s{<TR>\s*<TD NOWRAP>.*\s*<TD><SELECT NAME="topics">[\d\D]*?<\/TR>}
+	 {<INPUT TYPE="HIDDEN" NAME="topics" VALUE="$topic">};
+$new =~ s{<TR>\s*<TD valign=top NOWRAP>.*\s*<TD>\s*[\d\D]*?<\/TR>}
+	 {<INPUT TYPE="HIDDEN" NAME="template" VALUE="public_web_forum">};
+$new =~ s/(<TEXTAREA COLS=60 ROWS=)10( NAME="info">)/$1"5"$2/g;
+</%INIT>
+<%ATTR>
+Action	=> 'List.html'
+Method	=> 'Post'
+</%ATTR>
+<%ARGS>
+$QueueObj
+</%ARGS>

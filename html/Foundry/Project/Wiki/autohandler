@@ -1,0 +1,72 @@
+%# One way to stop a runaway horse is to bet on him.
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td bgcolor="#A3DEF1"> 
+                        <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
+			  <tr> 
+			    <td bgcolor="#C4E1F0">
+% $m->call_next(%ARGS, pwd => $pwd);
+			    </td>
+			  </tr>
+			</table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+<%INIT>
+my $repos = $QueueObj->OriginObj->CustomFieldValue('UnixName');
+my $basepath = "/usr/depot/rt3/share/html/Foundry/Project/Wiki";
+my $pwd = "$basepath/Kwiki/$repos";
+
+local $ENV{REMOTE_USER} = $session{CurrentUser}->UserObj->Name;
+
+my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
+$CGI::Kwiki::ADMIN = $QueueObj->HasWatcher($session{CurrentUser}->UserObj);
+
+require lib;
+lib->import("$basepath/lib");
+require CGI::Kwiki;
+require CGI::Kwiki::I18N;
+
+*CGI::Kwiki::I18N::loc = sub {
+    my $self = shift;
+    $self->initialize($] >= 5.008);
+    CGI::Kwiki::I18N::gettext_lang($tag);
+    return CGI::Kwiki::I18N::gettext(@_);
+};
+
+unless (-d $pwd) {
+    require File::Copy;
+    require File::Basename;
+
+    mkdir $pwd;
+    chdir $pwd;
+    symlink("../.default/$_", $_) for qw(config.yaml template);
+    mkdir "metabase";
+    chmod 0777, "metabase";
+    foreach (qw( blog lock metadata private protected public )) {
+	mkdir "metabase/$_";
+	chmod 0777, "metabase/$_";
+    }
+    mkdir "database";
+    chmod 0777, "database";
+
+    foreach (glob('../.default/database/*')) {
+	File::Copy::copy($_ => "database/" . File::Basename::basename($_));
+    }
+    foreach (glob('../.default/metabase/metadata/*')) {
+	File::Copy::copy($_ => "metabase/metadata/" . File::Basename::basename($_));
+    }
+}
+
+chdir $pwd;
+
+</%INIT>
+<%ATTR>
+Tab2	=> 'Wiki'
+</%ATTR>
+<%ARGS>
+$QueueObj
+</%ARGS>

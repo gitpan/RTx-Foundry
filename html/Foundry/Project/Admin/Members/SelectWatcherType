@@ -1,0 +1,25 @@
+% for my $option ( @types, '') {
+<INPUT <% $Disabled && "DISABLED" %> TYPE="RADIO" VALUE="<%$option%>" NAME="<% $Name %>" <%$option eq $Default && "CHECKED"%>><%loc($map{$option}||$option)%>
+% }
+
+<%INIT>
+my @types;
+if ($Scope =~ 'queue') {
+   @types = qw(Cc AdminCc);
+}
+else { 
+   @types = qw(Requestor Cc AdminCc);
+}
+
+my %map = (
+    Cc	    => 'Member',
+    AdminCc => 'Admin',
+    ''	    => 'none',
+);
+</%INIT>
+<%ARGS>
+$Disabled => ''
+$Default => undef
+$Scope => 'ticket'
+$Name => 'WatcherType'
+</%ARGS>

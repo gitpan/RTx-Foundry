@@ -1,0 +1,31 @@
+<br>
+<ul>
+<li><&|/l&>Admins</&>: <% $QueueObj->AdminCc->MembersObj->Count || 0 %></li>
+<li><&|/l&>Members</&>: <% $QueueObj->Cc->MembersObj->Count || 0 %></li>
+<li><&|/l&>Download #</&>: <% $QueueObj->FinalPriority || 0 %></li>
+<li><&|/l&>Requested issues</&>: <% $req || 0 %></li>
+<li><&|/l&>Resolved issues</&>: <% $res || 0 %></li>
+<li><&|/l&>Source checkin</&>: <% $checkin %></li>
+<li><&|/l&>Source checkout</&>: <&|/l&>n/a</&></li>
+</ul>
+<br>
+<%INIT>
+my $TicketsObj = RT::Tickets->new($session{CurrentUser});
+$TicketsObj->LimitQueue(VALUE => $QueueObj->Id);
+$TicketsObj->LimitStatus(OPERATOR => '!=', VALUE => 'deleted');
+my $req = $TicketsObj->Count;
+$TicketsObj = RT::Tickets->new($session{CurrentUser});
+$TicketsObj->LimitQueue(VALUE => $QueueObj->Id);
+$TicketsObj->LimitStatus(VALUE => $_) for
+    grep !/deleted/, RT::Queue->InactiveStatusArray;
+my $res = $TicketsObj->Count;
+require LWP::Simple;
+my $src = eval {
+    $m->scomp('/Foundry/Project/Source/index.html', QueueObj => $QueueObj)
+};
+my $checkin = loc('n/a');
+$checkin = ($1 - 1) if $src =~ /of revision (\d+)/;
+</%INIT>
+<%ARGS>
+$QueueObj
+</%ARGS>
