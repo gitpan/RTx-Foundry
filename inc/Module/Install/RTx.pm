@@ -1,11 +1,11 @@
-#line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.2/Module/Install/RTx.pm"
+#line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.3/Module/Install/RTx.pm"
 # $File: //member/autrijus/Module-Install-RTx/lib/Module/Install/RTx.pm $ $Author: autrijus $
-# $Revision: #8 $ $Change: 9428 $ $DateTime: 2003/12/25 13:19:26 $ vim: expandtab shiftwidth=4
+# $Revision: #12 $ $Change: 9841 $ $DateTime: 2004/02/01 20:07:17 $ vim: expandtab shiftwidth=4
 
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.03';
+$Module::Install::RTx::VERSION = '0.05';
 
 use strict;
 use FindBin;
@@ -21,9 +21,15 @@ sub RTx {
     $self->version_from (-e "$name.pm" ? "$name.pm" : "lib/RTx/$name.pm")
         unless $self->version;
 
-    my @prefixes = ($ENV{PREFIX}, qw(/opt /usr/local /home /usr /sw ));
+    my @prefixes = (qw(/opt /usr/local /home /usr /sw ));
+    my $prefix = $ENV{PREFIX};
+    @ARGV = grep { /PREFIX=(.*)/ ? (($prefix = $1), 0) : 1 } @ARGV;
 
-    {
+    if ($prefix) {
+        $RT::LocalPath = $prefix;
+        $INC{'RT.pm'} = "$RT::LocalPath/lib/RT.pm";
+    }
+    else {
         local @INC = (
             @INC,
             $ENV{RTHOME},
@@ -58,8 +64,9 @@ sub RTx {
     }
 
     $path{$_} .= "/$name" for grep $path{$_}, qw(etc po var);
-    print "./$_\t=> $path{$_}\n" for sort keys %path;
     my $args = join(', ', map "q($_)", %path);
+    $path{lib} = "$RT::LocalPath/lib" unless %subdirs and !$subdirs{'lib'};
+    print "./$_\t=> $path{$_}\n" for sort keys %path;
 
     my $postamble = << ".";
 install ::
@@ -73,7 +80,15 @@ install ::
 .
     }
 
-    $self->postamble($postamble);
+    $self->postamble("$postamble\n");
+    if (%subdirs and !$subdirs{'lib'}) {
+        $self->makemaker_args(
+            PM => { "" => "" },
+        )
+    }
+    else {
+        $self->makemaker_args( INSTALLSITELIB => "$RT::LocalPath/lib" );
+    }
 
     if (-e 'etc/initialdata') {
         print "For first-time installation, type 'make initialize-database'.\n";
@@ -89,4 +104,4 @@ initialize-database ::
 
 __END__
 
-#line 163
+#line 182

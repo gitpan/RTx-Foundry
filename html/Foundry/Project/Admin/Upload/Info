@@ -89,7 +89,7 @@ if ($Parent) {
 	}
     }
 
-    foreach my $key (keys %documents) {
+    foreach my $key (sort keys %documents) {
 	push @$List, $documents{$key};
     }
 }

@@ -15,7 +15,7 @@ while (my $Item = $Tickets->Next) {
     my $transactions = $Item->Transactions;
     while (my $trans = $transactions->Next) {
 	my $attachments = $trans->Attachments;
-	# $attachments->Columns( qw( Id Filename ContentType Headers Subject ) );
+	$attachments->Columns( qw( Id Filename ContentType Headers Subject ) );
 	my $subject;
 	while (my $attach = $attachments->Next) {
 	    $subject ||= $attach->Subject;
@@ -34,7 +34,7 @@ while (my $Item = $Tickets->Next) {
     }
 
     my $count = 0;
-    foreach my $key (keys %documents) {
+    foreach my $key (sort keys %documents) {
 	my $Id = $documents{$key}->Id;
 	push @$List, {
 	    Id		=> $Id,

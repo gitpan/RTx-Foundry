@@ -36,7 +36,7 @@ my $out = $m->scomp(
     NoUI => 1,
     Loc => 1,
     Subject => 'Password Reminder',
-    NoCF => { Notes => 1 },
+    NoCF => { Notes => 1, Attachments => 1 },
     ($Error ? () : %ARGS, Requestors => $Email),
 );
 

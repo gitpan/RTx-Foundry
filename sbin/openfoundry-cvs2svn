@@ -1,0 +1,80 @@
+#!/usr/local/bin/perl
+
+use strict;
+use FindBin;
+use File::Spec;
+use File::Path;
+use Proc::PID_File;
+
+eval {
+
+my $c2s_base = $ENV{CVS2SVNTEMP} || File::Spec->tmpdir.'/openfoundry/cvs2svn';
+mkpath([$c2s_base], 0, 0755) unless -d $c2s_base;
+my $lock_file = "$c2s_base.lock";
+exit if hold_pid_file($lock_file);
+
+eval { require "$FindBin::Bin/../etc/openfoundry.conf" };
+eval { require "$FindBin::Bin/../etc/Foundry/openfoundry.conf" };
+
+my ($svn_base) = grep { defined and -d } (
+    $ENV{SVNREPOS}, 
+    '/home/svn',
+    '/home/svn-repositories',
+) or die "Cannot find SVNREPOS";
+my ($cvs_base) = grep { defined and -d } (
+    $ENV{CVSROOT},
+    '/home/cvs',
+    '/usr/depot/cvsrepo'
+) or die "Cannot find CVSROOT";
+
+my $www_user = $ENV{WWWUSER} || 'www';
+my $www_group = $ENV{WWWGROUP} || 'www';
+
+chdir $svn_base;
+
+foreach my $dir (grep -d, <$cvs_base/*>) {
+    $dir =~ s!.*/!!;
+    next if $dir =~ /CVSROOT/;
+    next unless -d "$cvs_base/$dir";
+
+    print $dir, $/;
+    system("chown", "cvs", "$cvs_base/$dir");
+
+    my $vcp = << ".";
+Source: cvs:$cvs_base:$dir --use-cvs --continue
+
+Destination: svn:file://$svn_base/$dir: --db-dir=$c2s_base --init-svnrepo --delete-svnrepo
+
+Map:
+	$dir/(...)<>		trunk/\$1
+	$dir/(...)<(*)>		branches/\$2/\$1
+
+CVSLabelonBranch:
+
+SVNLabeller:
+
+ChangeSets:
+       time                     <=60   ## seconds
+       user_id                  equal  ## case-sensitive equality
+       comment                  equal  ## case-sensitive equality
+       branched_rev_branch_id   equal  ## change only one branch at a time
+.
+
+    open VCP, "| $^X $FindBin::Bin/openfoundry-vcp vcp:-" or next;
+    print VCP $vcp;
+    close VCP;
+
+    system("chown", "-R", "$www_user:$www_group", "$svn_base/$dir");
+    unlink("vcp.log.$dir") if -e "vcp.log.$dir";
+    rename("vcp.log", "vcp.log.$dir");
+}
+
+};
+
+if (my $interval = shift) {
+    warn $@ if $@;
+    $interval = 1 if $interval < 1;
+    sleep $interval;
+    exec($^X, $0, $interval);
+}
+die $@ if $@;

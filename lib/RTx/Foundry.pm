@@ -1,8 +1,8 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #8 $ $Change: 9653 $ $DateTime: 2004/01/10 13:49:49 $
+# $Revision: #9 $ $Change: 9840 $ $DateTime: 2004/02/01 19:13:31 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_05';
+$RTx::Foundry::VERSION = '0.00_06';
 
 1;
 
@@ -12,19 +12,23 @@ RTx::Foundry - Base classes for the OpenFoundry system
 
 =head1 VERSION
 
-This document describes version 0.00_05 of RTx::Foundry, released
+This document describes version 0.00_06 of RTx::Foundry, released
 January 10, 2004.
 
 =head1 SYNOPSIS
 
-    # not at the moment -- see http://rt.openfoundry.org/ for a demo
+Not at the moment.  See L<http://rt.openfoundry.org/> for a demo.
+
+Currently, the only way to install OpenFoundry is from the ports files in
+L<http://rt.openfoundry.org/Foundry/Project/Download/?Queue=OpenFoundry>,
+which requires a FreeBSD system to run on.
 
 =head1 DESCRIPTION
 
-The OpenFoundry project is the code behind Taiwan's Open Source Software
-Foundry (OSSF), as part of the Free Software Promotion Project initiated
-by the Industrial Development Bureau, Ministry of Economic Affairs (IDB)
-and executed by the Institute of Information Science, Academia Sinica (IIS).
+The OpenFoundry project is the code behind Taiwan's B<OSSF> initiative,
+as part of the Free Software Promotion Project initiated by the Industrial
+Development Bureau, Ministry of Economic Affairs (IDB) and executed by the
+Institute of Information Science, Academia Sinica (IIS).
 
 The initial goal of OpenFoundry is to become the leading project in
 Taiwan to accumulate experience and knowledge of free software and open

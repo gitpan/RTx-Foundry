@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # $File: //depot/RT/osf/Makefile.PL $ $Author: autrijus $
-# $Revision: #4 $ $Change: 9651 $ $DateTime: 2004/01/10 13:46:44 $
+# $Revision: #5 $ $Change: 9830 $ $DateTime: 2004/02/01 15:50:47 $
 
 use 5.008;
 use inc::Module::Install;
@@ -37,4 +37,19 @@ requires(
     'DBIx::SearchBuilder'   => 0.96,
 );
 
+features( 'SVN2CVS support' => [
+    -default => 0,
+    'LWP::Simple'	    => 0,
+    'Digest::MD5'	    => 0,
+    'File::Temp'	    => 0,
+    'IPC::Run'		    => 0,
+    'MIME::Base64'	    => 0,
+    'Regexp::Shellish'	    => 0.93,
+    'Text::Diff'	    => 0,
+    'XML::ValidWriter'	    => 0.37,
+    'XML::Parser'	    => 0,
+    'Pod::Links'	    => 0,
+] );
+
+auto_install( -default => 0 );
 &WriteAll( check_nmake => 0, sign => 1 );

@@ -33,7 +33,7 @@
 	    </table>
 % } else {
 		<input type="hidden" name="Step" value="1">
-		<& /Work/Tickets/Create.html, Queue => 'NewProject', NoUI => 1, Subject => 'New Project Registration', %ARGS, NoCF => { Notes => 1 }, Loc => 1 &>
+		<& /Work/Tickets/Create.html, Queue => 'NewProject', NoUI => 1, Subject => 'New Project Registration', %ARGS, NoCF => { Notes => 1, Attachments => 1 }, Loc => 1 &>
 % }
 
 % }

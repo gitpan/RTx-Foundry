@@ -1,0 +1,124 @@
+#!/usr/local/bin/perl
+
+use strict;
+use FindBin;
+use DBI;
+use File::Copy;
+use Proc::PID_File;
+
+eval {
+
+my $tmp = File::Spec->tmpdir.'/openfoundry';
+mkpath([$tmp], 0, 0755) unless -d $tmp;
+my $lock_file = "$tmp/syncdata.lock";
+exit if hold_pid_file($lock_file);
+
+eval { require "$FindBin::Bin/../etc/openfoundry.conf" };
+eval { require "$FindBin::Bin/../etc/Foundry/openfoundry.conf" };
+
+my ($svn_base) = grep { defined and -d } (
+    $ENV{SVNREPOS}, 
+    '/home/svn',
+    '/home/svn-repositories',
+) or die "Cannot find SVNREPOS";
+my ($cvs_base) = grep { defined and -d } (
+    $ENV{CVSROOT},
+    '/home/cvs',
+    '/usr/depot/cvsrepo'
+) or die "Cannot find CVSROOT";
+
+my $rt_dsn = $ENV{RT_DSN} or die 'Must specify $ENV{RT_DSN}';
+my $cvs_user = $ENV{CVSUSER} || 'cvs';
+my $cvs_group = $ENV{CVSGROUP} || 'cvs';
+my $cvs_uid = (getpwnam($cvs_user))[2] or die "Cannot find user $cvs_user";
+my $dbh = DBI->connect($rt_dsn) or exit;
+
+mkpath([$svn_base], 0, 0755) unless -d $svn_base;
+
+my $commitcheck = "$FindBin::Bin/openfoundry-cvs-commitcheck";
+my $start_commit = "$FindBin::Bin/openfoundry-svn-start-commit";
+my $pre_revprop_change = "$FindBin::Bin/openfoundry-svn-pre-revprop-change";
+
+unless (-d $cvs_base) {
+    mkpath([$cvs_base], 0, 0755);
+    system(qw( cvs -d ), $cvs_base, 'init');
+
+    my $_commitcheck = "$cvs_base/CVSROOT/commitcheck";
+    my $_commitinfo = "$cvs_base/CVSROOT/commitcheck";
+    open my $fh, ">", $_commitcheck or die $!;
+    print $fh "#!/bin/sh\n";
+    print $fh "exec $commitcheck \$\@\n";
+    close $fh;
+    chmod(0755, $_commitcheck);
+    open $fh, ">>", $_commitinfo or die $!;
+    print $fh "ALL     \$CVSROOT/CVSROOT/commitcheck\n";
+    close $fh;
+    system(qw( chown -R ), "$cvs_user:$cvs_group", $cvs_base);
+}
+
+my $users = $dbh->selectcol_arrayref(q{
+    SELECT Users.Name
+      FROM Users, GroupMembers
+     WHERE Users.Password != '*NO-PASSWORD*'
+       AND Users.Id = GroupMembers.MemberId
+  GROUP BY Users.Name;
+});
+
+foreach my $name (@{$users||[]}) {
+    next if defined getpwnam($name);
+    system(
+	'pw',
+	useradd => $name,
+	-h	=> '-',
+	-s	=> '/bin/sh',
+	-d	=> $cvs_base,
+	-u	=> $cvs_uid,
+	-g	=> $cvs_group,
+	-o	=> ()
+    );
+}
+
+my $projects = $dbh->selectcol_arrayref(q{
+    SELECT TicketCustomFieldValues.Content
+      FROM TicketCustomFieldValues, Queues, CustomFields
+     WHERE TicketCustomFieldValues.Ticket = Queues.DefaultDueIn
+       AND Queues.Disabled = 0
+       AND TicketCustomFieldValues.CustomField = CustomFields.Id
+       AND CustomFields.Description = 'UnixName'
+  GROUP BY TicketCustomFieldValues.Content
+});
+
+foreach my $name (@{$projects||[]}) {
+    $name = lc($name);
+    $name =~ /^[a-z][0-9a-z]{2,14}$/ or exit;
+
+    my $cvs_name = "$cvs_base/$name";
+    my $svn_name = "$svn_base/$name";
+
+    mkdir $cvs_name unless -d $cvs_name;
+    chmod(0777, $cvs_name);
+
+    system("svnadmin", "create", $svn_name) unless -d $svn_name;
+    
+    my $_start_commit = "$svn_name/hooks/start-commit";
+    my $_pre_revprop_change = "$svn_name/hooks/pre-revprop-change";
+
+    if (!-s $_start_commit) {
+	unlink $_start_commit if -e $_start_commit;
+	symlink($start_commit => $_start_commit);
+    }
+    if (!-s $_pre_revprop_change) {
+	unlink $_pre_revprop_change if -e $_pre_revprop_change;
+	symlink($pre_revprop_change => $_pre_revprop_change);
+    }
+}
+
+};
+
+if (my $interval = shift) {
+    warn $@ if $@;
+    $interval = 1 if $interval < 1;
+    sleep $interval;
+    exec($^X, $0, $interval);
+}
+die $@ if $@;

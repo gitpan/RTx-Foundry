@@ -1,5 +1,9 @@
 #!/usr/local/bin/perl -w
 
+use FindBin;
+use lib "$FindBin::Bin/openfoundry-lib";
+use lib "$FindBin::Bin/../libexec/openfoundry";
+
 =head1 NAME
 
 vcp - Copy versions of files between repositories and/or RevML

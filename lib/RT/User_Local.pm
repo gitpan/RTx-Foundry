@@ -52,20 +52,4 @@ sub IsPublic {
     };
 }
 
-sub _GeneratePassword {
-    my $self = shift;
-    my $password = shift;
-
-    if ((caller(1))[3] eq 'RT::User::SetPassword') {
-	# for PAM
-	my $md5 = Digest::MD5->new();
-	$md5->add($password);
-	$self->__Set( Field => 'ExternalContactInfoId', Value => $md5->hexdigest);
-    }
-
-    my $md5 = Digest::MD5->new();
-    $md5->add($password);
-    return ($md5->b64digest);
-}
-
 1;
