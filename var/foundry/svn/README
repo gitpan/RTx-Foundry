@@ -1,0 +1,8 @@
+# $File: //member/autrijus/.vimrc $ $Author: autrijus $
+# $Revision: #14 $ $Change: 4137 $ $DateTime: 2003/02/08 11:41:59 $
+
+If you have a local subversion installation, replace this directory
+by a symbolic to the subversion base directory, like this:
+
+    ln -s -f /var/subversion /usr/local/rt3/var/foundry/svn
+

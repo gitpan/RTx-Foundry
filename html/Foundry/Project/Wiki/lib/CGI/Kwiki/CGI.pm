@@ -8,9 +8,9 @@ sub all {
     my ($self) = @_;
     return (
         CGI::Vars(), 
+        (map { ($_, $self->{$_}) } 
+         grep { not /^(cgi|config|driver)$/ } keys %$self),
         page_id => $self->page_id,
-        map { ($_, $self->{$_}) } 
-        grep { not /^(cgi|config|driver)$/ } keys %$self
     );
 }
 
@@ -45,7 +45,7 @@ sub page_id {
         return $self;
     }
     return $self->{page_id} 
-      if defined $self->{page_id};
+      if defined($self->{page_id} ||= $CGI::Kwiki::page_id);
     my $page_id = '';
     my $query_string = CGI::query_string();
     $query_string =~ s/%([0-9a-fA-F]{2})/pack("H*", $1)/ge;

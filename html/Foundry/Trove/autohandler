@@ -21,7 +21,7 @@
 <%INIT>
 @RT::Tabs = (
     map { $_ => "/Foundry/Trove/?Type=$_" }
-    'Overview', 'Maturity', 'Operating System', 'License', 'Programming Language', 'Intended Audience'
+    'Overview', 'Maturity', 'Platform', 'License', 'ProgrammingLanguage', 'IntendedAudience'
 );
 
 my $action = $m->base_comp->attr('Action');

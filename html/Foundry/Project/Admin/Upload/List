@@ -1,36 +1,51 @@
 %# What this world needs is a good five-dollar plasma weapon.
 
-  <table width="100%" border="0" cellspacing="1" cellpadding="2" class="poptable" bgcolor="#AAE3DE">
+<input type="hidden" name="id" value="<% eval { $Item->Id } %>">
+  <table width="100%" border="0" cellspacing="1" cellpadding="2" bgcolor="#AAE3DE">
     <tr> 
-      <td colspan="4" class="tableTitle"><nobr><&|/l&>New Release</&></nobr></td>
+      <td colspan="4" class="tableTitle"><nobr><&|/l&>Version</&></nobr></td>
     </tr>
-    <tr><td align="center" colspan="4">
-	<&|/l&>Release Name</&>: <input name="Subject">
+    <tr><td align="left" colspan="4">
+	<nobr><&|/l&>Version Number</&>: <input name="Subject" value="<% eval{ $Item->Subject } %>" size="10"></nobr>
 % my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
-	<&|/l&>Release Date</&>: <input name="Starts" style="cursor: hand" size=10 value="<% $Now->AsDate %>" <& /Work/Elements/Date &> >
+	<nobr><&|/l&>Release Date</&>: <input name="Starts" style="cursor: hand" size=10 value="<% eval{ $Item->StartsObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+% my $status = eval { $Item->Status };
+% if ($status and $status ne 'new') {
+	<br>
+	<nobr><&|/l&>Status</&>:
+	<select name="Status">
+%           foreach my $key ('open', 'resolved', 'deleted') {
+	    <option value="<% $key %>" <% ($status eq $key) ? 'selected' : '' %>>
+		<% loc($StatusMap{$key}) %>
+	    </option>
+%           }
+	</select></nobr>
+% }
 	<input type="submit" value="<&|/l&>Submit</&>">
     </td></tr>
     <tr> 
-      <td colspan="4" class="tableTitle"><nobr><&|/l&>Existing Releases</&></nobr></td>
+      <td colspan="4" class="tableTitle"><nobr><&|/l&>Existing Versions</&></nobr></td>
     </tr>
     <tr> 
-      <td class="tableTitle" width="40"><nobr><&|/l&>Release Name</&></nobr></td>
+      <td class="tableTitle" width="40"><nobr><&|/l&>Version Number</&></nobr></td>
       <td class="tableTitle" width="120"><nobr><&|/l&>Release Date</&></nobr></td>
       <td class="tableTitle" width="100"><nobr><&|/l&>Status</&></nobr></td>
     </tr>
 % foreach my $item (@{$List}[$Begin .. $Begin + $Size - 1]) {
 %     my $bg = (($Item and $item and $item->Id == $Item->Id) ? '#ffffcc' : 'ffffff');
+%     my $url = "$URL?Queue=$Queue&id=" . ($IDMap->{$item->Id} || $item->Id) if $item;
     <tr bgcolor='<% $bg %>'
 %     if ($item) {
 	onMouseOver="this.style.backgroundColor='#D1FAFC'" 
         onMouseOut="this.style.backgroundColor='<% $bg %>'"
 	style="cursor:hand" 
-	onClick="MM_goToURL('self','<% $URL %>?Queue=<% $Queue %>&id=<% $IDMap->{$item->Id} || $item->Id %>');return document.MM_returnValue"
+	onClick="MM_goToURL('self','<% $url %>');return document.MM_returnValue"
 %     } else { $item = $RT::Nothing }
     > 
-      <td height="20" align="right"><% $item->Subject %>&nbsp;</td>
+%     my $status = $StatusMap{$item->Status};
+      <td height="20" align="right"><a href="<% $url %>"><% $item->Subject %></a>&nbsp;</td>
       <td height="20"><% eval { $item->StartsObj->AsDate } %></td>
-      <td height="20"><% loc($item->Status) %></td>
+      <td height="20"><% loc($status) %></td>
     </tr>
 % }
   </table>
@@ -45,6 +60,12 @@ if (UNIVERSAL::isa($List, 'DBIx::SearchBuilder')) {
 }
 $List ||= [];
 $Size = @$List if @$List > $Size;
+my %StatusMap = (
+    resolved	=> 'released',
+    open	=> 'preparing',
+    new		=> 'empty',
+    deleted	=> 'deleted',
+);
 </%INIT>
 <%ARGS>
 $Size	=> 14

@@ -27,9 +27,7 @@
 % }
 
 <%INIT>
-my $Root = RT::CurrentUser->new;
-$Root->Load('root');
-my $Ticket = RT::Ticket->new($Root);
+my $Ticket = RT::Ticket->new($RT::SystemUser);
 $Ticket->Load($id);
 $m->abort("Cannot load $id") unless $Ticket->Id;
 my $Name = $Ticket->CustomFieldValues('Name')->First->Content;
@@ -42,6 +40,9 @@ if ($no_login) {
 	$session{'CurrentUser'} = RT::CurrentUser->new;
 	$session{'CurrentUser'}->Load($user);
 	$RT::Guest = 0;
+
+	$m->comp('/Foundry/Elements/CheckUser', User => $user);
+	$m->comp('/Foundry/Elements/CheckInvitations', User => $user);
     }
     else {
 	$m->note( error => loc('Invalid login.') );

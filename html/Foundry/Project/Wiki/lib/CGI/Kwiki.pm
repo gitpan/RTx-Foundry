@@ -102,12 +102,12 @@ sub handler {
         $r->method('GET');
         $r->headers_in->unset('Content-length');
         $r->header_out('Location' => $html->{redirect});
-        $r->status(&REDIRECT);
+        $r->status(&REDIRECT || 307);
         $r->send_http_header;
     }
     else {
         $r->print($driver->cookie->header, $html);
-        $r->status(&OK);
+	$r->status(&OK || 200);
     }
     return;
 }

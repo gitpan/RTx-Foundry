@@ -8,8 +8,13 @@
 % $m->print($out);
 
 <%INIT>
-my $Name = $ARGS{'CustomField-24-Values'};
-my $Email = $ARGS{'CustomField-25-Values'};
+my $QueueObj = RT::Queue->new($session{CurrentUser});
+$QueueObj->Load('LostPassword') or die "Can't load LostPassword queue";
+my $name_id = $QueueObj->CustomField('Name')->Id or die "Can't find field 'Name'";
+my $email_id = $QueueObj->CustomField('Email')->Id or die "Can't find field 'Email'";
+
+my $Name = $ARGS{"CustomField-$name_id-Values"};
+my $Email = $ARGS{"CustomField-$email_id-Values"};
 my $OK;
 
 if ( exists $ARGS{'Subject'} ) {

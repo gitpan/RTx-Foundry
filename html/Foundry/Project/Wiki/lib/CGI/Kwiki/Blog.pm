@@ -23,16 +23,46 @@ sub run_cgi {
     }
 }
 
+sub handler {
+    my ($r) = @_;
+    my $base_directory = $_[1] || $r->location;
+    chdir($base_directory) 
+      or die "Can't chdir to '$base_directory'\n";
+    eval "use Apache::Constants qw(OK REDIRECT)";
+    die $@ if $@;
+
+    my $driver = CGI::Kwiki::load_driver();
+    $CGI::Kwiki::user_name = 
+      $ENV{REMOTE_USER} ||
+      $r->get_remote_host || 
+      $r->connection->remote_ip;
+    my $self = __PACKAGE__->new($driver);
+    my $html = $self->process;
+    if (ref $html) {
+        $r->method('GET');
+        $r->headers_in->unset('Content-length');
+        $r->header_out('Location' => $html->{redirect});
+        $r->status(&REDIRECT);
+        $r->send_http_header;
+    }
+    else {
+        $r->print($driver->cookie->header, $html);
+        $r->status(&OK);
+    }
+    return;
+}
+
 sub process {
     my ($self) = @_;
-    local $0 = 'index.cgi';
+    local $0 = ($CGI::Kwiki::index || 'index.cgi');
+    my $script = ($CGI::Kwiki::script || 'blog.cgi');
     my $blog_id = '';
     my @blog_pages = sort {$b cmp $a} 
         map {s/.*[\\\/]//; $_} 
         glob "metabase/blog/*";
     if (@blog_pages) {
         $blog_id = $self->cgi->blog_id
-          or return {redirect => "blog.cgi?$blog_pages[0]"};
+          or return {redirect => "$script?$blog_pages[0]"};
     }
     my $i;
     for ($i = 0; $i < @blog_pages; $i++) {

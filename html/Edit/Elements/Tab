@@ -10,7 +10,7 @@
 % while (my ($k, $v) = splice(@AdminTabs, 0, 2)) {
 %   if ($k eq $Text or (($Text =~ s/s$//), $k eq "$Text Setup")) {
     <td background="/img/tabLeft.png" width=2></td>
-    <td align="center" background="/img/tabMiddle.png"><div style="<% $OIN::OIN104 ? '' : 'padding: 3px;' %> padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><label><% loc($k) %></label></div></td>
+    <td align="center" background="/img/tabMiddle.png"><div style="<% $OIN::OIN104 ? '' : 'padding: 3px;' %> padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><a style="color: white" href="<% $v %>"><nobr><strong><% loc($k) %></strong></nobr></a></div></td>
     <td background="/img/tabRight.png" width=2></td>
 %   } elsif (!$RT::OIN104) {
     <td background="/img/tabLeftTop.png" width=2></td>
@@ -24,9 +24,9 @@
 </td></tr></table>
 <%INIT>
 my @AdminTabs = (
-'Site Admin'	    => '/Edit/',
+'Site Admin'	    => '/Edit/?SiteAdmin',
 'User Setup'	    => '/Edit/Users/',
-'Group Setup'	    => '/Edit/Groups/',
+# 'Group Setup'	    => '/Edit/Groups/',
 'Queue Setup'	    => "/Edit/Queues/",
 'Global Setup'	    => "/Edit/Global/Basic/",
 );

@@ -38,7 +38,7 @@ if (my $Email = $ARGS{EmailAddress}) {
 	}
     }
 }
-else {
+elsif ($ARGS{Name}) {
     delete $ARGS{EmailAddress};
     $Error = loc('Invalid email address');
 }

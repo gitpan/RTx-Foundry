@@ -105,10 +105,13 @@ sub run {
     my $obj = get_handler ({%$cfg, branch => $branch});
     my $html = $obj->run;
     my $out = $cfg->{out} || sub { print @_ };
+    my $header_out = $cfg->{header_out} || sub { print $cfg->{cgi}->header(@_) };
 
     if (ref ($html)) {
-#	print $cfg->{cgi}->header(-charset => $html->{charset} || 'UTF-8',
-#				  -type => $html->{mimetype} || 'text/html');
+	$header_out->(
+	    -charset => $html->{charset} || 'UTF-8',
+	    -type => $html->{mimetype} || 'text/html',
+	);
 	if ($html->{template}) {
 
 	    $template = Template->new ({ INCLUDE_PATH => $config->{templatedir} || 'template/',

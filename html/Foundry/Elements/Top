@@ -6,13 +6,15 @@
     <td class="poptable" bgcolor="#207AAA" height="24">
       <table width="100%" border="0" cellspacing="0" cellpadding="0" height="24">
         <tr> 
-          <td>
-	    &nbsp;<font color="white" size="2">OpenFoundry v0.01a</font>
-	  </td>
+          <td width="20%"><nobr>
+	    &nbsp;<font color="white" size="2"><% $RT::Organization %> - <&|/l&>OpenFoundry System</&></font>
+	  </nobr></td>
 	  <td align="right" style="color:white">
 	    <& TopSearch &>
-	    &nbsp;&nbsp;&nbsp;
+	    &nbsp;&nbsp;&nbsp;<nobr>
 		<a href="/Foundry/" style="color: white"><img src="/img/home.png" width="15" height="15" align="absmiddle" border="0" alt="[^]"><&|/l&>Homepage</&></a>
+		|
+		<a style="color: white" target="_blank" href="/Foundry/Help/"><&|/l&>Help</&></a>
 % if ($RT::Guest) {
 		|
 		<a style="color: white" href="/Foundry/Home/Guest/Register.html"><&|/l&>Register</&></a>
@@ -24,10 +26,8 @@
 		|
 		<a style="color: white" href="/Foundry/Logout.html"><&|/l&>Logout</&> <% $session{CurrentUser}->UserObj->Name %>&nbsp;<img src="/img/Quite.png" width="15" height="15" alt="[x]" border="0" align="absmiddle"></a>
 % }
-		|
-		<a style="color: white" target="_blank" href="/Foundry/Help/"><&|/l&>Help</&></a>
 		&nbsp;
-          </td>
+          </nobr></td>
         </tr>
       </table>
     </td>

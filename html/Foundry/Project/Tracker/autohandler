@@ -45,7 +45,7 @@ foreach my $type (qw(defect patch task feature enhancement)) {
     my $MyTickets = RT::Tickets->new($session{'CurrentUser'});
     $MyTickets->LimitQueue(VALUE => $QueueObj->Id);
     $MyTickets->LimitStatus(VALUE => $_) for RT::Queue->ActiveStatusArray;
-    $MyTickets->LimitCustomField(CUSTOMFIELD => 18, VALUE => $type);
+    $MyTickets->LimitCustomField(CUSTOMFIELD => 'Type', VALUE => $type);
     $RT::TypeCache{$QueueObj->Id}{$type} = $MyTickets->Count;
 }
 
@@ -62,7 +62,7 @@ my $Map = [
 ];
 
 push @$Map, (
-    "$prefix/Ticket/"  => (
+    "${prefix}Display.html?id=$ARGS{id}" => (
 	($ARGS{id} eq 'new')
 	    ? loc("New ticket")
 	    : loc("Ticket #[_1]", $ARGS{id}),
@@ -71,7 +71,7 @@ push @$Map, (
 
 my $url = $r->uri;
 if ($ARGS{id}) {
-    $url = "$prefix/Ticket/";
+    $url = "${prefix}Display.html?id=$ARGS{id}";
 }
 else {
     $url =~ s!\w+\.html$!!;

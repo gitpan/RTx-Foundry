@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+
+use strict;
+use LWP::Simple;
+
+# disallow cvs user directly
+if ($ENV{USER} eq 'cvs') {
+	print "this is anonymous readonly cvs\n";
+	exit 1;
+}
+
+my $module = shift;
+my $cvsroot = $ENV{CVSROOT};
+
+$module =~ s|^$cvsroot/(.*?)(/.*)?|$1|;
+$module =~ s|/.*$||;
+
+# bypass cvsroot commit
+exit 0 if $module eq 'CVSROOT';
+
+my $content = get("http://rt.openfoundry.org/REST/0.0/NoAuth/has_member?Queue=$module&User=$ENV{USER}");
+
+exit 0 if $content =~ '^OK';
+
+print "permission denied for user $ENV{USER} committing into $module";
+
+exit 1;

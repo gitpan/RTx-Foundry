@@ -45,19 +45,11 @@ sub VerifyPasswordHash {
     return 1;
 }
 
-sub _GeneratePassword {
-    my $self = shift;
-    my $password = shift;
-
-    if ((caller(1))[3] eq 'RT::User::SetPassword') {
-	open my $file, ">/var/spool/openfoundry/newuser." . time() . ".$$." . rand() or die $!;
-	print $file $self->Name, "\n", crypt($password, int(rand(100)));
-	close $file;
-    }
-
-    my $md5 = Digest::MD5->new();
-    $md5->add($password);
-    return ($md5->b64digest);
+sub IsPublic {
+    my ($self, $field) = @_;
+    return eval {
+	$self->OriginObj->CustomFieldValues('Public Info')->HasEntry($field)
+    };
 }
 
 1;

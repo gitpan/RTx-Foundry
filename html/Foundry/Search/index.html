@@ -1,44 +1,23 @@
-%# Never call a man a fool; borrow from him.
-
-<& /Foundry/Elements/Header, Title => 'Search' &>
-<br>
-<table width="97%" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr> 
-    <td>
-    <p align="center">
-% my @colors = qw(0039b6 c41200 f3c518 0039b6 30a72f c41200 f3c518 30a72f c41200 f3c518 0039b6);
-% foreach my $letter (qw(O p e n F o u n d r y)) {
-%   $m->print('<font color="#', shift(@colors), '" size=10>', $letter ,'</font>');
-% }
-    <br><br>
-    <& /Foundry/Elements/Tabs, Text => 'Tracker' &>
-    </td>
-  </tr>
-  <tr> 
-    <td valign="top"> 
-      <table border="0" cellspacing="0" cellpadding="4" class="poptable" width="100%">
-        <tr> 
-          <td valign="top" align="center"> 
-	    <input size=30 name="q" id="q" value="<% $q %>">
-	    <input type="image" border="0" name="Action-Search" src="/img/Go.png" width="23" height="19" align="middle">
-% if ($q) {
-	<hr>
-	    Under construction.
-% }
-	  </td>
-	</tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<br>
-<script><!--
-document.getElementById('q').focus();
---></script>
-<& /Foundry/Elements/Footer &>
-
+<&|/l&>No search to operate on.</&>
 <%INIT>
+$Query =~ s/^\s+|\s+$//g;
+if (length($Query) and $SearchType =~ /^(?:Project|User|Ticket)$/) {
+    my $List = $m->comp($SearchType, Query => $Query);
+    if ($List) {
+	return $m->comp('/Foundry/Trove/List', ARGS => \%ARGS, Begin => $Begin, List => $List)
+	    if $SearchType eq 'Project';
+	return $m->comp('/Foundry/Project/Tracker/List', List => $List, Begin => $Begin, URL => '/Foundry/Project/Tracker/Display.html', Hide => '!', ARGS => \%ARGS)
+	    if $SearchType eq 'Ticket';
+	return $m->comp('/Foundry/User/List', ARGS => \%ARGS, Begin => $Begin, List => $List)
+	    if $SearchType eq 'User';
+	return $m->print(loc("Under Construction."));
+    }
+    return if defined $List;
+    return $m->print(loc("Cannot find any matching items."));
+}
 </%INIT>
 <%ARGS>
-$q => ''
+$SearchType => 'Project'
+$Query	    => ''
+$Begin	    => 0
 </%ARGS>

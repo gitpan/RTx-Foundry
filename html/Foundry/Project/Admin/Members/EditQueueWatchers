@@ -1,29 +1,22 @@
 %# You can make it illegal, but you can't make it unpopular.
 
-%if ($Members->Count == 0 ) {
-<ul>
-<li><i><&|/l&>none</&></i>
-% } else {
+% if (!@$List) {
+<tr><td bgcolor="white">(<&|/l&>none</&>)</td></tr>
+% }
 
-% if (!$Nonempty or $Members->Count > 1) {
-<i><&|/l&>(Check box to delete)</&></i><br><BR>
+% foreach my $UserObj (@$List) {
+%     $RoleCache->{$UserObj->Id} = $Role;
+%     next if $UserObj->Disabled;
+%     if ($ReadOnly or $UserObj->Id == $session{CurrentUser}->Id) {
+<tr><td align="center" bgcolor="white"><% $UserObj->Name %></td></tr>
+%     } else {
+<tr><td align="center" bgcolor="white"><a href="?UserString=<% $UserObj->Name %>"><% $UserObj->Name %></a></td></tr>
+%     }
 % }
-<ul>
-% while (my $watcher = $Members->Next) {
-% my $IsMe = $watcher->MemberObj->Object->Id == $session{CurrentUser}->UserObj->Id;
-<li>
-% if ((!$Nonempty or $Members->Count > 1) and (!$ReadOnly or $IsMe)) {
-<INPUT  TYPE=CHECKBOX 
-        NAME="Queue-<%$QueueObj->Id%>-DelWatcher-Type-<%$Watchers->Type%>-Principal-<%$watcher->MemberId%>" 
-        UNCHECKED>
-% }
-<%$watcher->MemberObj->Object->Name%>
-% }
-% }
-</ul>
 
 <%INIT>
-my $Members = $Watchers->MembersObj;
+my $List = $Watchers->MembersObj->ItemsArrayRef;
+@$List = sort { lc($a->Name) cmp lc($b->Name) } map { $_->MemberObj->Object } @$List;
 </%INIT>
 
 <%ARGS>
@@ -31,6 +24,8 @@ $QueueObj => undef
 $Watchers => undef
 $Nonempty => undef
 $ReadOnly => undef
+$RoleCache => {}
+$Role => undef
 </%ARGS>
 
 

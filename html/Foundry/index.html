@@ -1,70 +1,42 @@
 %# Never call a man a fool; borrow from him.
 
-<& /Foundry/Elements/Header, Title => 'Homepage' &>
-<table width="100%" border="0" cellspacing="4" cellpadding="0" class="tableEmboss">
-  <tr>
-    <td width="156">&nbsp;</td>
-    <td width="14"><img src="/img/3Dtoolbar.png" width="2" height="20"></td>
-    <td> 
-      <table border="0" cellspacing="2" cellpadding="0" width="100%">
-        <tr>
-	  <td>
-<% "如果您在登入後，發現畫面上的「個人頁面」標籤消失了，請見我們的" %>
-<a href="http://rt.openfoundry.org/Foundry/Project/Wiki/?FoundryFAQ"><% "常見問題集" %></a><% "。" %>
-<!--
-	  <td width="270"><&|/l&>Refresh</&>
-<& /Elements/Refresh, Name => 'HomeRefreshInterval', Default => $session {'home_refresh_interval'} &>
-	    <input type="image" border="0" name="Action-Search" src="/img/Go.png" width="23" height="19" align="middle">
--->
-	  </td>
-	</tr>
-      </table>
-    </td>
-  </tr>
-</table>
+<& /Foundry/Elements/Header, Title => 'Homepage', Refresh => $session{home_refresh_interval} &>
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr> 
-    <td width="70%" align="left" valign="top">
-<ul>
-<li><em>Warnings and Contact Information</em>
-	<ul>
-	<li><b>Do Not Use Sensitive Password to test yet!</b>  It shows up in logs.</li>
-	<li>NewUser password WILL affect your PAM password (including ssh, lists, cvs)</li>
-	<li><A HREF="mailto:ossf-test@foundry.iis.sinica.edu.tw"
-	>Send your Feedbacks and Comments to ossf-test Mailing-List</A></li>
-	<li><A HREF="http://foundry.iis.sinica.edu.tw:8080/pipermail/ossf-test/"
-	>View ossf-test Mailing-List Archives</A></li>
-	<li>Developers usually chat on ircnet, #ossf channel</li>
-	</ul>
-</li>
-<li><em>Available Operations</em>
-	<ul>
-	<li>NewUser / Overview / Preference / NewProject / Upload / Download done</li>
-	<li>NewProject is now autoapproved.</li>
-	<li>For upload, goto My Page, ProjectName, Admin, Release Files</li>
-	<li><font color="red">Before upload files, make sure that the projects own the existing releases</font></li>
-	<li>For download, goto Trove, ProjectName, Downloads</li>
-	</ul>
-</li>
-<li><em>Features</em>
-	<ul>
-	<li>Lynx / w3m should be usable but not very pretty</li>
-	<li>Currently supported languages: zh_tw, zh_cn, en<br>
-	    (change your browser's Accept-Language; need logout before taking effect)</li>
-	</ul>
-</li>
-</ul>
+    <td align="left" valign="top" colspan="2">
+<&
+    /Foundry/Elements/Kwiki,
+    Repository	=> '.global',
+    IsAdmin	=> 0,
+    Script	=> 'index.html',
+    PageId	=> ($page_id || ($keywords ||= loc('HomePage'))),
+&>
     </td>
-    <td valign="top">
-     <& /Foundry/Elements/News &>
+    <td valign="top" width='30%'>
+     <& /Foundry/Elements/NewsLetter &>
      <br>
-     <& /Foundry/Elements/Stats &>
+     <& /Foundry/Elements/News &>
     </td>
   </tr>
+  <tr><td valign="top">
+     <& /Foundry/Elements/Stats &>
+  </td><td valign="top">
+     <& /Foundry/Elements/TopDownloads &>
+  </td><td valign="bottom" align="center">
+<form style="margin: 0" action="/Foundry/index.html">
+    <& /Elements/Refresh, Name => 'HomeRefreshInterval', Default => $session {'home_refresh_interval'} &>
+    <input type="image" border="0" name="Action-Search" src="/img/Go.png" width="23" height="19" align="middle">
+</form>
+  </td></tr>
 </table>
 <& /Foundry/Elements/Footer &>
 
 <%INIT>
+if ($ARGS{'HomeRefreshInterval'}) {
+	$session{'home_refresh_interval'} = $ARGS{'HomeRefreshInterval'};
+}
 </%INIT>
 <%ARGS>
+$keywords => undef
+$page_id => undef
 </%ARGS>

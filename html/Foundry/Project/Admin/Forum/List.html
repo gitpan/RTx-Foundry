@@ -1,6 +1,8 @@
 <%INIT>
 our ($Get, $Post, $ua, $wws);
-my $args = { map { $_ => $ARGS{$_} } grep /^[_a-z]/, keys %ARGS };
+
+use Encode;
+my $args = { map { $_ => Encode::encode_utf8($ARGS{$_}) } grep /^[_a-z]/, keys %ARGS };
 
 if ($r->path_info =~ m{^/wws(.*)}) {
     require URI;

@@ -13,7 +13,7 @@
 %#   $t = "~" . $session{CurrentUser}->Name if $k eq 'My Page';
 %   if ($k eq $Text) {
     <td background="/img/tabLeft.png" width=2></td>
-    <td align="center" background="/img/tabMiddle.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><label><% $t %></label></div></td>
+    <td align="center" background="/img/tabMiddle.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><label><a href="<% $v %>" style="color: white"><b><% $t %></b></a></label></div></td>
     <td background="/img/tabRight.png" width=2></td>
 %   } else {
     <td background="/img/tabLeftTop.png" width=2></td>
@@ -34,13 +34,16 @@ my @Tabs= (
 );
 if ($session{CurrentUser}->UserObj->HasRight(Object => $RT::System, Right => 'SuperUser')) {
     push @Tabs, (
-'Site Admin'	    => "/Edit/",
+'Site Admin'	    => "/Edit/?SiteAdmin",
     )
 };
 if ($Text and !grep {$_ eq $Text} @Tabs) {
-    push @Tabs, (
-$Text		    => "/Foundry/Project/?Queue=$ARGS{Queue}"
-    );
+    if ($Text =~ /^~/) {
+	push @Tabs, ( $Text => "/Foundry/User/?User=$session{LastUser}" );
+    }
+    else {
+	push @Tabs, ( $Text => "/Foundry/Project/?Queue=$session{LastQueue}" );
+    }
 }
 #'Project Foo'	    => "/Foundry/Project/",
 </%INIT>

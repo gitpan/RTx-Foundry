@@ -1,5 +1,9 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #2 $ $Change: 8884 $ $DateTime: 2003/11/15 05:11:58 $
+# $Revision: #3 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
+
+[Changes for 0.00_03 - December 15, 2003]
+
+Now installs itself with help from Module::Install::RTx.
 
 [Changes for 0.00_02 - November 15, 2003]
 

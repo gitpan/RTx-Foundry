@@ -7,12 +7,15 @@ my $ListCount = {};
 my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
 $Tickets->LimitQueue( VALUE => $QueueObj->Id );
 $Tickets->LimitType( VALUE => 'release' );
+$Tickets->LimitStatus( VALUE => 'resolved' );
+$Tickets->OrderBy( FIELD => 'Starts', ORDER => 'DESC' );
 
 while (my $Item = $Tickets->Next) {
     my (%url, %description, %documents);
     my $transactions = $Item->Transactions;
     while (my $trans = $transactions->Next) {
 	my $attachments = $trans->Attachments;
+	$attachments->Columns( qw( Id Filename ContentType Headers Subject ) );
 	my $subject = $trans->Subject;
 	while (my $attach = $attachments->Next) {
 	    next unless ($attach->Filename);

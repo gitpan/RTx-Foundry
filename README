@@ -1,5 +1,5 @@
 # $File: //depot/RT/osf/README $ $Author: autrijus $
-# $Revision: #3 $ $Change: 8874 $ $DateTime: 2003/11/14 21:28:08 $
+# $Revision: #4 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
 
 This is the README file for RTx::Foundry, the base classes for
 the OpenFoundry online collaboration system.
@@ -11,9 +11,9 @@ the module usage information.
 
 RTx::Foundry the standard perl module install process:
 
-cpansign -v		# see SIGNATURE for details
+cpansign -v		# optional; see SIGNATURE for details
 perl Makefile.PL
-make			# or 'nmake' on Win32
+make
 make test
 make install
 

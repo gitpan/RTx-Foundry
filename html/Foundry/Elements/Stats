@@ -4,26 +4,18 @@
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle"><&|/l&>Statistics</&></td></tr>
 <tr bgcolor="white"><td><nobr>
-<&|/l&>Projects</&>: <% $QueueCount %>
+<&|/l, $QueueCount &>Projects: [_1]</&>
 </nobr></td></tr>
 <tr bgcolor="white"><td><nobr>
-<&|/l&>Users</&>: <% $UserCount %>
+<&|/l, $UserCount &>Users: [_1]</&>
 </nobr></td></tr>
-<tr><td class="tableTitle"><&|/l&>Top Downloads</&></td></tr>
-% while (my $QueueObj = $Queues->Next) {
-%     last unless $QueueObj->FinalPriority;
-<tr bgcolor="white"><td><nobr>
-<a href="/Foundry/Project/Download/?Queue=<% $QueueObj->Id %>"><% $QueueObj->Name %></a> (<% $QueueObj->FinalPriority %>)
-</nobr></td></tr>
-% }
 </table>
 <%INIT>
 my $Queues = RT::Queues->new($RT::SystemUser);
-$Queues->UnLimit;
-$Queues->Limit( FIELD => 'Disabled', OPERATOR => '=', VALUE => '0');
-$Queues->OrderBy( FIELD => 'FinalPriority', ORDER => 'DESC' );
+$Queues->LimitToEnabled;
 my $QueueCount = $Queues->Count;
 my $Users = RT::Users->new($RT::SystemUser);
-$Users->Limit( FIELD => 'Password', OPERATOR => '!=', VALUE => '*NO-PASSWORD*');
+$Users->LimitToPrivileged;
+$Users->LimitToEnabled;
 my $UserCount = $Users->Count;
 </%INIT>

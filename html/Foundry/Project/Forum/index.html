@@ -10,6 +10,10 @@
 % }
 </UL>
 
+% } else {
+
+<&|/l&>This project does not have any mailing lists yet.</&>
+
 % }
 
 <%INIT>
@@ -21,8 +25,8 @@ my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
 our ($Get, $Post);
 my $current = $Get->("/lists/$topic");
 my @lists;
-my $admin = "/Foundry/Project/Admin/Forum/List.html/wws/info/";
-while ($current =~ m{<A HREF="$admin([^"]+)}g) {
+my $info = "/Foundry/Project/Admin/Forum/List.html/wws/info/";
+while ($current =~ m{<A HREF="$info([^"]+)}g) {
     push @lists, $1;
 }
 

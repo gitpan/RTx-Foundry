@@ -3,17 +3,35 @@
 %# to go.
 </form><form action="index.html" method="post" enctype="multipart/form-data">
 <input type="hidden" name="Queue" value="<% $Queue %>">
-<input type="hidden" name="id" value="<% eval { $Item->Id } %>">
+<input type="hidden" name="id" value="<% eval { $Parent->Id } %>">
 <input type="hidden" name="Action-Upload" value="1">
 
-  <table width="100%" border="0" cellspacing="1" cellpadding="2" class="poptable" bgcolor="#AAE3DE">
+  <table width="100%" border="0" cellspacing="1" cellpadding="2" bgcolor="#AAE3DE">
     <tr> 
-      <td colspan="4" class="tableTitle"><nobr><&|/l&>New File</&></nobr></td>
+      <td colspan="4" class="tableTitle"><nobr><&|/l&>File</&></nobr></td>
     </tr>
     <tr><td align="left" colspan="4">
-	<&|/l&>File</&>: <input <% $disabled %> type="file" name="Attach"><br>
-	<&|/l&>Description</&>: <input <% $disabled %> name="Description" size=10>
-	<input <% $disabled %> type="submit" value="<&|/l&>Submit</&>">
+	<nobr><&|/l&>File</&>:
+% if ($Item) {
+	<input readonly name="Filename" size=10 value="<% $Item->Filename %>">
+	<input type="hidden" name="File" value="<% eval { $Transaction->Id } %>">
+% } else {
+	<input <% $disabled %> type="file" name="Attach" size=10>
+% }
+	</nobr>
+	<nobr><&|/l&>Description</&>:
+	<input <% $disabled %> name="Description" size=10 value="<% $Description %>"></nobr>
+% if ($Item) {
+	<br>
+	<nobr>
+	<&|/l&>Status</&>:
+	<select name="FileStatus">
+	    <option value="open" selected><&|/l&>uploaded</&></option>
+	    <option value="deleted" selected><&|/l&>deleted</&></option>
+	</select></nobr>
+% }
+	<input <% $disabled %> type="submit" value="<&|/l&>Submit</&>"
+	    onclick="this.disabled = true; this.form.submit();">
     </td></tr>
     <tr> 
       <td colspan="4" class="tableTitle"><nobr><&|/l&>Existing Files</&></nobr></td>
@@ -47,27 +65,27 @@
   </table>
 <%INIT>
 my $List = [];
+my ($Item, $Description);
 my (%url, %description);
 
-if ($Item) {
+if ($Parent) {
     my %documents;
-    my $transactions = $Item->Transactions();
+    my $transactions = $Parent->Transactions();
     while (my $trans = $transactions->Next()) {
-	my $attachments = $trans->Attachments;
 	my $subject = $trans->Subject;
+	my $attachments = $trans->Attachments;
+	$attachments->Columns( qw( Id Filename ContentType Headers ) )
+	    unless $ARGS->{'Action-Upload'};
 	while (my $attach = $attachments->Next()) {
 	    next unless ($attach->Filename);
 	    # most recent at the top
 	    # unshift (@{$documents{$attach->Filename}}, $attach);
 	    $documents{$attach->Filename} = $attach;
 	    $description{$attach->Id} = $subject;
-	    $url{$attach->Id} = join(
-		'/',
-		"/Ticket/Attachment",
-		$trans->Id,
-		$attach->Id,
-		$attach->Filename
-	    );
+	    $url{$attach->Id} = "?Queue=$Queue&id=" . $Parent->Id . "&File=" . $trans->Id;
+	    next unless $Transaction and $Transaction->Id == $trans->Id and !$ARGS->{'Action-Upload'};
+	    $Item ||= $attach;
+	    $Description ||= $subject;
 	}
     }
 
@@ -77,7 +95,7 @@ if ($Item) {
 }
 $Size = @$List if @$List > $Size;
 
-my $disabled = 'disabled' unless $Item and $Item->Id;
+my $disabled = 'disabled' unless $Parent and $Parent->Id;
 </%INIT>
 <%ARGS>
 $Size	=> 14
@@ -86,7 +104,7 @@ $Begin	=> 0
 $IDMap	=> {}
 $URL	=> ''
 $ARGS	=> {}
-$Item	=> undef
+$Parent	=> undef
+$Transaction => 0
 $Queue
 </%ARGS>
-

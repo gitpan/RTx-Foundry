@@ -1,8 +1,8 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #4 $ $Change: 8885 $ $DateTime: 2003/11/15 05:13:20 $
+# $Revision: #5 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_02';
+$RTx::Foundry::VERSION = '0.00_03';
 
 1;
 

@@ -1,19 +1,25 @@
 %# Spend extra time on hobby.  Get plenty of rolling papers.
 
+<table border="0" cellspacing="1" cellpadding="2">
 % if (@lists) {
-
-<&|/l&>Current mailing lists</&>:
-<UL>
+<tr><td class="tableTitle"><&|/l&>Current mailing lists</&></td></tr>
 % foreach my $list (@lists) {
-<LI><A HREF="<% $admin %><% $list %>"><% $list %></A>
+<TR><TD bgcolor="white">
+%     if ($is_admin{$list}) {
+<A HREF="<% $admin %><% $list %>"><% $list %></A>
+%     } else {
+<% $list %>
+%     }
+</TD></TR>
 % }
-</UL>
-<HR>
-
+<TR><TD>&nbsp;</td></tr>
 % }
 
-<&|/l&>New mailing list</&>:
+<tr><td class="tableTitle"><&|/l&>New mailing list</&></td></tr>
+<tr><td>
 % $m->print($new);
+</td></tr>
+</table>
 
 <%INIT>
 my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
@@ -21,8 +27,13 @@ my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
 our ($Get, $Post);
 my $current = $Get->("/lists/$topic");
 my @lists;
+my %is_admin;
 my $admin = "/Foundry/Project/Admin/Forum/List.html/wws/admin/";
 while ($current =~ m{<A HREF="$admin([^"]+)}g) {
+    $is_admin{$1}++;
+}
+my $info = "/Foundry/Project/Admin/Forum/List.html/wws/info/";
+while ($current =~ m{<A HREF="$info([^"]+)}g) {
     push @lists, $1;
 }
 

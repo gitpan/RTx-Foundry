@@ -1,5 +1,9 @@
 %# Sauron is alive in Argentina!
 
+% if ($m->request_args->{'Do-Login'} and !$m->notes('error')) {
+%     $m->notes( error => loc('Invalid login.') );
+% }
+
 <& SELF:Draw &>
 
 <%METHOD Draw>
@@ -20,7 +24,7 @@
 % }
     <TR>
 	<TD colspan=2 align="center">
-	    <input type=submit Value="<% loc($submit) %>">
+	    <input type=submit value="<% loc($submit) %>" name="Do-Login">
 	</TD>
     </TR>
 </TABLE>

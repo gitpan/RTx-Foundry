@@ -35,15 +35,8 @@
     </td>
     </tr><tr>
     <td><nobr><&|/l&>Process Status</&></nobr></td><td>
-            <select name="Status" style="width:150px">
-		<option <% ($Status eq 'all') ? 'selected' : '' %>
-		    value='all'><&|/l&>all</&></option>
-		<option <% ($Status eq 'unresolved') ? 'selected' : '' %>
-		    value='unresolved'><&|/l&>unresolved</&></option>
-		<option <% ($Status eq 'resolved') ? 'selected' : '' %>
-		    value='resolved'><&|/l&>resolved</&></option>
-	    </select>
-	</select></td>
+<& FilterStatus, Status => $Status &>
+	</td>
     <td width="20">&nbsp;</td>
     <td>
       <input type="hidden" name="Type" value="<% $Type %>">

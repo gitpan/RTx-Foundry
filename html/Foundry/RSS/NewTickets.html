@@ -21,9 +21,12 @@ xmlns="http://my.netscape.com/rdf/simple/0.9/">
 $r->content_type('text/xml');
 
 my $tickets = RT::Tickets->new($RT::SystemUser);
-$tickets->LimitQueue(VALUE => $Queue) if $Queue;
-$tickets->LimitQueue(OPERATOR => '!=', VALUE => '3');
-$tickets->LimitQueue(OPERATOR => '!=', VALUE => '4');
+if ($Queue) {
+    $tickets->LimitQueue(VALUE => $Queue);
+}
+else {
+    $tickets->LimitToEnabledQueues;
+}
 $tickets->LimitStatus(VALUE => 'new', OPERATOR => '=');
 $tickets->LimitStatus(VALUE => 'open', OPERATOR => '=');
 $tickets->OrderBy(FIELD => 'id', ORDER => 'DESC');

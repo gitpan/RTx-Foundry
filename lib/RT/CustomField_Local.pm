@@ -15,4 +15,14 @@ push @TYPES, (
 # Populate a hash of types of easier validation
 for (@TYPES) { $TYPES{$_} = 1};
 
+sub IsReservedName {
+    my ($self, $name) = @_;
+    return scalar grep { lc($name) eq lc($_) } qw(
+Architecture Attachments ContactInfo Email IntendedAudience Intro
+License Maturity Name Password PasswordCheck PersonalHomepage Platform
+ProgrammingLanguage ProjectName PublicDescription Rationale RealName
+Resolution Severity Subcomponent Subject TargetVersion Type UnixName
+    );
+}
+
 1;

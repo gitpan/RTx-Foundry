@@ -1,22 +1,41 @@
+%# Parts that positively cannot be assembled in improper order will be.
+
+<h2><a href="<% $RT::BaseURL %>/wws/arc/<% $list_name %>"><% $list_name %></a></h2>
+
 % if ($out =~ /empty_archives/) {
-<&|/l&>The archive is currently empty.</&>
-<BR>
-<A HREF="<% $PostURL %>"><&|/l&>Post an article</&></A>
-% } else {
-% $m->print($out);
+<&|/l&>The archive is currently empty.</&><BR>
+% }
+% if (!$RT::Guest) {
+<A HREF="<% $PostURL %>"><&|/l&>Post an article</&></A><% $action |n %>
+% }
+% if ($out !~ /empty_archives/) {
+<P><TABLE width="100%" cellpadding=0 cellspacing=0><TR><TD>
+%     $m->print($out);
+</TD></TR></TABLE></P>
 % }
 <%INIT>
 our ($Get, $Post, $ua, $wws);
-my $args = { map { $_ => $ARGS{$_} } grep /^[_a-z]/, keys %ARGS };
+
+use Encode;
+my $args = { map { $_ => Encode::encode_utf8($ARGS{$_}) } grep /^[_a-z]/, keys %ARGS };
 $args->{quiet} = 1;
 
 $RT::BaseURL = "/Foundry/Project/Forum/List.html";
 my $out;
+my $action;
+my $list_name = $1 if $r->path_info =~ m{/wws/[^/]+/([^/]+)};
+$session{LastListName} = $list_name ||= $session{LastListName};
+
 if ($r->path_info =~ m{^/wws(.*)}) {
     require URI;
     my $url = URI->new('http:');
     $url->query_form(%$args);
     $out = $Get->("$1?" . $url->query);
+    if ($m->notes('RV') =~ m{^\s*(<A HREF=\W/wws/(?:subscribe|signoff)/.*</A>)\s*$}m) {
+	$action = " | $1";
+	$action =~ s{\bHREF="(/wws[^>]*>)}{HREF="$RT::BaseURL$1}gi;
+	$action =~ s/onClick=".*?"//;
+    }
 }
 else {
     $out = $Post->( "", scalar $m->request_args );

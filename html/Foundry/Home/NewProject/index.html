@@ -25,9 +25,10 @@
 %     $m->scomp('/Work/Tickets/Display.html', Queue => 'NewProject', %ARGS);
               <tr> 
                 <td class="tableEmboss" height="400" align="left" valign="top">
-<&|/l, $RT::Organization&>Your project has been submitted to the [_1] administrators. Within 72 hours, you will receive notification of their decision and further instructions.</&>
+<&|/l, $RT::Organization&>Your project has been submitted to the [_1] administrators.</&>
+<&|/l&>Within 72 hours, you will receive notification of further instructions.</&>
 <p>
-<&|/l, $RT::Organization&>Thank you for choosing [_1]</&>
+<&|/l, $RT::Organization&>Thank you for choosing [_1].</&>
 		</td></tr>
 	    </table>
 % } else {
@@ -53,21 +54,28 @@ if ($Step == 1 and $Action eq 'Disagree') {
     return;
 }
 
-my ($Name, $UnixName, $Rationale, $Description, $Platform, $License, $Language, $Audience)
-    = map { $_ } @ARGS{map "CustomField-$_-Values", qw(6 9 29 30 31 8 11 13)};
+my ($ProjectName, $UnixName, $Rationale, $Description, $Platform,
+    $License, $Language, $Audience
+) = @ARGS{
+    map "CustomField-".RT::CustomField->NameToId($_, 'NewProject')."-Values",
+    qw( ProjectName UnixName Rationale PublicDescription Platform
+	License ProgrammingLanguage IntendedAudience )
+};
 
 my @Error;
 
 if ($ARGS{id}) {
     push @Error, loc('Missing mandatory fields')
-	unless $Name and $UnixName and $Rationale and
+	unless $ProjectName and $UnixName and $Rationale and
 	       $Description and $Platform and $License and
 	       $Language and $Audience;
 
     push @Error, loc('ID must be 3-15 characters of lower-case letters or digits, beginning with a letter')
 	unless !$UnixName or $UnixName =~ /^[a-z][0-9a-z]{2,14}$/;
     push @Error, loc('Project Name must be at most 40 charaters')
-	unless !$Name or length($Name) <= 40;
+	unless !$ProjectName or length($ProjectName) <= 40;
+    push @Error, loc('Public Description must be at most 255 charaters')
+	unless !$Description or length($Description) <= 255;
     delete $ARGS{id} if @Error;
     $Step = 2 if $ARGS{id};
 }

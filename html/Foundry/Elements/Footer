@@ -1,3 +1,12 @@
 %# The cost of living is going up, and the chance of living is going down.
-    </table>
-</table>
+% return if $m->notes('Footer'); $m->notes('Footer' => 1); # counter-reentrant
+    </td></tr></table>
+    </td></tr></table>
+    </td></tr></table>
+    <p align="center">
+	    <a href="/Foundry/"><&|/l&>Homepage</&></a>
+	    |
+	    <a href="/Foundry/Policy/" target="_blank"><&|/l&>Privacy</&></a>
+	    |
+	    <&|/l&>Term of Use</&>
+    </p>

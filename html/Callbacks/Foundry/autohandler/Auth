@@ -5,13 +5,15 @@ $RT::Guest = 0;
 
 if ($user and !$no_login) {
     delete $session{'CurrentUser'};
+    $m->comp('/Foundry/Elements/CheckUser', User => $user);
 }
 elsif (
     $no_login or
     !((defined $session{'CurrentUser'}) and ( $session{'CurrentUser'}->Id))
 ) {
-    $session{'CurrentUser'} = RT::CurrentUser->new;
-    $session{'CurrentUser'}->Load('guest');
+    my $CurrentUser = RT::CurrentUser->new;
+    $CurrentUser->Load('guest') or die "Cannot load 'guest'";
+    $session{'CurrentUser'} = $CurrentUser;
 }
 
 $RT::Guest = 1 if $session{CurrentUser}

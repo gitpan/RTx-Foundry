@@ -1,5 +1,5 @@
 %# Stay away from flying saucers today.
-<& /Foundry/Elements/Header, Title => 'Site Admin' &>
+<& /Foundry/Elements/Header, Title => 'Site Admin', Method => $Method &>
 <& 104Buttons, Buttons => $Buttons &>
 <%INIT>
 unless ($RT::Nothing) {
@@ -8,7 +8,6 @@ unless ($RT::Nothing) {
 }
 
 $Action =~ s!//+!/!g;
-$RT::Foundry = 1;
 
 </%INIT>
 <%ARGS>

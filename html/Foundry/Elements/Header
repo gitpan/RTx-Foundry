@@ -1,7 +1,7 @@
 %# The universe does not have laws -- it has habits, and habits can be broken.
-<HTML><HEAD><TITLE>Open Foundry</TITLE>
-% if ($session{home_refresh_interval} > 0) {
-<META HTTP-EQUIV="REFRESH" CONTENT="<%$session{home_refresh_interval}%>">
+<HTML><HEAD><TITLE><% $RT::Organization %></TITLE>
+% if ($Refresh > 0) {
+<META HTTP-EQUIV="REFRESH" CONTENT="<% $Refresh %>">
 % }
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Pragma" content="no-cache">
@@ -35,8 +35,9 @@ TD.button:hover { border-top: 1px solid white; border-left: 1px solid white; bor
 % }
 >
 <table width="99%" align="center" border=2 bgcolor="#C4E1F0"><tr><td>
-<table>
+<table width="100%" align="center" border=0><tr><td>
 <%INIT>
+return if $m->notes('Header'); $m->notes('Header' => 1); # counter-reentrant
 $Action =~ s!//+!/!g;
 </%INIT>
 <%ARGS>
@@ -46,4 +47,5 @@ $Action	    => $r->uri
 $Enctype    => ''
 $OnLoad	    => ''
 $Buttons    => []
+$Refresh    => undef
 </%ARGS>

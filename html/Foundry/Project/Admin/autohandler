@@ -4,21 +4,6 @@
 	    <tr> 
 		<td><& /Edit/Elements/Tabs, Map => $Map, URL => $url &></td>
               </tr>
-<!--
-              <tr> 
-                <td class="tableEmboss">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="4">
-                    <tr> 
-                      <td bgcolor="#82D1EC" class="poptable" valign="bottom" > 
-                          <&|/l&>Project Name</&>: <% $QueueObj->Name %></td>
-                    </tr>
-                    <tr> 
-                      <td bgcolor="#A3DEF1"> 
-                        <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
-			  <tr> 
-			    <td><& /Edit/Elements/Tabs, Name => 'Map2', Map => $ARGS{Map2}, URL => '../Basic/' &></td>
-			  </tr>
--->
 			  <tr> 
 			    <td class="poptable" bgcolor="#C4E1F0">
 % $m->call_next;
@@ -49,6 +34,7 @@ my $Map = [
     $prefix . "Members/"    => 'Members',		# loc
     $prefix . "Upload/"     => 'Release Files',		# loc
     $prefix . "Forum/"   => 'Forums',		# loc
+    $prefix . "CustomField/"      => 'Tracker Fields',		# loc
     $prefix . "Stats/"      => 'Statistics',		# loc
 ];
 
@@ -61,7 +47,7 @@ if ($url =~ m{List\.html/wws/\w+/(.*)}) {
 
 </%INIT>
 <%ATTR>
-Tab2	=> 'Admin'
+Tab2	=> 'Project Admin'
 </%ATTR>
 <%ARGS>
 $QueueObj

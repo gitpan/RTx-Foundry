@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+use LWP::Simple;
+
+my $prefix = '/home/svn-repositories/';
+my ($repos, $user) = @ARGV;
+
+my $project = $1 if $repos =~ m|^$prefix(\w+)|;
+
+exit 1 unless $project;
+
+# XXX - don't hardcode rt.openfoundry.org here.
+my $content = get("http://rt.openfoundry.org/REST/0.0/NoAuth/has_member?Queue=$project&User=$user");
+
+exit 0 if $content =~ '^OK';
+
+die "permission denied for user $user to commit to project $project";

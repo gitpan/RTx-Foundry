@@ -15,22 +15,15 @@
 <TD class="tableTitle" ALIGN=LEFT><&|/l&>Members</&></TD>
 </TR>
 
-<%PERL>
-my $i;
-my $count = 0;
-while (my $queue = $Queues->Next) {
-    next if $queue->Disabled;
-    next unless $queue->HasWatcher($session{CurrentUser}->UserObj);
-</%PERL>
+%while (my $queue = $Queues->Next) {
+%     next unless $queue->HasWatcher($session{CurrentUser}->UserObj);
 %     my $bg = 'ffffff';
 %     my $clicky = '';
     <tr bgcolor='<% $bg %>'
-%     if (!$i) {
 	onMouseOver="this.style.backgroundColor='#D1FAFC'" 
         onMouseOut="this.style.backgroundColor='<% $bg %>'"
 	style="cursor:hand" 
 	onClick="MM_goToURL('self','/Foundry/Project/index.html?Queue=<% $queue->Id %>');return document.MM_returnValue"
-%     } else { $queue = $RT::Nothing }
     > 
 <td height="26"><a href="/Foundry/Project/index.html?Queue=<% $queue->Id %>"><% $queue->Name %></a></td>
 <td><% eval {join(', ', map $_->Name, @{$queue->AdminCc->UserMembersObj->ItemsArrayRef} ) } %></td>
@@ -40,9 +33,6 @@ while (my $queue = $Queues->Next) {
 </TABLE>
 
 <%INIT>
-my $rows = 5;
 my $Queues = RT::Queues->new($session{'CurrentUser'}); 
-$Queues->UnLimit();
-#    $queue = $RT::Nothing if $Queue->Description eq 'Open Foundry System';
-my $Tickets = RT::Tickets->new($session{'CurrentUser'});
+$Queues->LimitToEnabled;
 </%INIT>

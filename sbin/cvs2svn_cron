@@ -1,0 +1,60 @@
+#!/usr/local/bin/perl
+
+use FindBin;
+
+# XXX - read config to determine the path
+chdir "/home/svn-repositories";
+
+if (open PID, "/tmp/.lock_cvs2svn") {
+    my $pid = <PID>;
+    close PID;
+    chomp $pid;
+    exit if kill(0, $pid);
+}
+
+open LOCK, ">/tmp/.lock_cvs2svn";
+print LOCK $$;
+close LOCK;
+
+foreach my $dir (grep -d, </usr/depot/cvsrepo/*>) {
+    $dir =~ s!.*/!!;
+    next if $dir =~ /CVSROOT/;
+
+
+print $dir,$/;
+
+next unless -d "/usr/depot/cvsrepo/$dir";
+    system("chown cvs /usr/depot/cvsrepo/$dir");
+
+    my $add = " --init-svnrepo --delete-svnrepo";
+
+    my $vcp = << ".";
+Source: cvs:/usr/depot/cvsrepo:$dir --use-cvs --continue
+
+Destination: svn:file:///home/svn-repositories/$dir: --db-dir=/tmp/vcpstate$add
+
+Map:
+	$dir/(...)<>		trunk/\$1
+	$dir/(...)<(*)>		branches/\$2/\$1
+
+CVSLabelonBranch:
+
+SVNLabeller:
+
+ChangeSets:
+       time                     <=60   ## seconds
+       user_id                  equal  ## case-sensitive equality
+       comment                  equal  ## case-sensitive equality
+       branched_rev_branch_id   equal  ## change only one branch at a time
+.
+
+    open VCP, "| $^X -I$FindBin::Bin/lib $FindBin::Bin/vcp vcp:-" or next;
+    print VCP $vcp;
+    close VCP;
+
+    system("chown -R www:www /home/svn-repositories/$dir");
+    unlink ("vcp.log.$dir") if -e "vcp.log.$dir";
+    rename ("vcp.log", "vcp.log.$dir");
+}
+
+unlink "/tmp/.lock_cvs2svn";

@@ -1,5 +1,7 @@
+%# Perfect day for scrubbing the floor and other exciting things.
+
 % for my $option ( @types, '') {
-<INPUT <% $Disabled && "DISABLED" %> TYPE="RADIO" VALUE="<%$option%>" NAME="<% $Name %>" <%$option eq $Default && "CHECKED"%>><%loc($map{$option}||$option)%>
+<LABEL><INPUT <% $Disabled && "DISABLED" %> TYPE="RADIO" VALUE="<%$option%>" NAME="<% $Name %>" <%$option eq $Default && "CHECKED"%>><%loc($RoleMap->{$option}||$option)%></LABEL>
 % }
 
 <%INIT>
@@ -11,15 +13,11 @@ else {
    @types = qw(Requestor Cc AdminCc);
 }
 
-my %map = (
-    Cc	    => 'Member',
-    AdminCc => 'Admin',
-    ''	    => 'none',
-);
 </%INIT>
 <%ARGS>
 $Disabled => ''
 $Default => undef
 $Scope => 'ticket'
 $Name => 'WatcherType'
+$RoleMap => {}
 </%ARGS>

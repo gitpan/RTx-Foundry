@@ -6,6 +6,6 @@ $m->subexec(
     map(Encode::encode_utf8($_), %ARGS),
     user => '',
     pass => '',
-);
+) unless $m->is_subrequest;
 $m->abort;
 </%INIT>

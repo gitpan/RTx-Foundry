@@ -19,8 +19,6 @@ xmlns="http://my.netscape.com/rdf/simple/0.9/">
 $r->content_type('text/xml');
 
 my $Queues = RT::Queues->new($RT::SystemUser);
-$Queues->UnLimit;
-$Queues->Limit( FIELD => 'Disabled', OPERATOR => '=', VALUE => '0');
-$Queues->OrderBy( FIELD => 'FinalPriority', ORDER => 'DESC' );
+$Queues->LimitToEnabled;
 my $QueueCount = $Queues->Count;
 </%INIT>
