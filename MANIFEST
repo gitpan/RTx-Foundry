@@ -5,6 +5,7 @@ etc/devwww.conf
 etc/foundry.conf.sample
 etc/httpd.conf.mod_perl2
 etc/initialdata
+etc/initialdata.delta
 etc/rc.d/foundry-vcs.sh
 etc/RT_SiteConfig.pm
 etc/sitemap.yml

@@ -1401,6 +1401,9 @@ msgstr "您也可以直接回复此封信件，保持标题中的此字符串：
 msgid "Other"
 msgstr "其它"
 
+msgid "Others"
+msgstr "其它"
+
 msgid "Owner"
 msgstr "负责人"
 
@@ -2383,3 +2386,8 @@ msgstr "选填"
 msgid "Invalid date format"
 msgstr "日期格式错误（yyyy/mm/dd）"
 
+msgid "ProjectDownloaders"
+msgstr "项目下载纪录"
+
+msgid "ProjectReferences"
+msgstr "项目参考文献"

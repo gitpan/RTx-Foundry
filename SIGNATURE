@@ -15,10 +15,10 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 17e3b0eea99abffe6ac71e65627413236e0b117a COPYING
-SHA1 2f2ee9ab5a4e4744b8a15daee7fc890cd201c477 ChangeLog
+SHA1 6dab3f7dfc7f036b71e0b1f9439ea9d7c972be5b ChangeLog
 SHA1 883d9adb688e2ff6a61410d0b5c24229c6513dfa INSTALL
 SHA1 840ea992b92167fa26751401375dd0e627c51d31 INSTALL.FreeBSD
-SHA1 414ee2029ba5c2a99829d734ad664555efda44ee MANIFEST
+SHA1 62e2f0861cda625403b76e23fbe571cdd117e036 MANIFEST
 SHA1 45d3250402ad5976142ca46e353aeb625b67778a META.yml
 SHA1 28aa650e246a95a9623c16403f334d182209c739 Makefile.PL
 SHA1 377dda78efe2622aa93522749e754686e3fb3e6b README
@@ -28,6 +28,7 @@ SHA1 0191cf26a1163eeec3518b59657e597f0c3a3770 etc/devwww.conf
 SHA1 7d1e6f87ee1e93a64dcca8acb193fe12a3077e9f etc/foundry.conf.sample
 SHA1 3b39b5bb2b7700df4ee9a8c25d6cb829b0c8b8cb etc/httpd.conf.mod_perl2
 SHA1 d86dab9ffa9e208bbb10bf2f4d5ad826f5307dd5 etc/initialdata
+SHA1 d60bf6898061fc1acbb71c9d5b8fab55947ab1ac etc/initialdata.delta
 SHA1 1298ce2098eb112784a90641c204532a2fb9c02d etc/rc.d/foundry-vcs.sh
 SHA1 4e0513b49d5fc00583376b90253c4edf8b7d0e63 etc/sitemap.yml
 SHA1 0cb790960caef55e177480210b94e552bdb61c0f etc/subversion.conf
@@ -178,7 +179,7 @@ SHA1 8d32e69d6581726e4f72c2b0b2fa732c49df668d html/Foundry/Project/Forum/autohan
 SHA1 17184f902e41cf888099275862ef81b47b4e1f5d html/Foundry/Project/Forum/index.html
 SHA1 5c24e80b84b1cd6eff69d05c1b9ea4e17d3a1ff0 html/Foundry/Project/Item.html
 SHA1 ff3b77508844a769a29638c300bee6ecde66f927 html/Foundry/Project/References/autohandler
-SHA1 addd96a5758536f8d8eab28a64338ef37481c325 html/Foundry/Project/References/index.html
+SHA1 1bfeee1d0cef61aa71912cb1474b6dc4704e052a html/Foundry/Project/References/index.html
 SHA1 e6e734ed9fa758ffc54649c3838f067e1eae0e94 html/Foundry/Project/Source/P4Web/Changes/index.html
 SHA1 0b348371490fae615886f13f4bb789fdcdbe54cb html/Foundry/Project/Source/P4Web/autohandler
 SHA1 751ba607c0a62668672c3681fbd5e6243594330d html/Foundry/Project/Source/P4Web/index.html
@@ -187,8 +188,8 @@ SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/ViewCV
 SHA1 b820af0d139cdb8cdcb65a89093c3e8d706972eb html/Foundry/Project/Source/ViewCVS/autohandler
 SHA1 6b08ce5c7ae8ae46470f91fd455fc32dec846ad3 html/Foundry/Project/Source/ViewCVS/index.html
 SHA1 9baf086f644a99b2644884798925d1ff0c0d1082 html/Foundry/Project/Source/autohandler
-SHA1 43a88c01ffc1b3b4e78f6180f4c78e32c7b1f66d html/Foundry/Project/Source/index.html
-SHA1 c78228e746f9d7a7be9e35bffb470eda1f748bc6 html/Foundry/Project/Source/template/browse
+SHA1 769833b3198c769d515169382a0964d1a4050524 html/Foundry/Project/Source/index.html
+SHA1 5f9ae20b24c4215bf3067ef783bf8b134abf2795 html/Foundry/Project/Source/template/browse
 SHA1 4d26f8c90f4db02be69c11cb3139f14ecde6798f html/Foundry/Project/Source/template/footer
 SHA1 04b78c5a025d6d4b8861adafa21c1155b01b333d html/Foundry/Project/Source/template/header
 SHA1 5c9c7b1f1fe383bd0bbdc2fa7134adabcd6d590a html/Foundry/Project/Source/template/log
@@ -308,9 +309,9 @@ SHA1 13ff4d95543e616cd9ce449b24e697bf7ee1a7b3 lib/RT/Queue_Local.pm
 SHA1 ea8c13a87b94b92a479309bff41396d04ca75595 lib/RT/Ticket_Local.pm
 SHA1 521bff7ba637dee7adf0763004926c7d441cdc98 lib/RT/Tickets_Local.pm
 SHA1 9bb08cde384060cba9dc83394af52724de022361 lib/RT/User_Local.pm
-SHA1 b5d46664684614c288eac90bb14fa2fbcc35ea89 lib/RTx/Foundry.pm
-SHA1 a6ed1262bee18b12cb6355771b9c3e2701125e1c po/zh_cn.po
-SHA1 c155d2dac9b1c398be5e44359dfd6756b9873939 po/zh_tw.po
+SHA1 2cbf621d913b505d2107fd4fb5ccffb027db37ce lib/RTx/Foundry.pm
+SHA1 627dbc082770997c0c34134b296b1210a2aab0af po/zh_cn.po
+SHA1 847a38cdf87d7e8d566d333119f6edd8886772b6 po/zh_tw.po
 SHA1 6928cc863d2a16529762595efc98006a4a4b370e sbin/foundry-cvs-commitcheck
 SHA1 df51419ac242cd208a6503307ad4ec6943f60564 sbin/foundry-cvs2svn
 SHA1 47f40f8ff2a74a9f0817ec58efd5ed4a702af448 sbin/foundry-setup
@@ -808,7 +809,7 @@ SHA1 939e7660261159dd485e2edb35f24142170bed3d var/kwiki/.global/template/slide_p
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.6 (FreeBSD)
 
-iD8DBQFBozcItLPdNzw1AaARAgTSAJ9fx+tgrJuXRBRl4iV0LCOC3jbH1gCfaNOB
-ZMRlf9bobbp2bgdVsBMuBh0=
-=1TQN
+iD8DBQFBrYm3tLPdNzw1AaARAinpAJ4vKJA4K87U7TJpY+iT3UnkDy+upQCfQiPI
+eJ/xN1tYIWYOOfT3/QwFiZY=
+=cisP
 -----END PGP SIGNATURE-----

@@ -24,7 +24,7 @@
 <img border="0" src="/icons/dir.gif" />
 <a href="[% script %]/[% repos %]/browse[% path %][% name %]/">[% name %]</a>
 [% ELSE %]
-<a href="[% script %]/[% repos %]/checkout[% path %][% name %]?rev=[% rev %]"><img border="0" src="/icons/[% type || 'text' %].gif" /></a>
+<a href="[% script %]/[% repos %]/checkout[% path %][% name %]?rev=[% rev %]"><img border="0" src="/icons/[% 'text' %].gif" /></a>
 <a href="[% script %]/[% repos %]/log[% path %][% name %]">[% name %]</a>
 [% END %]</td>
 <td class="revision">[% rev %]</td>

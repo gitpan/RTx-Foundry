@@ -1,5 +1,5 @@
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_21';
+$RTx::Foundry::VERSION = '0.00_22';
 
 1;
 
@@ -9,8 +9,8 @@ RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.00_21 of RTx::Foundry, released
-November 23, 2004.
+This document describes version 0.00_22 of RTx::Foundry, released
+December 1, 2004.
 
 =head1 SYNOPSIS
 

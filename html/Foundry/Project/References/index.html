@@ -1,6 +1,7 @@
 % my $Items = $QueueObj->FunctionItems('References');
 % while (my $Item = $Items->Next) {
 <& /Foundry/Elements/Text2HTML, Text => $Item->LastContent &>
+%    last if $Items->IsLast;
 <hr>
 % }
 <%ARGS>

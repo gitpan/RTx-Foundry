@@ -1,3 +1,12 @@
+[Changes for 0.00_22 - December 1, 2004]
+
+Some more localization.
+
+Added a migration initialdata as etc/initialdata.delta for users of
+the 0.00_0x series to upgrade.
+
+Fix SVN::Web UTF8 decoding problem and icon display.
+
 [Changes for 0.00_21 - November 23, 2004]
 
 Subversion notification and snapshot support.
