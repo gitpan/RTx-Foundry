@@ -2,21 +2,17 @@
 
 case "$1" in
 	start)
-		if [ -x /usr/local/sbin/foundry-cvs2svn ]; then
-			/usr/local/sbin/foundry-cvs2svn 60 &
-			echo -n ' foundry-cvs2svn'
-		fi
 		if [ -x /usr/local/sbin/foundry-syncdata ]; then
 			/usr/local/sbin/foundry-syncdata 60 &
 			echo -n ' foundry-syncdata'
+                else
+                    if [ -x /usr/local/rt3/local/sbin/foundry-syncdata ]; then
+			/usr/local/rt3/local/sbin/foundry-syncdata 60 &
+			echo -n ' foundry-syncdata'
+                    fi
 		fi
 		;;
 	stop)
-		if [ -f /tmp/foundry/cvs2svn.lock ]; then
-			/bin/kill `cat /tmp/foundry/cvs2svn.lock` > /dev/null 2>&1 && echo -n ' foundry-cvs2svn'
-		else
-			echo "foundry-cvs2svn isn't running"
-		fi
 		if [ -f /tmp/foundry/syncdata.lock ]; then
 			/bin/kill `cat /tmp/foundry/syncdata.lock` > /dev/null 2>&1 && echo -n ' foundry-syncdata'
 		else

@@ -2,7 +2,7 @@
 # $Revision: #15 $ $Change: 10088 $ $DateTime: 2004/02/18 00:22:05 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_11';
+$RTx::Foundry::VERSION = '0.00_12';
 
 1;
 
@@ -12,8 +12,8 @@ RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.00_11 of RTx::Foundry, released
-September 9, 2004.
+This document describes version 0.00_12 of RTx::Foundry, released
+September 22, 2004.
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,12 @@
 DocumentRoot /usr/local/rt3/share/html
 
+<Directory "/usr/local/rt3/share/html">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
 AddDefaultCharset UTF-8
 PerlSetVar MasonArgsMethod CGI
 RedirectMatch ^/$ /Foundry/index.html

@@ -11,9 +11,13 @@ of a rt3-elixus installation; all other environments are
 unsupported.
 
 You may obtain a copy of the rt3-elixus tree by checking
-out from this URL:
+out from this URL, using SVK or Subversion:
 
-    http://svn.autrijus.org/104/trunk/rt/
+  http://svn.autrijus.org/104/trunk/rt/
+
+For SVK support, grab a copy of VCP-0.9-clkao here:
+
+  http://wagner.elixus.org/~clkao/VCP-0.9-clkao-20040919.tar.gz
 
 More detailed installation guides will be available in
 English soon, including how to set up your RT_SiteConfig.pm
@@ -34,27 +38,26 @@ abstract('Base classes for the OpenFoundry system');
 license ('gpl');
 
 requires(
-    'WWW::Mechanize'        => 0,
-    'Email::Address'        => 0,
-    'Email::Valid'          => 0,
-    'MIME::Base64'          => 0,
-    'HTML::Mason'           => 0,
-    'XML::RSS'              => 0,
-    'DBIx::SearchBuilder'   => 1.10,
+    'WWW::Mechanize'            => 0,
+    'Email::Address'            => 0,
+    'Email::Valid'              => 0,
+    'MIME::Base64'              => 0,
+    'HTML::Mason'               => 0,
+    'XML::RSS'                  => 0,
+    'Project::Gantt'            => 0,
+    'HTML::CalendarMonthSimple' => 0,
+    'DBIx::SearchBuilder'       => 0,
 );
 
-features( 'CVS2SVN support' => [
+features( 'SVK support' => [
     -default => 0,
-    'LWP::Simple'           => 0,
-    'Digest::MD5'           => 0,
-    'File::Temp'            => 0,
-    'IPC::Run'              => 0,
-    'MIME::Base64'          => 0,
-    'Regexp::Shellish'      => 0.93,
-    'Text::Diff'            => 0,
-    'XML::ValidWriter'      => 0.37,
-    'XML::Parser'           => 0,
-    'Pod::Links'            => 0,
+    'Data::UUID'	    => 0,
+    'VCP'		    => 0.9,
+    'SVN::Mirror'	    => 0.46,
+    'SVK'		    => 0.21,
+    'Proc::PID_File'	    => 0,
+    'VCP::Dest::svk'	    => 0,
+    'VCP::Source::cvsbk'    => 0,
 ] );
 
 auto_install( -default => 0 );

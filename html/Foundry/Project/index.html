@@ -32,6 +32,27 @@
 % }
 </&>
 
+% foreach my $function (qw( News Jobs )) {
+%   my $Items = $QueueObj->FunctionItems($function);
+%   $Items->RowsPerPage(5);
+%   if ($Items->Count) {
+<&|/Work/Elements/Row, Title => loc("Latest $function") &>
+<em>(<a href="Feed.html?Queue=<% $QueueObj->Id %>;Function=<% $function %>;Flavor=RSS">RSS</a>)</em>
+</&>
+<tr><td colspan="3">
+<ul>
+%     while (my $Item = $Items->Next) {
+<li><nobr><a href="<% $function %>.html?Queue=<% $QueueObj->Id %>;id=<% $Item->Id %>"><% $Item->Subject %></a></nobr>
+%       if ($function eq 'News') {
+(<% $Item->CreatedObj->AsString =~ /(^\S+)/g %>)
+%       }
+</li>
+%     }
+</ul>
+</td></tr>
+%   }
+% }
+
 </table></td></tr></table>
 
 <%ATTR>

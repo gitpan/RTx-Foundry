@@ -1,19 +1,27 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 945 2004-06-22T15:49:15.257941Z autrijus  $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 7949 2004-09-21T05:06:49.161788Z autrijus  $
+
+# inhibit l10n
+use Locale::Maketext::Lexicon;
+BEGIN { $Locale::Maketext::Lexicon::VERSION = 0 }
 
 use strict;
 use FindBin;
 use DBI;
+use SVK;
+use File::Spec;
 use File::Copy;
 use File::Path;
 use Proc::PID_File;
+
+die "SVN/Perl too old, need 1.1.0" unless SVN::Core->VERSION ge '1.1.0';
 
 eval {
 
 my $tmp = File::Spec->tmpdir.'/foundry';
 mkpath([$tmp], 0, 0755) unless -d $tmp;
-my $lock_file = "$tmp/syncdata.lock";
-exit if hold_pid_file($lock_file);
+chmod(0777, $tmp);
+exit if hold_pid_file("$tmp/syncdata.lock");
 
 eval { require "$FindBin::Bin/../etc/foundry.conf" };
 eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" };
@@ -29,8 +37,10 @@ my ($cvs_base) = grep { defined and -d } (
     '/usr/depot/cvsrepo'
 ) or die "Cannot find CVSROOT";
 
-my $www_user = $ENV{WWWUSER} || 'www';
-my $www_group = $ENV{WWWGROUP} || 'www';
+my $svn_user = $ENV{WWWUSER} || 'www';
+my $svn_group = $ENV{WWWGROUP} || 'www';
+my $svn_uid = (getpwnam($svn_user))[2] or die "Cannot find user $svn_user";
+my $svn_gid = (getgrnam($svn_user))[2] or die "Cannot find user $svn_user";
 
 $svn_base .= "/foundry-repos";
 $cvs_base .= "/foundry-repos";
@@ -42,10 +52,13 @@ my $rt_dsn = $ENV{RT_DSN} || join(';',
 );
 my $cvs_user = $ENV{CVSUSER} || 'cvs';
 my $cvs_group = $ENV{CVSGROUP} || 'cvs';
-my $cvs_uid = (getpwnam($cvs_user))[2] or die "Cannot find user $cvs_user";
+my $cvs_uid = (getpwnam($cvs_user))[2] or warn "Cannot find user $cvs_user";
 my $dbh = DBI->connect($rt_dsn, $ENV{DB_DBA_USER}, $ENV{DB_DBA_PASSWORD}) or exit;
 
-mkpath([$svn_base], 0, 0755) unless -d $svn_base;
+if (!-d $svn_base) {
+    mkpath([$svn_base], 0, 0755);
+    system(qw( chown -R ), "$svn_user:$svn_group", $svn_base);
+}
 
 my $commitcheck = "$FindBin::Bin/foundry-cvs-commitcheck";
 my $start_commit = "$FindBin::Bin/foundry-svn-start-commit";
@@ -55,7 +68,7 @@ my $pre_revprop_change = "$FindBin::Bin/foundry-svn-pre-revprop-change";
 # this block build the CVS Repostiory, run only once 
 #  XXX should it be set in the setup procedure
 #
-unless (-d $cvs_base) {
+if ($cvs_uid and not -d $cvs_base) {
     mkpath([$cvs_base], 0, 0755);
     system(qw( cvs -d ), $cvs_base, 'init');
 
@@ -75,15 +88,15 @@ unless (-d $cvs_base) {
 #
 # The following block get user id from database
 #
-my $users = $dbh->selectcol_arrayref(q{
+my @users = @{ $dbh->selectcol_arrayref(q{
     SELECT Users.Name
       FROM Users, GroupMembers
      WHERE Users.Password != '*NO-PASSWORD*'
        AND Users.Id = GroupMembers.MemberId
   GROUP BY Users.Name;
-});
+}) || [] };
 
-foreach my $name (@{$users||[]}) {
+foreach my $name (@users) {
     next if defined getpwnam($name);
     system(
 	'pw',
@@ -98,9 +111,9 @@ foreach my $name (@{$users||[]}) {
 }
 
 #
-# The following block get project id from database
+# The following block get Project Id and VCS state from database
 #
-my $projects = $dbh->selectcol_arrayref(q{
+my @projects = @{ $dbh->selectcol_arrayref(q{
     SELECT TicketCustomFieldValues.Content
       FROM TicketCustomFieldValues, Queues, CustomFields
      WHERE TicketCustomFieldValues.Ticket = Queues.DefaultDueIn
@@ -108,42 +121,159 @@ my $projects = $dbh->selectcol_arrayref(q{
        AND TicketCustomFieldValues.CustomField = CustomFields.Id
        AND CustomFields.Name = 'UnixName'
   GROUP BY TicketCustomFieldValues.Content
-});
+}) || [] };
 
-#
-# The following block setup svn repository hooks
-#
-foreach my $name (@{$projects||[]}) {
-    $name = lc($name);
-    $name =~ /^[a-z][0-9a-z]{2,14}$/ or exit;
+my %vcs = @{ $dbh->selectcol_arrayref(q{
+    SELECT UnixName.Content, VCS.Content
+      FROM TicketCustomFieldValues UnixName,
+           TicketCustomFieldValues VCS,
+           CustomFields UnixName_CF,
+           CustomFields VCS_CF
+     WHERE UnixName.Ticket = VCS.Ticket
+       AND UnixName_CF.Name = 'UnixName'
+       AND UnixName.CustomField = UnixName_CF.id
+       AND VCS_CF.Name = 'VCS'
+       AND VCS.CustomField = VCS_CF.id
+}, { Columns => [1, 2] }) || [] };
 
-    my $cvs_name = "$cvs_base/$name";
-    my $svn_name = "$svn_base/$name";
-
-    mkdir $cvs_name unless -d $cvs_name;
-    chmod(0777, $cvs_name);
-
-    unless ( -d $svn_name )
-    {  system("svnadmin", "create", $svn_name);
-       system("chown", "-R", "$www_user:$www_group", $svn_name);
-    }
-    
-    my $_start_commit = "$svn_name/hooks/start-commit";
-    my $_pre_revprop_change = "$svn_name/hooks/pre-revprop-change";
-
-    if (!-s $_start_commit) {
-	unlink $_start_commit if -e $_start_commit;
-	symlink($start_commit => $_start_commit);
-    }
-    if (!-s $_pre_revprop_change) {
-	unlink $_pre_revprop_change if -e $_pre_revprop_change;
-	symlink($pre_revprop_change => $_pre_revprop_change);
-    }
-}
+my %remote = @{ $dbh->selectcol_arrayref(q{
+    SELECT UnixName.Content, RemoteVCS.Content
+      FROM TicketCustomFieldValues UnixName,
+           TicketCustomFieldValues RemoteVCS,
+           CustomFields UnixName_CF,
+           CustomFields RemoteVCS_CF
+     WHERE UnixName.Ticket = RemoteVCS.Ticket
+       AND UnixName_CF.Name = 'UnixName'
+       AND UnixName.CustomField = UnixName_CF.id
+       AND RemoteVCS_CF.Name = 'RemoteVCS'
+       AND RemoteVCS.CustomField = RemoteVCS_CF.id
+}, { Columns => [1, 2] }) || [] };
 
 $dbh->disconnect;
 
-# END of EVAL{} block
+chdir $tmp;
+
+#
+# The following block setup base SVK Repositories
+#
+
+my %new;
+my $svk = SVK->new(
+    xd => SVK::XD->new(
+        depotmap => {
+            map {
+		$new{"$svn_base/$_"}++ unless -d "$svn_base/$_";
+                ($_ => "$svn_base/$_")
+            } grep {
+                $vcs{$_} ne 'none'
+            } @projects
+        },
+        checkout => Data::Hierarchy->new,
+    ),
+);
+{
+    local *SVK::Util::get_prompt = sub { 'y' };
+    $svk->depotmap('--init');
+}
+
+foreach my $svn_name (sort keys %new) {
+    system(qw( chown -R ), "$svn_user:$svn_group", $svn_name);
+    chmod(0755, $svn_name);
+}
+
+my %sync;
+
+#
+# The following block setup mirrors
+#
+foreach my $name (@projects) {
+    my $cvs_name = "$cvs_base/$name";
+    my $svn_name = "$svn_base/$name";
+    my $vcs_type = $vcs{$name} || 'cvs';
+
+    if ($vcs_type eq 'cvs') {
+	if (!-d $cvs_name) {
+	    mkpath([$cvs_name], 0, 0777);
+	    system(qw( chown -R ), "$cvs_user:$cvs_group", $cvs_name);
+	}
+        set_mirror($name => "cvs:/$cvs_base:$name/...");
+        next;
+    }
+
+    # Not using CVS: Deny reading from the CVS repository
+    chmod(0, $cvs_name) if -d $cvs_name;
+
+    if ($vcs_type eq 'vcp') {
+        set_mirror($name => $remote{$name});
+        next;
+    }
+    elsif ($vcs_type eq 'svn') {
+        set_mirror($name => '');
+        next;
+    }
+
+    # Not using SVN: Deny reading from the SVN repository
+    chmod(0, $svn_name) if -d $svn_name;
+}
+
+sub set_mirror {
+    my ($name, $remote) = @_;
+
+    local($>, $)) = ($svn_uid, $svn_gid);
+
+    $sync{$name}++ if $remote;
+
+    my $old_remote = '';
+    my $output;
+    $svk->{output} = \$output;
+    $svk->mirror('--list' => "/$name/");
+    $old_remote = $1 if ($output =~ m!^/\Q$name\E/\s+(.*)!m);
+    delete $svk->{output};
+
+    return if $remote eq $old_remote;
+
+    if (!$remote) {
+	print "==> Removed /$name/ from mirroring $old_remote\n";
+	$svk->mirror('--delete' => "/$name/");
+	return;
+    }
+
+    my $svn_name = "$svn_base/$name"; 
+
+    if (-e "$svn_name/db/0") {
+	print "==> Moving away old /$name/\n";
+	rename($svn_name => "$svn_name.".time()) or return(warn $!);
+
+	local $svk->{xd}{depotmap} = { $name => $svn_name };
+	local *SVK::Util::get_prompt = sub { 'y' };
+	$svk->depotmap('--init');
+    }
+
+    print "==> Setting /$name/ to mirror $remote\n";
+    $svk->mirror($remote => "/$name/");
+}
+
+#
+# The following block forks and runs "svk sync" for each mirrored repos,
+# taking care of not intruding on ongoing syncs
+#
+
+# --- XXX --- Use this for now --- XXX ---
+
+local($>, $)) = ($svn_uid, $svn_gid);
+$svk->sync("/$_/") foreach sort keys %sync;
+
+=comment BROKEN
+
+foreach my $name (sort keys %sync) {
+    fork and next;
+    exit if hold_pid_file("$tmp/syncdata.$name.lock");
+
+    local($>, $)) = ($svn_uid, $svn_gid);
+    $svk->sync("/$name/");
+}
+
+=cut
 
 };
 

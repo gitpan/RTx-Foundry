@@ -1,10 +1,10 @@
 package RT;
 
-eval { require "/usr/local/etc/foundry.conf" };
+eval { require "/usr/local/rt3/local/etc/Foundry/foundry.conf" };
 
 Set($rtname, $ENV{RT_NAME} || 'OSSF');
 Set($Timezone, $ENV{TZ} || 'Asia/Taipei');
-Set($Host, $ENV{HOST} || 'foundry.org');
+Set($Host, $ENV{HOST} || 'openfoundry.org');
 
 Set($WebHost, $ENV{WEB_HOST} || "rt.$Host");
 Set($EmailHost, $ENV{EMAIL_HOST} || "users.$Host");
@@ -12,7 +12,7 @@ Set($DatabaseHost, $ENV{DB_HOST} || "ssh.$Host");
 Set($DatabasePort, $ENV{DB_PORT} || '');
 
 Set($DatabaseType, $ENV{DB_TYPE} || 'Pg');
-Set($DatabaseUser, $ENV{DB_DBA_USER} || 'pgsql');
+Set($DatabaseUser, $ENV{DB_DBA_USER} || 'rt_user');
 Set($DatabasePassword, $ENV{DB_DBA_PASSWORD} || '');
 Set($DatabaseRTHost, $DatabaseHost);
 

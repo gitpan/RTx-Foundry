@@ -1,5 +1,7 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-cvs2svn 945 2004-06-22T15:49:15.257941Z autrijus  $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-cvs2svn 7754 2004-09-19T17:59:48.832684Z autrijus  $
+
+die "$0 IS DEPRECATED, SIMPLY RUN foundry-syncdata INSTEAD!";
 
 use strict;
 use FindBin;

@@ -16,6 +16,10 @@
      <br>
      <& /Foundry/Elements/News, Rows => 5 &>
      <br>
+     <& /Foundry/Elements/NewsFeed, Title => loc('Latest News'), URL => "$FeedURI?Function=News;Flavor=RSS" &>
+     <br>
+     <& /Foundry/Elements/NewsFeed, Title => loc('Latest Jobs'), URL => "$FeedURI?Function=Jobs;Flavor=RSS" &>
+     <br>
      <& /Foundry/Elements/TopDownloads, Rows => 10 &>
     </td>
       </tr>
@@ -27,6 +31,7 @@
 <& /Foundry/Elements/Footer &>
 
 <%INIT>
+my $FeedURI = ($RT::WebBaseURL || 'http://localhost/') . "/Foundry/Project/Feed.html";
 </%INIT>
 <%ARGS>
 $keywords => undef

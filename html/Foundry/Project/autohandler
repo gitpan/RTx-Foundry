@@ -16,7 +16,7 @@
       <table border="0" cellspacing="0" cellpadding="4" class="poptable" width="100%">
         <tr> 
           <td valign="top"> 
-% $m->call_next(%ARGS, QueueObj => $QueueObj) unless $r->uri =~ /Admin/ and !$IsMember;
+% $m->call_next(%ARGS, QueueObj => $QueueObj, ProjectRole => $ProjectRole) unless $r->uri =~ /Admin/ and !$ProjectRole;
 	  </td>
 	</tr>
       </table>
@@ -40,11 +40,15 @@ my $s = "?Queue=$ARGS{Queue}";
     'Downloads'		=> '/Foundry/Project/Download/' . $s,
 );
 
-my $IsMember = $QueueObj->HasWatcher($session{CurrentUser}->UserObj)
-    || $session{CurrentUser}->UserObj->HasRight( Right => 'SuperUser', Object => $QueueObj );
+my $UserObj = $session{CurrentUser}->UserObj;
+my $IsAdmin = $QueueObj->HasAdminCc($UserObj)
+           || $UserObj->HasRight( Right => 'SuperUser', Object => $QueueObj );
+my $ProjectRole = (
+    $IsAdmin ? 'admin' : ($QueueObj->HasCc($UserObj) ? 'member' : '')
+);
 
 my %Skips;
-if ($IsMember) {
+if ($ProjectRole) {
     push @RT::Tabs, ( 'Project Admin' => '/Foundry/Project/Admin/' . $s );
 }
 elsif ( $RT::SkipEmptyTabs ) {

@@ -30,16 +30,23 @@
 my $prefix = '/Foundry/Project/Admin/';
 my $Map = [
     ''			    => 'Queue=' . $QueueObj->Id,
-    $prefix		    => 'Basics',		# loc
-    $prefix . "Members/"    => 'Members',		# loc
-    $prefix . "News/"      => 'News',		# loc
-    $prefix . "Upload/"     => 'Release Files',		# loc
-    $prefix . "Forum/"   => 'Forums',		# loc
-    $prefix . "CustomField/"      => 'Tracker Fields',		# loc
-    $prefix . "Jobs/"      => 'Help Wanted',		# loc
-    $prefix . "Stats/"      => 'Statistics',		# loc
-    $prefix . "ACL/"      => 'Access control',		# loc
 ];
+
+my @items = $QueueObj->FunctionsMap;
+my %ACL = map { ($_ => 1) } $QueueObj->FunctionsACL($ProjectRole);
+
+foreach my $item (@items) {
+    my $link = $prefix . (($item->[0] eq 'Basics') ? '' : $item->[0]);
+    push @$Map, ($link => $item->[1]) if $ACL{$item->[0] || 'Basics'};
+}
+
+push @$Map, (
+    $prefix . "ACL/"      => 'Access control',		# loc
+) if ($ProjectRole eq 'admin');
+
+push @$Map, (
+    $prefix . "Stats/"      => 'Statistics',		# loc
+);
 
 my $url = $r->uri;
 $url =~ s/\w+\.html$//;
@@ -54,4 +61,5 @@ Tab2	=> 'Project Admin'
 </%ATTR>
 <%ARGS>
 $QueueObj
+$ProjectRole
 </%ARGS>

@@ -6,9 +6,9 @@
 <li><&|/l&>To post a message to all the list members, send email to</&>
 <a href="mailto:<% $list_name %>@lists.openfoundry.org"><% $list_name %>@lists.openfoundry.org</a></li>
 <li><&|/l&>To subscribe to this mailing list, send email to</&>
-<a href="mailto:<% $list_name %>-request@lists.openfoundry.org"><% $list_name %>-request@lists.openfoundry.org</a></li>
+<a href="mailto:<% $list_name %>-request@lists.openfoundry.org?subject=subscribe"><% $list_name %>-request@lists.openfoundry.org</a> <&|/l, 'subscribe'&>with the subject '[_1]'</&></li>
 <li><&|/l&>To unsubscribe from this mailing list, send email to</&>
-<a href="mailto:<% $list_name %>-unsubscribe@lists.openfoundry.org"><% $list_name %>-unsubscribe@lists.openfoundry.org</a></li>
+<a href="mailto:<% $list_name %>-unsubscribe@lists.openfoundry.org?subject=unsubscribe"><% $list_name %>-unsubscribe@lists.openfoundry.org</a> <&|/l, 'unsubscribe'&>with the subject '[_1]'</&></li>
 </ul>
 
 % if ($out =~ /empty_archives/) {

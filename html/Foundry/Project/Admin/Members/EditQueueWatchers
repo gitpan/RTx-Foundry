@@ -1,7 +1,7 @@
 %# You can make it illegal, but you can't make it unpopular.
 
 % if (!@$List) {
-<tr><td bgcolor="white">(<&|/l&>none</&>)</td></tr>
+<tr><td align="center" bgcolor="white">(<&|/l&>none</&>)</td></tr>
 % }
 
 % foreach my $UserObj (@$List) {

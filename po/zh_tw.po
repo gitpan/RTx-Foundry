@@ -610,6 +610,9 @@ msgstr "釋出日期"
 msgid "Release Files"
 msgstr "釋出檔案"
 
+msgid "Release Plans"
+msgstr "版本規劃"
+
 msgid "Version Number"
 msgstr "版本號"
 
@@ -1160,3 +1163,68 @@ msgstr "首頁轉址"
 msgid "Homepage Redirection"
 msgstr "首頁轉址"
 
+msgid "with the subject '%1'"
+msgstr "，信件標題請填 '%1' 即可"
+
+msgid "Gantt"
+msgstr "甘特圖"
+
+msgid "Calendar"
+msgstr "行事曆"
+
+msgid "Upload"
+msgstr "上載區"
+
+msgid "Latest News"
+msgstr "最新消息"
+
+msgid "Latest Jobs"
+msgstr "徵人啟事"
+
+msgid "Help Wanted"
+msgstr "徵人"
+
+msgid "Member-writable admin areas"
+msgstr "可由專案成員寫入的設定區域"
+
+msgid "Post a news item"
+msgstr "刊登一則新聞"
+
+msgid "Post a job offer"
+msgstr "刊登徵人啟事"
+
+msgid "Job Title"
+msgstr "工作項目"
+
+msgid "Job Description"
+msgstr "工作內容"
+
+msgid "Required Skills"
+msgstr "應備條件"
+
+msgid "Available Until"
+msgstr "截止時間"
+
+msgid "Please select or create a version on the left side first."
+msgstr "請先在左方新增或選取一個版本。"
+
+msgid "Available tools for this release:"
+msgstr "可選用的版本規劃工具："
+
+msgid "Collect Released Files"
+msgstr "整理釋出檔案"
+
+msgid "File Collected Releases"
+msgstr "檔案整理釋出"
+
+msgid "Release Filed Collections"
+msgstr "釋出檔案整理"
+
+msgid "Available repositories"
+msgstr "已啟用的檔案庫"
+
+msgid "Empty repositories"
+msgstr "空的檔案庫"
+
+msgid "To work with a repository, please use one of these tools"
+msgstr "請使用下列工具之一，對這些檔案庫進行存取"

@@ -1,1652 +1,1396 @@
-# Initial data for a fresh OpenFoundry Installation.
-@Users = (
-           {
-             'Privileged' => '1',
-             'Name' => 'guest'
-           },
-         );
-@Queues = (
-            {
-              'Disabled' => '1',
-              'Name' => 'NewUser',
-              'Description' => 'Open Foundry System',
-            },
-            {
-              'Disabled' => '1',
-              'Name' => 'NewProject',
-              'Description' => 'Open Foundry System',
-            },
-            {
-              'Disabled' => '1',
-              'Name' => 'LostPassword',
-              'Description' => 'Open Foundry System',
-            },
-            {
-              'Disabled' => '1',
-              'Name' => 'MemberChange',
-              'Description' => 'Open Foundry System',
-            }
-          );
-@ScripActions = (
-                  {
-                    'Argument' => 'Owner,Cc,AdminCc',
-                    'ExecModule' => 'NotifyAsComment',
-                    'Description' => 'Send mail to Owner, Ccs and AdminCcs as a "comment"',
-                    'Name' => 'Notify Owner, Ccs and AdminCcs as Comment'
-                  },
-                  {
-                    'Argument' => 'Owner,Cc,AdminCc',
-                    'ExecModule' => 'Notify',
-                    'Description' => 'Send mail to Owner, Ccs and AdminCcs',
-                    'Name' => 'Notify Owner, Ccs and AdminCcs'
-                  }
-                );
-@Templates = (
-               {
-                 'Queue' => 'NewUser',
-                 'Content' => 'Subject: Confirm Registration
-
-{loc(\'Thank you for registering on the [_1] web site.\', $RT::Organization)}
-{loc("You have an account with username \'[_1]\' created for you.",
-    $Ticket->CustomFieldValues(\'Name\')->First->Content)}
-{loc(\'In order to complete your registration, visit the following URL:\')}
-
-    {$RT::WebBaseURL}/Foundry/Home/Guest/Verify.html?id={$Ticket->Id}
-
-{loc(\'Or just reply to this mail, keeping this string in the subject line:\')}
-
-    [{$rtname} #{$Ticket->id}]
-
-                        {loc(\'Thank you.\')}
-                        {$RT::Organization}
-',
-                 'Name' => 'Registration',
-                 'Description' => 'Confirm the registration'
-               },
-               {
-                 'Queue' => 'NewUser',
-                 'Content' => 'Subject: Registration complete
-
-{loc(\'You are now a registered user on [_1].\', $RT::Organization)}
-
-{loc(\'As a registered user, you can participate fully in the activities on the site:\')}
-  - {loc(\'Post messages to the project message forums\')}
-  - {loc(\'Post bugs and patches for projects\')}
-  - {loc(\'Sign on as a project developer\')}
-  - {loc(\'Start your own project!\')}
-
-{loc(\'You should take some time to read through the Site Documentation,\')}
-{loc(\'so you may take full advantage of [_1].\', $RT::Organization)}
-
-{loc(\'Please provide us with feedback on ways that we can improve [_1].\', $RT::Organization)}
-
-                        {loc(\'Thank you.\')}
-                        {$RT::Organization}
-',
-                 'Name' => 'Complete',
-                 'Description' => 'Registration Complete'
-               },
-               {
-                 'Queue' => 'NewProject',
-                 'Content' => 'Subject: Project Submitted
-
-
-{loc(\'Your project has been submitted to the [_1] administrators.\', $RT::Organization)}
-{loc(\'Within 72 hours, you will receive notification of further instructions.\')}
-
-{loc(\'There is no need to reply to this message right now.\')}
-
-                        {loc(\'Thank you.\')}
-                        {$RT::Organization}
-',
-                 'Name' => 'Notification',
-                 'Description' => 'Notify the user of the new project'
-               },
-               {
-                 'Queue' => 'NewProject',
-                 'Content' => '===Create-Ticket: BEGIN
-### BEGIN ### { require RT::Workflow; %X = () } ###############################
-# {eval \\{ RT::Workflow::condition($Tickets\\{TOP\\}, \'BEGIN\') \\} or die "=$@"} #
-###############################################################################
-Subject: BEGIN #{$Tickets\\{TOP\\}->Id}
-Queue: ___Approvals
-Type: code
-Status: resolved
-Content:
-"BEGIN #{$Tickets\\{TOP\\}->Id}"
-ENDOFCONTENT
-
-===Create-Ticket: T1
-### CONDITION ### { require RT::Workflow } ####################################
-## { eval \\{ RT::Workflow::condition($TOP, \'any\', \'\') \\} or die "=$@" } #
-### ENTRY POINT ### { "\\nDepends-On: BEGIN\\n" } ###############################
-{join(\'\',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP" ).$/}do{0,
-### NEXT STATE ################################################################
-
-###############################################################################
-}).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-###############################################################################
-Subject: autoresolve
-Type: code
-IsEntryPoint: 1
-Queue: ___Approvals
-ConditionSatisfy: any
-ActionProcedure: AutoResolve
-OwnerClass: owner
-Content-Type: text/plain
-Content:
-require RT::Workflow;
-RT::Workflow::action($TOP, \'AutoResolve\', \'\');
-
-ENDOFCONTENT
-
-',
-                 'Name' => 'DefaultApproval',
-                 'Description' => 'DefaultApproval'
-               },
-               {
-                 'Queue' => 'NewUser',
-                 'Content' => 'OpenFoundry.org Terms and Conditions of Use
-
-Before using this website, please read this agreement relating to your use
-of this site carefully.
-
-1. ACCEPTANCE OF TERMS
-
-    By using this website, you agree to be bound by these terms and conditions.
-    If you do not agree to these terms and conditions, please do not use the
-    site.
-
-2. NO UNLAWFUL OR PROHIBITED USE
-
-    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-    you will not use this website, or any of the content obtained from this
-    website, for any purpose that is unlawful or prohibited by these Terms. If
-    you violate any of these Terms, your permission to use the OpenFoundry.org
-    website automatically terminates.
-
-3. VIOLATIONS OF TERMS
-
-    Please report any violations of the Terms to the OpenFoundry.org Support
-    Manager at contact@openfoundry.org.
-
-',
-                 'Name' => 'TermOfUse',
-                 'Description' => 'Term Of Use'
-               },
-               {
-                 'Queue' => 'LostPassword',
-                 'Content' => '===Create-Ticket: BEGIN
-### BEGIN ### { require RT::Workflow; %X = () } ###############################
-# {eval \\{ RT::Workflow::condition($Tickets\\{TOP\\}, \'BEGIN\') \\} or die "=$@"} #
-###############################################################################
-Subject: BEGIN #{$Tickets\\{TOP\\}->Id}
-Queue: ___Approvals
-Type: code
-Status: resolved
-Content:
-"BEGIN #{$Tickets\\{TOP\\}->Id}"
-ENDOFCONTENT
-
-===Create-Ticket: T1
-### CONDITION ### { require RT::Workflow } ####################################
-## { eval \\{ RT::Workflow::condition($TOP, \'any\', \'\') \\} or die "=$@" } #
-### ENTRY POINT ### { "\\nDepends-On: BEGIN\\n" } ###############################
-{join(\'\',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP" ).$/}do{0,
-### NEXT STATE ################################################################
-
-###############################################################################
-}).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-###############################################################################
-Subject: autoresolve
-Type: code
-IsEntryPoint: 1
-Queue: ___Approvals
-ConditionSatisfy: any
-ActionProcedure: AutoResolve
-OwnerClass: owner
-Content-Type: text/plain
-Content:
-require RT::Workflow;
-RT::Workflow::action($TOP, \'AutoResolve\', \'\');
-
-ENDOFCONTENT
-
-',
-                 'Name' => 'DefaultApproval',
-                 'Description' => 'DefaultApproval'
-               },
-               {
-                 'Queue' => 'LostPassword',
-                 'Content' => 'Subject: Reset Password
-
-{loc(\'Please visit this URL to reset your password on [_1]:\', $RT::Organization)}
-    { $RT::WebBaseURL }/Foundry/Home/Guest/Recover.html?token={ $Ticket->Requestors->UserMembersObj->First->RecoverPasswordHash }
-
-{loc(\'Thank you.\')}
-
-',
-                 'Name' => 'RecoverPassword',
-                 'Description' => 'Recover Password'
-               },
-               {
-                 'Queue' => 'NewProject',
-                 'Content' => 'OpenFoundry.org Terms and Conditions of Use
-
-Before using this website, please read this agreement relating to your use
-of this site carefully.
-
-1. ACCEPTANCE OF TERMS
-
-    By using this website, you agree to be bound by these terms and conditions.
-    If you do not agree to these terms and conditions, please do not use the
-    site.
-
-2. NO UNLAWFUL OR PROHIBITED USE
-
-    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-    you will not use this website, or any of the content obtained from this
-    website, for any purpose that is unlawful or prohibited by these Terms. If
-    you violate any of these Terms, your permission to use the OpenFoundry.org
-    website automatically terminates.
-
-3. VIOLATIONS OF TERMS
-
-    Please report any violations of the Terms to the OpenFoundry.org Support
-    Manager at contact@openfoundry.org.
-
-',
-                 'Name' => 'TermOfProject',
-                 'Description' => 'Term of new project'
-               },
-               {
-                 'Queue' => 'NewProject',
-                 'Content' => 'Subject: Project Created
-
-{loc(\'Thank you for choosing [_1].\', $RT::Organization)}
-
-{loc(\'You have now successfully registered a project on [_1].\', $RT::Organization)}
-
-                        {loc(\'Thank you.\')}
-                        {$RT::Organization}
-',
-                 'Name' => 'CreateProject',
-                 'Description' => 'Notify user the completion of project'
-               },
-               {
-                 'Queue' => '0',
-                 'Content' => 'RT-Attach-Message: yes
-
-
-{
-    my $date = $Transaction->CreatedObj;
-    $date->OriginalUser( $Transaction->OriginalUser );
-    $date->AsString;
-}: {loc(\'Request [_1] was acted upon.\', $Ticket->id)}
-{join("\\n",
-loc(\'       Queue: [_1]\', $Ticket->QueueObj->Name),
-loc(\'     Subject: [_1]\', $Ticket->Subject || loc("(No subject given)")),
-loc(\'       Owner: [_1]\', $Ticket->OwnerObj->Name),
-loc(\'  Requestors: [_1]\', $Ticket->RequestorNames),
-loc(\'      Status: [_1]\', loc($Ticket->Status)),
-loc(\' Ticket <URL: [_1] >\', $RT::WebURL.\'Foundry/Project/Tracker/Display.html?id=\'.$Ticket->id.\'&Queue=\'.$Ticket->QueueObj->Id),
-loc("(Contact project admins if you don\'t want to receive mails in this project.)"),
-)
-}
-
-{
-    my @Batch = grep $_->BriefDescription, @{$Ticket->TransactionBatch} or die;
-    foreach my $Transaction (grep {!$_->ContentObj} @Batch) {
-        $OUT .= "* " . $Transaction->Description . "\n";
-    }
-    foreach my $Transaction (grep {$_->ContentObj} @Batch) {
-        $OUT .= "* " . $Transaction->Description . "\n\n";
-        $OUT .= $Transaction->ContentObj->Content . "\n\n";
-    }
-}
-
-',
-                 'Name' => 'BatchReply',
-                 'Description' => 'Batch Reply'
-               },
-               {
-                 'Queue' => 'MemberChange',
-                 'Content' => '{
-    my ($Type, $Role, $QueueId, $Queue) = split(/\\s+/, $Ticket->Subject, 4);
-
-    (($Type eq \'Invite\') ? (
-	"Subject: Invitation to $RT::Organization\\n\\n" . loc(
-	    "An administrator of \'[_1]\' has invited you to its staff list.",
-	    $Queue
-	) . "\\n" . loc(
-	    "Your role in the project will be \'[_1]\'.", loc(
-		($Role =~ /^Admin/) ? \'Admin\' : \'Member\'
-	    )
-	) . "\\n" . loc(
-	    "This invitation will expire in 14 days."
-	) . "\\n\\n" . loc(
-	    "Please visit the following URL to register your account on [_1]:",
-	    $RT::Organization
-	) . "\\n" . "    $RT::WebBaseURL/Foundry/Home/Guest/Register.html?Email=" . 
-	$Ticket->OwnerObj->EmailAddress
-    ) : (
-	"Subject: Project Role Changed\\n\\n" . loc((
-	    ($Type eq \'Add\')
-		? "An administrator of \'[_1]\' has added you to its staff list." :
-	    ($Type eq \'Edit\')
-		? "An administrator of \'[_1]\' has changed your role in the staff list." :
-	    ($Type eq \'Delete\')
-		? "An administrator of \'[_1]\' has removed you from its staff list." :
-	    die "!"
-	), $Queue) . "\\n" . (
-	    $Role ? loc("Your role in the project is now \'[_1]\'.", loc(
-			($Role =~ /^Admin/) ? \'Admin\' : \'Member\'
-		    ))
-		: loc("You no longer have staff privileges in the project.")
-	)
-    )) . "\\n\\n" . loc(
-	"If you have any questions, please contact \'[_1]\'.",
-	($Type eq \'Invite\') ? $Ticket->RequestorAddresses : $Ticket->RequestorNames
-    )
-}
-
-			{loc("Thank you.")}
-			{$RT::Organization}
-',
-                 'Name' => 'MemberChange',
-                 'Description' => 'MemberChange'
-               },
-               {
-                 'Queue' => 'MemberChange',
-                 'Content' => '===Create-Ticket: BEGIN
-### BEGIN ### { require RT::Workflow; %X = () } ###############################
-# {eval \\{ RT::Workflow::condition($Tickets\\{TOP\\}, \'BEGIN\') \\} or die "=$@"} #
-###############################################################################
-Subject: BEGIN #{$Tickets\\{TOP\\}->Id}
-Queue: ___Approvals
-Type: code
-Status: resolved
-Content:
-"BEGIN #{$Tickets\\{TOP\\}->Id}"
-ENDOFCONTENT
-
-===Create-Ticket: T1
-### CONDITION ### { require RT::Workflow } ####################################
-## { eval \\{ RT::Workflow::condition($TOP, \'any\', \'\') \\} or die "=$@" } #
-### ENTRY POINT ### { "\\nDepends-On: BEGIN\\n" } ###############################
-{join(\'\',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP" ).$/}do{0,
-### NEXT STATE ################################################################
-
-###############################################################################
-}).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-###############################################################################
-Subject: AutoResolve
-Type: code
-IsEntryPoint: 1
-Queue: ___Approvals
-ConditionSatisfy: any
-ActionProcedure: AutoResolve
-OwnerClass: owner
-Content-Type: text/plain
-Content:
-require RT::Workflow;
-RT::Workflow::action($TOP, \'AutoResolve\', \'\');
-
-ENDOFCONTENT
-
-',
-                 'Name' => 'DefaultApproval',
-                 'Description' => 'DefaultApproval'
-               }
-             );
-@Scrips = (
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Autoreply To Requestors',
-              'Template' => 'Registration',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewUser',
-              'Description' => 'Registration'
-            },
-            {
-              'CustomPrepareCode' => '1;',
-              'ScripCondition' => 'On Correspond',
-              'ScripAction' => 'User Defined',
-              'CustomCommitCode' => '$self->TicketObj->SetStatus(\'resolved\');',
-              'Template' => 'DefaultApproval',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewUser',
-              'Description' => 'Resolve on correspond'
-            },
-            {
-              'ScripCondition' => 'On Resolve',
-              'ScripAction' => 'Autoreply To Requestors',
-              'Template' => 'Complete',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewUser',
-              'Description' => 'Process registration'
-            },
-            {
-              'CustomPrepareCode' => '1;',
-              'ScripCondition' => 'On Resolve',
-              'ScripAction' => 'User Defined',
-              'CustomCommitCode' => 'my $Ticket = $self->TicketObj;
-my ($Name, $Password, $RealName, $Email)
-    = map { eval{$Ticket->CustomFieldValue($_)} }
-	qw(Name Password RealName Email);
-
-my $OrigObj = RT::User->new($RT::SystemUser);
-$OrigObj->Load($Email);
-$OrigObj->SetEmailAddress(\'\');
-my $UserObj = RT::User->new($RT::SystemUser);
-my ($val, $msg) = $UserObj->Create( Name => $Name );
-
-if (!$val) {
-    # die $msg;
-    $UserObj->Load($Name);
-    die $msg unless $UserObj->Id;
-}
-
-$UserObj->SetPassword($Password);
-$UserObj->SetRealName($RealName || $Name);
-$UserObj->SetEmailAddress($Email);
-$UserObj->SetPrivileged(1);
-',
-              'Template' => 'Blank',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewUser',
-              'Description' => 'CreateUser'
-            },
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Autoreply To Requestors',
-              'Template' => 'Notification',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewProject',
-              'Description' => 'Notification'
-            },
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Create Tickets',
-              'Template' => 'DefaultApproval',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewProject',
-              'Description' => 'Default Approval'
-            },
-            {
-              'CustomPrepareCode' => '1;',
-              'ScripCondition' => 'On Resolve',
-              'ScripAction' => 'User Defined',
-              'CustomCommitCode' => 'my $Ticket = $self->TicketObj;
-my $Requestor = $Ticket->FirstRequestor or die;
-
-my ($Name, $Description)
-    = map $Ticket->CustomFieldValues($_)->First->Content,
-	(\'ProjectName\', \'PublicDescription\');
-
-my $QueueObj = RT::Queue->new($RT::SystemUser);
-
-my ($val, $msg) = $QueueObj->Create(
-    Name => $Name,
-    Description => $Description,
-);
-$RT::Logger->info($msg);
-
-if (!$val) {
-    # die $msg;
-    $QueueObj->Load($Name);
-    die $msg unless $QueueObj->Id;
-}
-
-$QueueObj->SetOrigin($Ticket->Id);
-
-my $AdminCc = $QueueObj->AdminCc;
-$RT::Logger->debug($AdminCc->AddMember($Requestor->PrincipalId));
-
-my @Rights = qw(
-    AdminCustomFields AdminQueue
-    CommentOnTicket CreateTicket
-    OwnTicket ReplyToTicket SeeQueue ShowTicket
-    ShowTicketComments Watch WatchAsAdminCc
-);
-
-foreach my $right (@Rights) {
-    my $ace = RT::ACE->new( $RT::SystemUser );
-    $RT::Logger->debug($ace->Create(
-        RightName       => $right,
-        Object          => $QueueObj,
-        PrincipalType   => \'Group\',
-        PrincipalId     => $AdminCc->Id,
-    ));
-}
-
-1;
-',
-              'Template' => 'Blank',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewProject',
-              'Description' => 'CreateProject'
-            },
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Create Tickets',
-              'Template' => 'DefaultApproval',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'LostPassword',
-              'Description' => 'Default Approval'
-            },
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Autoreply To Requestors',
-              'Template' => 'RecoverPassword',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'LostPassword',
-              'Description' => 'SendNotification'
-            },
-            {
-              'ScripCondition' => 'On Resolve',
-              'ScripAction' => 'Autoreply To Requestors',
-              'Template' => 'CreateProject',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'NewProject',
-              'Description' => 'Complete'
-            },
-            {
-              'CustomIsApplicableCode' => '$self->TicketObj->Type eq \'ticket\'
-    and not grep { $_->Type eq \'Comment\' } @{$self->TicketObj->TransactionBatch};
-',
-              'ScripCondition' => 'User Defined',
-              'ScripAction' => 'Notify Requestors, Ccs and AdminCcs',
-              'Template' => 'BatchReply',
-              'Stage' => 'TransactionBatch',
-              'Queue' => '0',
-              'Description' => 'BatchNotify'
-            },
-            {
-              'CustomIsApplicableCode' => '$self->TicketObj->Type eq \'ticket\'
-    and grep { $_->Type eq \'Comment\' } @{$self->TicketObj->TransactionBatch};
-',
-              'ScripCondition' => 'User Defined',
-              'ScripAction' => 'Notify Owner, Ccs and AdminCcs as Comment',
-              'Template' => 'BatchReply',
-              'Stage' => 'TransactionBatch',
-              'Queue' => '0',
-              'Description' => 'CommentNotify'
-            },
-            {
-              'ScripCondition' => 'On Resolve',
-              'ScripAction' => 'Notify Owner',
-              'Template' => 'MemberChange',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'MemberChange',
-              'Description' => 'MemberChange'
-            },
-            {
-              'ScripCondition' => 'On Create',
-              'ScripAction' => 'Create Tickets',
-              'Template' => 'DefaultApproval',
-              'Stage' => 'TransactionCreate',
-              'Queue' => 'MemberChange',
-              'Description' => 'Default Approval'
-            }
-          );
-@ACL = (
-         {
-           'Queue' => 'NewUser',
-           'Right' => 'CommentOnTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Everyone'
-         },
-         {
-           'Queue' => 'NewUser',
-           'Right' => 'ReplyToTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Everyone'
-         },
-         {
-           'Right' => 'AdminCustomFields',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'AdminQueue',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'CommentOnTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'CreateTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'DeleteTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'ModifySelf',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'ModifyTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'OwnTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'ReplyToTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'SeeQueue',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'ShowTicket',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'ShowTicketComments',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         },
-         {
-           'Right' => 'Watch',
-           'GroupDomain' => 'SystemInternal',
-           'GroupType' => 'Privileged'
-         }
-       );
-@CustomFields = (
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Name must be 3-15 characters of digits, letters or underscore, beginning with a letter',
-                                      'Pattern' => '^[A-Za-z]\\w{2,14}$',
-                                      'OnChange' => 'readonly'
-                                    },
-                    'SortOrder' => '1',
-                    'Queue' => 'NewUser',
-                    'Name' => 'Name',
-                    'Description' => 'Login Name'
-                  },
-                  {
-                    'Type' => 'FreeformPassword',
-                    'Attributes' => {
-                                      'Hints' => 'Password must be at least 6 letters',
-                                      'Pattern' => '^.{6}'
-                                    },
-                    'SortOrder' => '2',
-                    'Queue' => 'NewUser',
-                    'Name' => 'Password',
-                    'Description' => 'Password'
-                  },
-                  {
-                    'Type' => 'FreeformPassword',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '^.{6}'
-                                    },
-                    'SortOrder' => '3',
-                    'Queue' => 'NewUser',
-                    'Name' => 'PasswordCheck',
-                    'Description' => 'Password (repeat)'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'SortOrder' => '4',
-                    'Queue' => 'NewUser',
-                    'Name' => 'RealName',
-                    'Description' => 'Full Name'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'SortOrder' => '5',
-                    'Queue' => 'NewUser',
-                    'Name' => 'Email',
-                    'Description' => 'Email Address'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Project Name must be at most 40 charaters',
-                                      'Pattern' => '^.{1,40}$'
-                                    },
-                    'SortOrder' => '1',
-                    'Queue' => 'NewProject',
-                    'Name' => 'ProjectName',
-                    'Description' => 'Project Name'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'HTMLAttr' => 'onchange="foundry_license_check(this)"',
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Apache v.1.1',
-                                    'Name' => 'Apache1'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Apache v.2.0',
-                                    'Name' => 'Apache2'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Artistic',
-                                    'Name' => 'Artistic'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'BSD',
-                                    'Name' => 'BSD'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Common Public v.1',
-                                    'Name' => 'CPL'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'GNU Public v.2',
-                                    'Name' => 'GPL'
-                                  },
-                                  {
-                                    'SortOrder' => '7',
-                                    'Description' => 'Lesser GNU Public v.2.1',
-                                    'Name' => 'LGPL'
-                                  },
-                                  {
-                                    'SortOrder' => '8',
-                                    'Description' => 'MIT',
-                                    'Name' => 'MIT'
-                                  },
-                                  {
-                                    'SortOrder' => '9',
-                                    'Description' => 'Mozilla Public v.1.1',
-                                    'Name' => 'MPL'
-                                  },
-                                  {
-                                    'SortOrder' => '10',
-                                    'Description' => 'Qt Public v.1',
-                                    'Name' => 'QPL'
-                                  },
-                                  {
-                                    'SortOrder' => '11',
-                                    'Description' => 'Zlib/libpng',
-                                    'Name' => 'Zlib'
-                                  },
-                                  {
-                                    'SortOrder' => '12',
-                                    'Description' => 'Other OSI Approved...',
-                                    'Name' => 'OSI...'
-                                  },
-                                  {
-                                    'SortOrder' => '13',
-                                    'Description' => 'Public Domain',
-                                    'Name' => '!PD'
-                                  },
-                                  {
-                                    'SortOrder' => '14',
-                                    'Description' => 'Project contains no code',
-                                    'Name' => '!none'
-                                  }
-                                ],
-                    'SortOrder' => '7',
-                    'Queue' => 'NewProject',
-                    'Name' => 'License',
-                    'Description' => 'Code License'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Academic Free License',
-                                    'Name' => 'Academic Free License'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Apple Public Source License',
-                                    'Name' => 'Apple Public Source License'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Attribution Assurance Licenses',
-                                    'Name' => 'Attribution Assurance Licenses'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'CUA Office Public License Version 1.0',
-                                    'Name' => 'CUA Office Public License Version 1.0'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'EU DataGrid Software License',
-                                    'Name' => 'EU DataGrid Software License'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'Eiffel Forum License',
-                                    'Name' => 'Eiffel Forum License'
-                                  },
-                                  {
-                                    'SortOrder' => '7',
-                                    'Description' => 'Eiffel Forum License V2.0',
-                                    'Name' => 'Eiffel Forum License V2.0'
-                                  },
-                                  {
-                                    'SortOrder' => '8',
-                                    'Description' => 'Entessa Public License',
-                                    'Name' => 'Entessa Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '9',
-                                    'Description' => 'Fair License',
-                                    'Name' => 'Fair License'
-                                  },
-                                  {
-                                    'SortOrder' => '10',
-                                    'Description' => 'Frameworx License',
-                                    'Name' => 'Frameworx License'
-                                  },
-                                  {
-                                    'SortOrder' => '11',
-                                    'Description' => 'Lucent Public License (Plan9)',
-                                    'Name' => 'Lucent Public License (Plan9)'
-                                  },
-                                  {
-                                    'SortOrder' => '12',
-                                    'Description' => 'Lucent Public License Version 1.02',
-                                    'Name' => 'Lucent Public License Version 1.02'
-                                  },
-                                  {
-                                    'SortOrder' => '13',
-                                    'Description' => 'IBM Public License',
-                                    'Name' => 'IBM Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '14',
-                                    'Description' => 'Intel Open Source License',
-                                    'Name' => 'Intel Open Source License'
-                                  },
-                                  {
-                                    'SortOrder' => '15',
-                                    'Description' => 'Historical Permission Notice and Disclaimer',
-                                    'Name' => 'Historical Permission Notice and Disclaimer'
-                                  },
-                                  {
-                                    'SortOrder' => '16',
-                                    'Description' => 'Jabber Open Source License',
-                                    'Name' => 'Jabber Open Source License'
-                                  },
-                                  {
-                                    'SortOrder' => '17',
-                                    'Description' => 'MITRE Collaborative Virtual Workspace License (CVW License)',
-                                    'Name' => 'MITRE Collaborative Virtual Workspace License (CVW License)'
-                                  },
-                                  {
-                                    'SortOrder' => '18',
-                                    'Description' => 'Motosoto License',
-                                    'Name' => 'Motosoto License'
-                                  },
-                                  {
-                                    'SortOrder' => '19',
-                                    'Description' => 'Mozilla Public License 1.0 (MPL)',
-                                    'Name' => 'Mozilla Public License 1.0 (MPL)'
-                                  },
-                                  {
-                                    'SortOrder' => '20',
-                                    'Description' => 'Naumen Public License',
-                                    'Name' => 'Naumen Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '21',
-                                    'Description' => 'Nethack General Public License',
-                                    'Name' => 'Nethack General Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '22',
-                                    'Description' => 'Nokia Open Source License',
-                                    'Name' => 'Nokia Open Source License'
-                                  },
-                                  {
-                                    'SortOrder' => '23',
-                                    'Description' => 'OCLC Research Public License 2.0',
-                                    'Name' => 'OCLC Research Public License 2.0'
-                                  },
-                                  {
-                                    'SortOrder' => '24',
-                                    'Description' => 'Open Group Test Suite License',
-                                    'Name' => 'Open Group Test Suite License'
-                                  },
-                                  {
-                                    'SortOrder' => '25',
-                                    'Description' => 'Open Software License',
-                                    'Name' => 'Open Software License'
-                                  },
-                                  {
-                                    'SortOrder' => '26',
-                                    'Description' => 'PHP License',
-                                    'Name' => 'PHP License'
-                                  },
-                                  {
-                                    'SortOrder' => '27',
-                                    'Description' => 'Python license (CNRI Python License)',
-                                    'Name' => 'Python license (CNRI Python License)'
-                                  },
-                                  {
-                                    'SortOrder' => '28',
-                                    'Description' => 'Python Software Foundation License',
-                                    'Name' => 'Python Software Foundation License'
-                                  },
-                                  {
-                                    'SortOrder' => '29',
-                                    'Description' => 'RealNetworks Public Source License V1.0',
-                                    'Name' => 'RealNetworks Public Source License V1.0'
-                                  },
-                                  {
-                                    'SortOrder' => '30',
-                                    'Description' => 'Reciprocal Public License',
-                                    'Name' => 'Reciprocal Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '31',
-                                    'Description' => 'Ricoh Source Code Public License',
-                                    'Name' => 'Ricoh Source Code Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '32',
-                                    'Description' => 'Sleepycat License',
-                                    'Name' => 'Sleepycat License'
-                                  },
-                                  {
-                                    'SortOrder' => '33',
-                                    'Description' => 'Sun Industry Standards Source License (SISSL)',
-                                    'Name' => 'Sun Industry Standards Source License (SISSL)'
-                                  },
-                                  {
-                                    'SortOrder' => '34',
-                                    'Description' => 'Sun Public License',
-                                    'Name' => 'Sun Public License'
-                                  },
-                                  {
-                                    'SortOrder' => '35',
-                                    'Description' => 'Sybase Open Watcom Public License 1.0',
-                                    'Name' => 'Sybase Open Watcom Public License 1.0'
-                                  },
-                                  {
-                                    'SortOrder' => '36',
-                                    'Description' => 'University of Illinois/NCSA Open Source License',
-                                    'Name' => 'University of Illinois/NCSA Open Source License'
-                                  },
-                                  {
-                                    'SortOrder' => '37',
-                                    'Description' => 'Vovida Software License v. 1.0',
-                                    'Name' => 'Vovida Software License v. 1.0'
-                                  },
-                                  {
-                                    'SortOrder' => '38',
-                                    'Description' => 'W3C License',
-                                    'Name' => 'W3C License'
-                                  },
-                                  {
-                                    'SortOrder' => '39',
-                                    'Description' => 'wxWindows Library License',
-                                    'Name' => 'wxWindows Library License'
-                                  },
-                                  {
-                                    'SortOrder' => '40',
-                                    'Description' => 'X.Net License',
-                                    'Name' => 'X.Net License'
-                                  },
-                                  {
-                                    'SortOrder' => '41',
-                                    'Description' => 'Zope Public License',
-                                    'Name' => 'Zope Public License'
-                                  }
-                                ],
-                    'SortOrder' => '8',
-                    'Queue' => 'NewProject',
-                    'Name' => 'LicenseOSI',
-                    'Description' => ' '
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'HTMLAttr' => 'onchange="foundry_license_check(this)"',
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Creative Commons Licenses...',
-                                    'Name' => 'CC...'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'GNU Free Documentation License',
-                                    'Name' => 'GFDL'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Same license as code',
-                                    'Name' => 'code'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Public Domain',
-                                    'Name' => '!PD'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Project contains only code',
-                                    'Name' => '!none'
-                                  }
-                                ],
-                    'Queue' => 'NewProject',
-                    'SortOrder' => '10',
-                    'Name' => 'ContentLicense',
-                    'Description' => 'Content License'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Attribution',
-                                    'Name' => 'Attribution'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Attribution-ShareAlike',
-                                    'Name' => 'Attribution-ShareAlike'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Attribution-NoDerivs',
-                                    'Name' => 'Attribution-NoDerivs'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Attribution-NonCommercial',
-                                    'Name' => 'Attribution-NonCommercial'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'Attribution-NonCommercial-ShareAlike',
-                                    'Name' => 'Attribution-NonCommercial-ShareAlike'
-                                  },
-                                  {
-                                    'SortOrder' => '12',
-                                    'Description' => 'Attribution-NonCommercial-NoDerivs',
-                                    'Name' => 'Attribution-NonCommercial-NoDerivs'
-                                  }
-                                ],
-                    'Queue' => 'NewProject',
-                    'SortOrder' => '11',
-                    'Name' => 'ContentLicenseCC',
-                    'Description' => ' '
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Queue' => 'NewProject',
-                    'Name' => 'LicenseOther',
-                    'SortOrder' => '9',
-                    'Description' => 'Other Code Licenses'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Queue' => 'NewProject',
-                    'SortOrder' => '12',
-                    'Name' => 'ContentLicenseOther',
-                    'Description' => 'Other Content Licenses'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'ID must be 3-15 characters of lower-case letters or digits, beginning with a letter',
-                                      'Pattern' => '^[a-z][0-9a-z]{2,14}$',
-                                      'OnChange' => 'readonly'
-                                    },
-                    'SortOrder' => '2',
-                    'Queue' => 'NewProject',
-                    'Name' => 'UnixName',
-                    'Description' => 'Project ID'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Idea',
-                                    'Name' => 'Idea'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Pre-Alpha',
-                                    'Name' => 'Pre-Alpha'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Alpha',
-                                    'Name' => 'Alpha'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Beta',
-                                    'Name' => 'Beta'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Released',
-                                    'Name' => 'Released'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'Mature',
-                                    'Name' => 'Mature'
-                                  },
-                                  {
-                                    'SortOrder' => '7',
-                                    'Description' => 'Standard',
-                                    'Name' => 'Standard'
-                                  }
-                                ],
-                    'SortOrder' => '6',
-                    'Queue' => 'NewProject',
-                    'Name' => 'Maturity',
-                    'Description' => 'Maturity'
-                  },
-                  {
-                    'Type' => 'SelectMultiple',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Assembly',
-                                    'Name' => 'Assembly'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'C',
-                                    'Name' => 'C'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'C++',
-                                    'Name' => 'C++'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Java',
-                                    'Name' => 'Java'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Perl',
-                                    'Name' => 'Perl'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'PHP',
-                                    'Name' => 'PHP'
-                                  },
-                                  {
-                                    'SortOrder' => '7',
-                                    'Description' => 'Python',
-                                    'Name' => 'Python'
-                                  },
-                                  {
-                                    'SortOrder' => '8',
-                                    'Description' => 'Ruby',
-                                    'Name' => 'Ruby'
-                                  }
-                                ],
-                    'SortOrder' => '14',
-                    'Queue' => 'NewProject',
-                    'Name' => 'ProgrammingLanguage',
-                    'Description' => 'Programming Language'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Optional; fill in an email address or URL'
-                                    },
-                    'SortOrder' => '5',
-                    'Queue' => 'NewProject',
-                    'Name' => 'ContactInfo',
-                    'Description' => 'Contact Info'
-                  },
-                  {
-                    'Type' => 'SelectMultiple',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'General Use',
-                                    'Name' => 'General Use'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Programmer',
-                                    'Name' => 'Programmer'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'System Administrator',
-                                    'Name' => 'System Administrator'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Education',
-                                    'Name' => 'Education'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Researcher',
-                                    'Name' => 'Researcher'
-                                  },
-                                  {
-                                    'SortOrder' => '6',
-                                    'Description' => 'Other',
-                                    'Name' => 'Other'
-                                  }
-                                ],
-                    'SortOrder' => '15',
-                    'Queue' => 'NewProject',
-                    'Name' => 'IntendedAudience',
-                    'Description' => 'Intended Audience'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'SortOrder' => '16',
-                    'Queue' => 'NewProject',
-                    'Name' => 'RedirectURL',
-                    'Description' => 'Homepage Redirection'
-                  }
-                  {
-                    'Type' => 'SelectResolution',
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'FIXED',
-                                    'Name' => 'FIXED'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'LATER',
-                                    'Name' => 'LATER'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'INVALID',
-                                    'Name' => 'INVALID'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'WONTFIX',
-                                    'Name' => 'WONTFIX'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'WORKSFORME',
-                                    'Name' => 'WORKSFORME'
-                                  }
-                                ],
-                    'SortOrder' => '17',
-                    'Queue' => '0',
-                    'Name' => 'Resolution',
-                    'Description' => 'Resolution'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'OnCreate' => 'readonly'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'defect',
-                                    'Name' => 'defect'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'patch',
-                                    'Name' => 'patch'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'task',
-                                    'Name' => 'task'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'feature',
-                                    'Name' => 'feature'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'enhancement',
-                                    'Name' => 'enhancement'
-                                  }
-                                ],
-                    'SortOrder' => '18',
-                    'Queue' => '0',
-                    'Name' => 'Type',
-                    'Description' => 'Type'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Backend',
-                                    'Name' => 'Backend'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Interface',
-                                    'Name' => 'Interface'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Other',
-                                    'Name' => 'Other'
-                                  }
-                                ],
-                    'SortOrder' => '19',
-                    'Queue' => '0',
-                    'Name' => 'Subcomponent',
-                    'Description' => 'Subcomponent'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'All Architectures',
-                                    'Name' => 'All'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'i386 PC',
-                                    'Name' => 'PC'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Mac',
-                                    'Name' => 'Mac'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Other',
-                                    'Name' => 'Other'
-                                  }
-                                ],
-                    'SortOrder' => '20',
-                    'Queue' => '0',
-                    'Name' => 'Architecture',
-                    'Description' => 'Architecture'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'All Platforms',
-                                    'Name' => 'All'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Linux',
-                                    'Name' => 'Linux'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'MS Windows',
-                                    'Name' => 'Win32'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'FreeBSD',
-                                    'Name' => 'FreeBSD'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Other',
-                                    'Name' => 'Other'
-                                  }
-                                ],
-                    'SortOrder' => '21',
-                    'Queue' => '0',
-                    'Name' => 'Platform',
-                    'Description' => 'Platform'
-                  },
-                  {
-                    'Type' => 'SelectSingle',
-                    'Attributes' => {
-                                      'OnCreate' => 'hidden'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Most Important',
-                                    'Name' => 'P1'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Important',
-                                    'Name' => 'P2'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Normal',
-                                    'Name' => 'P3'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Less Important',
-                                    'Name' => 'P4'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => 'Least Important',
-                                    'Name' => 'P5'
-                                  }
-                                ],
-                    'SortOrder' => '22',
-                    'Queue' => '0',
-                    'Name' => 'Severity',
-                    'Description' => 'Severity'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'SortOrder' => '23',
-                    'Queue' => 'NewUser',
-                    'Name' => 'PersonalHomepage',
-                    'Description' => 'PersonalHomepage'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'SortOrder' => '24',
-                    'Queue' => 'LostPassword',
-                    'Name' => 'Name',
-                    'Description' => 'Name'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'SortOrder' => '25',
-                    'Queue' => 'LostPassword',
-                    'Name' => 'Email',
-                    'Description' => 'Email'
-                  },
-                  {
-                    'Type' => 'SelectVersion',
-                    'SortOrder' => '26',
-                    'Queue' => '0',
-                    'Name' => 'Version',
-                    'Description' => 'Version'
-                  },
-                  {
-                    'Type' => 'SelectVersion',
-                    'SortOrder' => '27',
-                    'Queue' => '0',
-                    'Name' => 'TargetVersion',
-                    'Description' => 'TargetVersion'
-                  },
-                  {
-                    'Type' => 'SelectMultiple',
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Email Address',
-                                    'Name' => 'Email'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'Real Name',
-                                    'Name' => 'RealName'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Personal Homepage',
-                                    'Name' => 'PersonalHomepage'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Self Introduction',
-                                    'Name' => 'Intro'
-                                  }
-                                ],
-                    'SortOrder' => '28',
-                    'Queue' => 'NewUser',
-                    'Name' => 'Public Info',
-                    'Description' => 'Public Info'
-                  },
-                  {
-                    'Type' => 'FreeformMultiple',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'OnUpdate' => 'hidden',
-                                      'Pattern' => '.',
-                                      'OnChange' => 'hidden'
-                                    },
-                    'SortOrder' => '3',
-                    'Queue' => 'NewProject',
-                    'Name' => 'Rationale',
-                    'Description' => 'Rationale'
-                  },
-                  {
-                    'Type' => 'FreeformSingle',
-                    'Attributes' => {
-                                      'Hints' => 'Public Description must be at most 255 charaters',
-                                      'Pattern' => '^[\\d\\D]{1,255}$'
-                                    },
-                    'SortOrder' => '4',
-                    'Queue' => 'NewProject',
-                    'Name' => 'PublicDescription',
-                    'Description' => 'Public Description'
-                  },
-                  {
-                    'Type' => 'SelectMultiple',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'Pattern' => '.'
-                                    },
-                    'Values' => [
-                                  {
-                                    'SortOrder' => '1',
-                                    'Description' => 'Windows',
-                                    'Name' => 'Windows'
-                                  },
-                                  {
-                                    'SortOrder' => '2',
-                                    'Description' => 'FreeBSD',
-                                    'Name' => 'FreeBSD'
-                                  },
-                                  {
-                                    'SortOrder' => '3',
-                                    'Description' => 'Linux',
-                                    'Name' => 'Linux'
-                                  },
-                                  {
-                                    'SortOrder' => '4',
-                                    'Description' => 'Java Environment',
-                                    'Name' => 'Java Environment'
-                                  },
-                                  {
-                                    'SortOrder' => '5',
-                                    'Description' => '.NET Environment',
-                                    'Name' => '.NET Environment'
-                                  }
-                                ],
-                    'SortOrder' => '13',
-                    'Queue' => 'NewProject',
-                    'Name' => 'Platform',
-                    'Description' => 'Platform'
-                  },
-                  {
-                    'Type' => 'LabelContent',
-                    'SortOrder' => '32',
-                    'Queue' => 'NewUser',
-                    'Name' => 'Intro',
-                    'Description' => 'About Me'
-                  },
-                  {
-                    'Type' => 'LabelSubject',
-                    'Attributes' => {
-                                      'Hints' => 'Mandatory',
-                                      'OnUpdate' => 'hidden',
-                                      'Pattern' => '.'
-                                    },
-                    'SortOrder' => '36',
-                    'Queue' => '0',
-                    'Name' => 'Subject',
-                    'Description' => 'Subject'
-                  },
-                  {
-                    'Type' => 'LabelAttachments',
-                    'SortOrder' => '35',
-                    'Queue' => '0',
-                    'Name' => 'Attachments',
-                    'Description' => 'Attachments'
-                  },
-                );
+no strict;use YAML;*_=YAML::Load(do{local$/;<DATA>});@$_=@{$_{$_}}for keys%_;1
+__DATA__
+--- #YAML:1.0
+ACL:
+  - GroupDomain: SystemInternal
+    GroupType: Everyone
+    Queue: NewUser
+    Right: CommentOnTicket
+  - GroupDomain: SystemInternal
+    GroupType: Everyone
+    Queue: NewUser
+    Right: ReplyToTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: AdminCustomFields
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: AdminQueue
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: CommentOnTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: CreateTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: DeleteTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: ModifySelf
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: ModifyTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: OwnTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: ReplyToTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: SeeQueue
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: ShowTicket
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: ShowTicketComments
+  - GroupDomain: SystemInternal
+    GroupType: Privileged
+    Right: Watch
+CustomFields:
+  - Attributes:
+      Hints: ! >-
+        Name must be 3-15 characters of digits, letters or underscore, beginning
+        with a letter
+      OnChange: readonly
+      Pattern: '^[A-Za-z]\w{2,14}$'
+    Description: Login Name
+    Name: Name
+    Queue: NewUser
+    SortOrder: 1
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Password must be at least 6 letters
+      Pattern: '^.{6}'
+    Description: Password
+    Name: Password
+    Queue: NewUser
+    SortOrder: 2
+    Type: FreeformPassword
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '^.{6}'
+    Description: Password (repeat)
+    Name: PasswordCheck
+    Queue: NewUser
+    SortOrder: 3
+    Type: FreeformPassword
+  - Description: Full Name
+    Name: RealName
+    Queue: NewUser
+    SortOrder: 4
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Email Address
+    Name: Email
+    Queue: NewUser
+    SortOrder: 5
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Project Name must be at most 40 charaters
+      Pattern: '^.{1,40}$'
+    Description: Project Name
+    Name: ProjectName
+    Queue: NewProject
+    SortOrder: 1
+    Type: FreeformSingle
+  - Attributes:
+      HTMLAttr: onchange="foundry_license_check(this)"
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Code License
+    Name: License
+    Queue: NewProject
+    SortOrder: 7
+    Type: SelectSingle
+    Values:
+      - Description: Apache v.1.1
+        Name: Apache1
+        SortOrder: 1
+      - Description: Apache v.2.0
+        Name: Apache2
+        SortOrder: 2
+      - Description: Artistic
+        Name: Artistic
+        SortOrder: 3
+      - Description: BSD
+        Name: BSD
+        SortOrder: 4
+      - Description: Common Public v.1
+        Name: CPL
+        SortOrder: 5
+      - Description: GNU Public v.2
+        Name: GPL
+        SortOrder: 6
+      - Description: Lesser GNU Public v.2.1
+        Name: LGPL
+        SortOrder: 7
+      - Description: MIT
+        Name: MIT
+        SortOrder: 8
+      - Description: Mozilla Public v.1.1
+        Name: MPL
+        SortOrder: 9
+      - Description: Qt Public v.1
+        Name: QPL
+        SortOrder: 10
+      - Description: Zlib/libpng
+        Name: Zlib
+        SortOrder: 11
+      - Description: Other OSI Approved...
+        Name: OSI...
+        SortOrder: 12
+      - Description: Public Domain
+        Name: '!PD'
+        SortOrder: 13
+      - Description: Project contains no code
+        Name: '!none'
+        SortOrder: 14
+  - Attributes:
+      Hints: Mandatory
+    Description: ' '
+    Name: LicenseOSI
+    Queue: NewProject
+    SortOrder: 8
+    Type: SelectSingle
+    Values:
+      - Description: Academic Free License
+        Name: Academic Free License
+        SortOrder: 1
+      - Description: Apple Public Source License
+        Name: Apple Public Source License
+        SortOrder: 2
+      - Description: Attribution Assurance Licenses
+        Name: Attribution Assurance Licenses
+        SortOrder: 3
+      - Description: CUA Office Public License Version 1.0
+        Name: CUA Office Public License Version 1.0
+        SortOrder: 4
+      - Description: EU DataGrid Software License
+        Name: EU DataGrid Software License
+        SortOrder: 5
+      - Description: Eiffel Forum License
+        Name: Eiffel Forum License
+        SortOrder: 6
+      - Description: Eiffel Forum License V2.0
+        Name: Eiffel Forum License V2.0
+        SortOrder: 7
+      - Description: Entessa Public License
+        Name: Entessa Public License
+        SortOrder: 8
+      - Description: Fair License
+        Name: Fair License
+        SortOrder: 9
+      - Description: Frameworx License
+        Name: Frameworx License
+        SortOrder: 10
+      - Description: Lucent Public License (Plan9)
+        Name: Lucent Public License (Plan9)
+        SortOrder: 11
+      - Description: Lucent Public License Version 1.02
+        Name: Lucent Public License Version 1.02
+        SortOrder: 12
+      - Description: IBM Public License
+        Name: IBM Public License
+        SortOrder: 13
+      - Description: Intel Open Source License
+        Name: Intel Open Source License
+        SortOrder: 14
+      - Description: Historical Permission Notice and Disclaimer
+        Name: Historical Permission Notice and Disclaimer
+        SortOrder: 15
+      - Description: Jabber Open Source License
+        Name: Jabber Open Source License
+        SortOrder: 16
+      - Description: |-
+          MITRE Collaborative Virtual Workspace License (CVW License)
+        Name: |-
+          MITRE Collaborative Virtual Workspace License (CVW License)
+        SortOrder: 17
+      - Description: Motosoto License
+        Name: Motosoto License
+        SortOrder: 18
+      - Description: Mozilla Public License 1.0 (MPL)
+        Name: Mozilla Public License 1.0 (MPL)
+        SortOrder: 19
+      - Description: Naumen Public License
+        Name: Naumen Public License
+        SortOrder: 20
+      - Description: Nethack General Public License
+        Name: Nethack General Public License
+        SortOrder: 21
+      - Description: Nokia Open Source License
+        Name: Nokia Open Source License
+        SortOrder: 22
+      - Description: OCLC Research Public License 2.0
+        Name: OCLC Research Public License 2.0
+        SortOrder: 23
+      - Description: Open Group Test Suite License
+        Name: Open Group Test Suite License
+        SortOrder: 24
+      - Description: Open Software License
+        Name: Open Software License
+        SortOrder: 25
+      - Description: PHP License
+        Name: PHP License
+        SortOrder: 26
+      - Description: Python license (CNRI Python License)
+        Name: Python license (CNRI Python License)
+        SortOrder: 27
+      - Description: Python Software Foundation License
+        Name: Python Software Foundation License
+        SortOrder: 28
+      - Description: RealNetworks Public Source License V1.0
+        Name: RealNetworks Public Source License V1.0
+        SortOrder: 29
+      - Description: Reciprocal Public License
+        Name: Reciprocal Public License
+        SortOrder: 30
+      - Description: Ricoh Source Code Public License
+        Name: Ricoh Source Code Public License
+        SortOrder: 31
+      - Description: Sleepycat License
+        Name: Sleepycat License
+        SortOrder: 32
+      - Description: Sun Industry Standards Source License (SISSL)
+        Name: Sun Industry Standards Source License (SISSL)
+        SortOrder: 33
+      - Description: Sun Public License
+        Name: Sun Public License
+        SortOrder: 34
+      - Description: Sybase Open Watcom Public License 1.0
+        Name: Sybase Open Watcom Public License 1.0
+        SortOrder: 35
+      - Description: University of Illinois/NCSA Open Source License
+        Name: University of Illinois/NCSA Open Source License
+        SortOrder: 36
+      - Description: Vovida Software License v. 1.0
+        Name: Vovida Software License v. 1.0
+        SortOrder: 37
+      - Description: W3C License
+        Name: W3C License
+        SortOrder: 38
+      - Description: wxWindows Library License
+        Name: wxWindows Library License
+        SortOrder: 39
+      - Description: X.Net License
+        Name: X.Net License
+        SortOrder: 40
+      - Description: Zope Public License
+        Name: Zope Public License
+        SortOrder: 41
+  - Attributes:
+      HTMLAttr: onchange="foundry_license_check(this)"
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Content License
+    Name: ContentLicense
+    Queue: NewProject
+    SortOrder: 10
+    Type: SelectSingle
+    Values:
+      - Description: Creative Commons Licenses...
+        Name: CC...
+        SortOrder: 1
+      - Description: GNU Free Documentation License
+        Name: GFDL
+        SortOrder: 2
+      - Description: Same license as code
+        Name: code
+        SortOrder: 3
+      - Description: Public Domain
+        Name: '!PD'
+        SortOrder: 4
+      - Description: Project contains only code
+        Name: '!none'
+        SortOrder: 5
+  - Attributes:
+      Hints: Mandatory
+    Description: ' '
+    Name: ContentLicenseCC
+    Queue: NewProject
+    SortOrder: 11
+    Type: SelectSingle
+    Values:
+      - Description: Attribution
+        Name: Attribution
+        SortOrder: 1
+      - Description: Attribution-ShareAlike
+        Name: Attribution-ShareAlike
+        SortOrder: 2
+      - Description: Attribution-NoDerivs
+        Name: Attribution-NoDerivs
+        SortOrder: 4
+      - Description: Attribution-NonCommercial
+        Name: Attribution-NonCommercial
+        SortOrder: 5
+      - Description: Attribution-NonCommercial-ShareAlike
+        Name: Attribution-NonCommercial-ShareAlike
+        SortOrder: 6
+      - Description: Attribution-NonCommercial-NoDerivs
+        Name: Attribution-NonCommercial-NoDerivs
+        SortOrder: 12
+  - Description: Other Code Licenses
+    Name: LicenseOther
+    Queue: NewProject
+    SortOrder: 9
+    Type: FreeformSingle
+  - Description: Other Content Licenses
+    Name: ContentLicenseOther
+    Queue: NewProject
+    SortOrder: 12
+    Type: FreeformSingle
+  - Attributes:
+      Hints: ! >-
+        ID must be 3-15 characters of lower-case letters or digits, beginning with a
+        letter
+      OnChange: readonly
+      Pattern: '^[a-z][0-9a-z]{2,14}$'
+    Description: Project ID
+    Name: UnixName
+    Queue: NewProject
+    SortOrder: 2
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Maturity
+    Name: Maturity
+    Queue: NewProject
+    SortOrder: 6
+    Type: SelectSingle
+    Values:
+      - Description: Idea
+        Name: Idea
+        SortOrder: 1
+      - Description: Pre-Alpha
+        Name: Pre-Alpha
+        SortOrder: 2
+      - Description: Alpha
+        Name: Alpha
+        SortOrder: 3
+      - Description: Beta
+        Name: Beta
+        SortOrder: 4
+      - Description: Released
+        Name: Released
+        SortOrder: 5
+      - Description: Mature
+        Name: Mature
+        SortOrder: 6
+      - Description: Standard
+        Name: Standard
+        SortOrder: 7
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Programming Language
+    Name: ProgrammingLanguage
+    Queue: NewProject
+    SortOrder: 14
+    Type: SelectMultiple
+    Values:
+      - Description: Assembly
+        Name: Assembly
+        SortOrder: 1
+      - Description: C
+        Name: C
+        SortOrder: 2
+      - Description: C++
+        Name: C++
+        SortOrder: 3
+      - Description: Java
+        Name: Java
+        SortOrder: 4
+      - Description: Perl
+        Name: Perl
+        SortOrder: 5
+      - Description: PHP
+        Name: PHP
+        SortOrder: 6
+      - Description: Python
+        Name: Python
+        SortOrder: 7
+      - Description: Ruby
+        Name: Ruby
+        SortOrder: 8
+  - Attributes:
+      Hints: Optional; fill in an email address or URL
+    Description: Contact Info
+    Name: ContactInfo
+    Queue: NewProject
+    SortOrder: 5
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Intended Audience
+    Name: IntendedAudience
+    Queue: NewProject
+    SortOrder: 15
+    Type: SelectMultiple
+    Values:
+      - Description: General Use
+        Name: General Use
+        SortOrder: 1
+      - Description: Programmer
+        Name: Programmer
+        SortOrder: 2
+      - Description: System Administrator
+        Name: System Administrator
+        SortOrder: 3
+      - Description: Education
+        Name: Education
+        SortOrder: 4
+      - Description: Researcher
+        Name: Researcher
+        SortOrder: 5
+      - Description: Other
+        Name: Other
+        SortOrder: 6
+  - Description: Homepage Redirection
+    Name: RedirectURL
+    Queue: NewProject
+    SortOrder: 16
+    Type: FreeformSingle
+  - Description: Version Control System
+    Name: VCS
+    Queue: NewProject
+    SortOrder: 17
+    Type: SelectSingle
+    Values:
+      - Description: Subversion(read/write)
+        Name: svn
+        SortOrder: 1
+      - Description: CVS, Subversion(mirror)
+        Name: cvs
+        SortOrder: 2
+      - Description: Remote, Subversion(mirror)
+        Name: vcp
+        SortOrder: 3
+      - Description: Remote
+        Name: none
+        SortOrder: 4
+  - Description: Remote Repository
+    Name: RemoteVCS
+    Queue: NewProject
+    SortOrder: 18
+    Type: FreeformSingle
+    Attributes:
+      Pattern: '^(?:$|[A-Za-z][-+.A-Za-z0-9]*:)'
+  - Description: Resolution
+    Name: Resolution
+    Queue: 0
+    SortOrder: 17
+    Type: SelectResolution
+    Values:
+      - Description: FIXED
+        Name: FIXED
+        SortOrder: 1
+      - Description: LATER
+        Name: LATER
+        SortOrder: 2
+      - Description: INVALID
+        Name: INVALID
+        SortOrder: 3
+      - Description: WONTFIX
+        Name: WONTFIX
+        SortOrder: 4
+      - Description: WORKSFORME
+        Name: WORKSFORME
+        SortOrder: 5
+  - Attributes:
+      OnCreate: readonly
+    Description: Type
+    Name: Type
+    Queue: 0
+    SortOrder: 18
+    Type: SelectSingle
+    Values:
+      - Description: defect
+        Name: defect
+        SortOrder: 1
+      - Description: patch
+        Name: patch
+        SortOrder: 2
+      - Description: task
+        Name: task
+        SortOrder: 3
+      - Description: feature
+        Name: feature
+        SortOrder: 4
+      - Description: enhancement
+        Name: enhancement
+        SortOrder: 5
+  - Description: Subcomponent
+    Name: Subcomponent
+    Queue: 0
+    SortOrder: 19
+    Type: SelectSingle
+    Values:
+      - Description: Backend
+        Name: Backend
+        SortOrder: 1
+      - Description: Interface
+        Name: Interface
+        SortOrder: 2
+      - Description: Other
+        Name: Other
+        SortOrder: 3
+  - Description: Architecture
+    Name: Architecture
+    Queue: 0
+    SortOrder: 20
+    Type: SelectSingle
+    Values:
+      - Description: All Architectures
+        Name: All
+        SortOrder: 1
+      - Description: i386 PC
+        Name: PC
+        SortOrder: 2
+      - Description: Mac
+        Name: Mac
+        SortOrder: 3
+      - Description: Other
+        Name: Other
+        SortOrder: 4
+  - Description: Platform
+    Name: Platform
+    Queue: 0
+    SortOrder: 21
+    Type: SelectSingle
+    Values:
+      - Description: All Platforms
+        Name: All
+        SortOrder: 1
+      - Description: Linux
+        Name: Linux
+        SortOrder: 3
+      - Description: MS Windows
+        Name: Win32
+        SortOrder: 4
+      - Description: FreeBSD
+        Name: FreeBSD
+        SortOrder: 5
+      - Description: Other
+        Name: Other
+        SortOrder: 5
+  - Attributes:
+      OnCreate: hidden
+    Description: Severity
+    Name: Severity
+    Queue: 0
+    SortOrder: 22
+    Type: SelectSingle
+    Values:
+      - Description: Most Important
+        Name: P1
+        SortOrder: 1
+      - Description: Important
+        Name: P2
+        SortOrder: 2
+      - Description: Normal
+        Name: P3
+        SortOrder: 3
+      - Description: Less Important
+        Name: P4
+        SortOrder: 4
+      - Description: Least Important
+        Name: P5
+        SortOrder: 5
+  - Description: PersonalHomepage
+    Name: PersonalHomepage
+    Queue: NewUser
+    SortOrder: 23
+    Type: FreeformSingle
+  - Description: Name
+    Name: Name
+    Queue: LostPassword
+    SortOrder: 24
+    Type: FreeformSingle
+  - Description: Email
+    Name: Email
+    Queue: LostPassword
+    SortOrder: 25
+    Type: FreeformSingle
+  - Description: Version
+    Name: Version
+    Queue: 0
+    SortOrder: 26
+    Type: SelectVersion
+  - Description: TargetVersion
+    Name: TargetVersion
+    Queue: 0
+    SortOrder: 27
+    Type: SelectVersion
+  - Description: Public Info
+    Name: Public Info
+    Queue: NewUser
+    SortOrder: 28
+    Type: SelectMultiple
+    Values:
+      - Description: Email Address
+        Name: Email
+        SortOrder: 1
+      - Description: Real Name
+        Name: RealName
+        SortOrder: 2
+      - Description: Personal Homepage
+        Name: PersonalHomepage
+        SortOrder: 3
+      - Description: Self Introduction
+        Name: Intro
+        SortOrder: 4
+  - Attributes:
+      Hints: Mandatory
+      OnChange: hidden
+      OnUpdate: hidden
+      Pattern: '.'
+    Description: Rationale
+    Name: Rationale
+    Queue: NewProject
+    SortOrder: 3
+    Type: FreeformMultiple
+  - Attributes:
+      Hints: Public Description must be at most 255 charaters
+      Pattern: '^[\d\D]{1,255}$'
+    Description: Public Description
+    Name: PublicDescription
+    Queue: NewProject
+    SortOrder: 4
+    Type: FreeformSingle
+  - Attributes:
+      Hints: Mandatory
+      Pattern: '.'
+    Description: Platform
+    Name: Platform
+    Queue: NewProject
+    SortOrder: 13
+    Type: SelectMultiple
+    Values:
+      - Description: Windows
+        Name: Windows
+        SortOrder: 1
+      - Description: FreeBSD
+        Name: FreeBSD
+        SortOrder: 2
+      - Description: Linux
+        Name: Linux
+        SortOrder: 3
+      - Description: Java Environment
+        Name: Java Environment
+        SortOrder: 4
+      - Description: '.NET Environment'
+        Name: '.NET Environment'
+        SortOrder: 5
+      - Description: 'MacOSX'
+        Name: 'MacOSX'
+        SortOrder: 6
+      - Description: 'MacOS Classic'
+        Name: 'MacOS Classic'
+        SortOrder: 6
+  - Description: About Me
+    Name: Intro
+    Queue: NewUser
+    SortOrder: 32
+    Type: LabelContent
+  - Attributes:
+      Hints: Mandatory
+      OnUpdate: hidden
+      Pattern: '.'
+    Description: Subject
+    Name: Subject
+    Queue: 0
+    SortOrder: 36
+    Type: LabelSubject
+  - Description: Attachments
+    Name: Attachments
+    Queue: 0
+    SortOrder: 35
+    Type: LabelAttachments
+  - Description: Version
+    Name: Version
+    Queue: ProjectEvents
+    SortOrder: 1
+    Type: SelectVersion
+  - Description: 'Job Title'
+    Name: JobTitle
+    Queue: ProjectJobs
+    SortOrder: 1
+    Type: LabelSubject
+  - Description: 'Job Description'
+    Name: JobDescription
+    Queue: ProjectJobs
+    SortOrder: 2
+    Type: LabelContent
+  - Description: 'Required Skills'
+    Name: JobRequirement
+    Queue: ProjectJobs
+    SortOrder: 3
+    Type: FreeformMultiple
+  - Description: 'Available Until'
+    Name: JobDue
+    Queue: ProjectJobs
+    SortOrder: 4
+    Type: FreeformDate
+Queues:
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: NewUser
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: NewProject
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: LostPassword
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: MemberChange
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: ProjectNews
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: ProjectEvents
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: ProjectJobs
+ScripActions:
+  - Argument: Owner,Cc,AdminCc
+    Description: |-
+      Send mail to Owner, Ccs and AdminCcs as a "comment"
+    ExecModule: NotifyAsComment
+    Name: Notify Owner, Ccs and AdminCcs as Comment
+  - Argument: Owner,Cc,AdminCc
+    Description: Send mail to Owner, Ccs and AdminCcs
+    ExecModule: Notify
+    Name: Notify Owner, Ccs and AdminCcs
+Templates:
+  - Content: >
+      Subject: Confirm Registration
+      
+      {loc('Thank you for registering on the [_1] web site.', $RT::Organization)}
+      
+      {loc("You have an account with username '[_1]' created for you.",
+          $Ticket->CustomFieldValues('Name')->First->Content)}
+      {loc('In order to complete your registration, visit the following URL:')}
+      
+          {$RT::WebBaseURL}/Foundry/Home/Guest/Verify.html?id={$Ticket->Id}
+      
+      {loc('Or just reply to this mail, keeping this string in the subject
+      line:')}
+      
+          [{$rtname} #{$Ticket->id}]
+      
+                              {loc('Thank you.')}
+                              {$RT::Organization}
+    Description: Confirm the registration
+    Name: Registration
+    Queue: NewUser
+  - Content: >
+      Subject: Registration complete
+      
+      {loc('You are now a registered user on [_1].', $RT::Organization)}
+      
+      {loc('As a registered user, you can participate fully in the activities on
+      the site:')}
+        - {loc('Post messages to the project message forums')}
+        - {loc('Post bugs and patches for projects')}
+        - {loc('Sign on as a project developer')}
+        - {loc('Start your own project!')}
+      
+      {loc('You should take some time to read through the Site Documentation,')}
+      
+      {loc('so you may take full advantage of [_1].', $RT::Organization)}
+      
+      {loc('Please provide us with feedback on ways that we can improve [_1].',
+      $RT::Organization)}
+      
+                              {loc('Thank you.')}
+                              {$RT::Organization}
+    Description: Registration Complete
+    Name: Complete
+    Queue: NewUser
+  - Content: >
+      Subject: Project Submitted
+      
+      
+      {loc('Your project has been submitted to the [_1] administrators.',
+      $RT::Organization)}
+      
+      {loc('Within 72 hours, you will receive notification of further
+      instructions.')}
+      
+      {loc('There is no need to reply to this message right now.')}
+      
+                              {loc('Thank you.')}
+                              {$RT::Organization}
+    Description: Notify the user of the new project
+    Name: Notification
+    Queue: NewProject
+  - Content: >+
+      ===Create-Ticket: BEGIN
+      
+      ### BEGIN ### { require RT::Workflow; %X = () }
+      ###############################
+      
+      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
+      "=$@"} #
+      
+      ###############################################################################
+      
+      Subject: BEGIN #{$Tickets\{TOP\}->Id}
+      
+      Queue: ___Approvals
+      
+      Type: code
+      
+      Status: resolved
+      
+      Content:
+      
+      "BEGIN #{$Tickets\{TOP\}->Id}"
+      
+      ENDOFCONTENT
+      
+      ===Create-Ticket: T1
+      
+      ### CONDITION ### { require RT::Workflow }
+      ####################################
+      
+      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
+      
+      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
+      ###############################
+      
+      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
+      ).$/}do{0,
+      
+      ### NEXT STATE
+      ################################################################
+      
+      ###############################################################################
+      
+      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
+      
+      ###############################################################################
+      
+      Subject: autoresolve
+      
+      Type: code
+      
+      IsEntryPoint: 1
+      
+      Queue: ___Approvals
+      
+      ConditionSatisfy: any
+      
+      ActionProcedure: AutoResolve
+      
+      OwnerClass: owner
+      
+      Content-Type: text/plain
+      
+      Content:
+      
+      require RT::Workflow;
+      
+      RT::Workflow::action($TOP, 'AutoResolve', '');
+      
+      ENDOFCONTENT
+
+    Description: DefaultApproval
+    Name: DefaultApproval
+    Queue: NewProject
+  - Content: |+
+      OpenFoundry.org Terms and Conditions of Use
+      
+      Before using this website, please read this agreement relating to your use
+      of this site carefully.
+      
+      1. ACCEPTANCE OF TERMS
+      
+          By using this website, you agree to be bound by these terms and conditions.
+          If you do not agree to these terms and conditions, please do not use the
+          site.
+      
+      2. NO UNLAWFUL OR PROHIBITED USE
+      
+          By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
+          you will not use this website, or any of the content obtained from this
+          website, for any purpose that is unlawful or prohibited by these Terms. If
+          you violate any of these Terms, your permission to use the OpenFoundry.org
+          website automatically terminates.
+      
+      3. VIOLATIONS OF TERMS
+      
+          Please report any violations of the Terms to the OpenFoundry.org Support
+          Manager at contact@openfoundry.org.
+
+    Description: Term Of Use
+    Name: TermOfUse
+    Queue: NewUser
+  - Content: >+
+      ===Create-Ticket: BEGIN
+      
+      ### BEGIN ### { require RT::Workflow; %X = () }
+      ###############################
+      
+      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
+      "=$@"} #
+      
+      ###############################################################################
+      
+      Subject: BEGIN #{$Tickets\{TOP\}->Id}
+      
+      Queue: ___Approvals
+      
+      Type: code
+      
+      Status: resolved
+      
+      Content:
+      
+      "BEGIN #{$Tickets\{TOP\}->Id}"
+      
+      ENDOFCONTENT
+      
+      ===Create-Ticket: T1
+      
+      ### CONDITION ### { require RT::Workflow }
+      ####################################
+      
+      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
+      
+      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
+      ###############################
+      
+      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
+      ).$/}do{0,
+      
+      ### NEXT STATE
+      ################################################################
+      
+      ###############################################################################
+      
+      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
+      
+      ###############################################################################
+      
+      Subject: autoresolve
+      
+      Type: code
+      
+      IsEntryPoint: 1
+      
+      Queue: ___Approvals
+      
+      ConditionSatisfy: any
+      
+      ActionProcedure: AutoResolve
+      
+      OwnerClass: owner
+      
+      Content-Type: text/plain
+      
+      Content:
+      
+      require RT::Workflow;
+      
+      RT::Workflow::action($TOP, 'AutoResolve', '');
+      
+      ENDOFCONTENT
+
+    Description: DefaultApproval
+    Name: DefaultApproval
+    Queue: LostPassword
+  - Content: >+
+      Subject: Reset Password
+      
+      {loc('Please visit this URL to reset your password on [_1]:',
+      $RT::Organization)}
+          { $RT::WebBaseURL }/Foundry/Home/Guest/Recover.html?token={
+      $Ticket->Requestors->UserMembersObj->First->RecoverPasswordHash }
+      
+      {loc('Thank you.')}
+
+    Description: Recover Password
+    Name: RecoverPassword
+    Queue: LostPassword
+  - Content: |+
+      OpenFoundry.org Terms and Conditions of Use
+      
+      Before using this website, please read this agreement relating to your use
+      of this site carefully.
+      
+      1. ACCEPTANCE OF TERMS
+      
+          By using this website, you agree to be bound by these terms and conditions.
+          If you do not agree to these terms and conditions, please do not use the
+          site.
+      
+      2. NO UNLAWFUL OR PROHIBITED USE
+      
+          By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
+          you will not use this website, or any of the content obtained from this
+          website, for any purpose that is unlawful or prohibited by these Terms. If
+          you violate any of these Terms, your permission to use the OpenFoundry.org
+          website automatically terminates.
+      
+      3. VIOLATIONS OF TERMS
+      
+          Please report any violations of the Terms to the OpenFoundry.org Support
+          Manager at contact@openfoundry.org.
+
+    Description: Term of new project
+    Name: TermOfProject
+    Queue: NewProject
+  - Content: >
+      Subject: Project Created
+      
+      {loc('Thank you for choosing [_1].', $RT::Organization)}
+      
+      {loc('You have now successfully registered a project on [_1].',
+      $RT::Organization)}
+      
+                              {loc('Thank you.')}
+                              {$RT::Organization}
+    Description: Notify user the completion of project
+    Name: CreateProject
+    Queue: NewProject
+  - Content: >+
+      RT-Attach-Message: yes
+      
+      
+      {
+          my $date = $Transaction->CreatedObj;
+          $date->OriginalUser( $Transaction->OriginalUser );
+          $date->AsString;
+      }: {loc('Request [_1] was acted upon.', $Ticket->id)}
+      
+      {join("\n",
+      
+      loc('       Queue: [_1]', $Ticket->QueueObj->Name),
+      
+      loc('     Subject: [_1]', $Ticket->Subject || loc("(No subject given)")),
+      
+      loc('       Owner: [_1]', $Ticket->OwnerObj->Name),
+      
+      loc('  Requestors: [_1]', $Ticket->RequestorNames),
+      
+      loc('      Status: [_1]', loc($Ticket->Status)),
+      
+      loc(' Ticket <URL: [_1] >',
+      $RT::WebURL.'Foundry/Project/Tracker/Display.html?id='.$Ticket->id.'&Queue='.$Ticket->QueueObj->Id),
+      
+      loc("(Contact project admins if you don't want to receive mails in this
+      project.)"),
+      
+      )
+      
+      }
+      
+      {
+          my @Batch = grep $_->BriefDescription, @{$Ticket->TransactionBatch} or
+      die;
+          foreach my $Transaction (grep {!$_->ContentObj} @Batch) {
+              $OUT .= "* " . $Transaction->Description . "\n";
+          }
+          foreach my $Transaction (grep {$_->ContentObj} @Batch) {
+              $OUT .= "* " . $Transaction->Description . "\n\n";
+              $OUT .= $Transaction->ContentObj->Content . "\n\n";
+          }
+      }
+
+    Description: Batch Reply
+    Name: BatchReply
+    Queue: 0
+  - Content: |
+      {
+          my ($Type, $Role, $QueueId, $Queue) = split(/\s+/, $Ticket->Subject, 4);
+      
+          (($Type eq 'Invite') ? (
+      	"Subject: Invitation to $RT::Organization\n\n" . loc(
+      	    "An administrator of '[_1]' has invited you to its staff list.",
+      	    $Queue
+      	) . "\n" . loc(
+      	    "Your role in the project will be '[_1]'.", loc(
+      		($Role =~ /^Admin/) ? 'Admin' : 'Member'
+      	    )
+      	) . "\n" . loc(
+      	    "This invitation will expire in 14 days."
+      	) . "\n\n" . loc(
+      	    "Please visit the following URL to register your account on [_1]:",
+      	    $RT::Organization
+      	) . "\n" . "    $RT::WebBaseURL/Foundry/Home/Guest/Register.html?Email=" . 
+      	$Ticket->OwnerObj->EmailAddress
+          ) : (
+      	"Subject: Project Role Changed\n\n" . loc((
+      	    ($Type eq 'Add')
+      		? "An administrator of '[_1]' has added you to its staff list." :
+      	    ($Type eq 'Edit')
+      		? "An administrator of '[_1]' has changed your role in the staff list." :
+      	    ($Type eq 'Delete')
+      		? "An administrator of '[_1]' has removed you from its staff list." :
+      	    die "!"
+      	), $Queue) . "\n" . (
+      	    $Role ? loc("Your role in the project is now '[_1]'.", loc(
+      			($Role =~ /^Admin/) ? 'Admin' : 'Member'
+      		    ))
+      		: loc("You no longer have staff privileges in the project.")
+      	)
+          )) . "\n\n" . loc(
+      	"If you have any questions, please contact '[_1]'.",
+      	($Type eq 'Invite') ? $Ticket->RequestorAddresses : $Ticket->RequestorNames
+          )
+      }
+      
+      			{loc("Thank you.")}
+      			{$RT::Organization}
+    Description: MemberChange
+    Name: MemberChange
+    Queue: MemberChange
+  - Content: >+
+      ===Create-Ticket: BEGIN
+      
+      ### BEGIN ### { require RT::Workflow; %X = () }
+      ###############################
+      
+      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
+      "=$@"} #
+      
+      ###############################################################################
+      
+      Subject: BEGIN #{$Tickets\{TOP\}->Id}
+      
+      Queue: ___Approvals
+      
+      Type: code
+      
+      Status: resolved
+      
+      Content:
+      
+      "BEGIN #{$Tickets\{TOP\}->Id}"
+      
+      ENDOFCONTENT
+      
+      ===Create-Ticket: T1
+      
+      ### CONDITION ### { require RT::Workflow }
+      ####################################
+      
+      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
+      
+      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
+      ###############################
+      
+      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
+      ).$/}do{0,
+      
+      ### NEXT STATE
+      ################################################################
+      
+      ###############################################################################
+      
+      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
+      
+      ###############################################################################
+      
+      Subject: AutoResolve
+      
+      Type: code
+      
+      IsEntryPoint: 1
+      
+      Queue: ___Approvals
+      
+      ConditionSatisfy: any
+      
+      ActionProcedure: AutoResolve
+      
+      OwnerClass: owner
+      
+      Content-Type: text/plain
+      
+      Content:
+      
+      require RT::Workflow;
+      
+      RT::Workflow::action($TOP, 'AutoResolve', '');
+      
+      ENDOFCONTENT
+
+    Description: DefaultApproval
+    Name: DefaultApproval
+    Queue: MemberChange
+Users:
+  - Name: guest
+    Privileged: 1
+Scrips:
+  - Description: Registration
+    Queue: NewUser
+    ScripAction: Autoreply To Requestors
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: Registration
+  - CustomCommitCode: "$self->TicketObj->SetStatus('resolved');"
+    CustomPrepareCode: 1;
+    Description: Resolve on correspond
+    Queue: NewUser
+    ScripAction: User Defined
+    ScripCondition: On Correspond
+    Stage: TransactionCreate
+    Template: DefaultApproval
+  - Description: Process registration
+    Queue: NewUser
+    ScripAction: Autoreply To Requestors
+    ScripCondition: On Resolve
+    Stage: TransactionCreate
+    Template: Complete
+  - CustomCommitCode: |
+      my $Ticket = $self->TicketObj;
+      my ($Name, $Password, $RealName, $Email)
+          = map { eval{$Ticket->CustomFieldValue($_)} }
+      	qw(Name Password RealName Email);
+      
+      my $OrigObj = RT::User->new($RT::SystemUser);
+      $OrigObj->Load($Email);
+      $OrigObj->SetEmailAddress('');
+      my $UserObj = RT::User->new($RT::SystemUser);
+      my ($val, $msg) = $UserObj->Create( Name => $Name );
+      
+      if (!$val) {
+          # die $msg;
+          $UserObj->Load($Name);
+          die $msg unless $UserObj->Id;
+      }
+      
+      $UserObj->SetPassword($Password);
+      $UserObj->SetRealName($RealName || $Name);
+      $UserObj->SetEmailAddress($Email);
+      $UserObj->SetPrivileged(1);
+    CustomPrepareCode: 1;
+    Description: CreateUser
+    Queue: NewUser
+    ScripAction: User Defined
+    ScripCondition: On Resolve
+    Stage: TransactionCreate
+    Template: Blank
+  - Description: Notification
+    Queue: NewProject
+    ScripAction: Autoreply To Requestors
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: Notification
+  - Description: Default Approval
+    Queue: NewProject
+    ScripAction: Create Tickets
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: DefaultApproval
+  - CustomCommitCode: |
+      my $Ticket = $self->TicketObj;
+      my $Requestor = $Ticket->FirstRequestor or die;
+      
+      my ($Name, $Description)
+          = map $Ticket->CustomFieldValues($_)->First->Content,
+      	('ProjectName', 'PublicDescription');
+      
+      my $QueueObj = RT::Queue->new($RT::SystemUser);
+      
+      my ($val, $msg) = $QueueObj->Create(
+          Name => $Name,
+          Description => $Description,
+      );
+      $RT::Logger->info($msg);
+      
+      if (!$val) {
+          # die $msg;
+          $QueueObj->Load($Name);
+          die $msg unless $QueueObj->Id;
+      }
+      
+      $QueueObj->SetOrigin($Ticket->Id);
+      
+      my $AdminCc = $QueueObj->AdminCc;
+      $RT::Logger->debug($AdminCc->AddMember($Requestor->PrincipalId));
+      
+      my @Rights = qw(
+          AdminCustomFields AdminQueue
+          CommentOnTicket CreateTicket
+          OwnTicket ReplyToTicket SeeQueue ShowTicket
+          ShowTicketComments Watch WatchAsAdminCc
+      );
+      
+      foreach my $right (@Rights) {
+          my $ace = RT::ACE->new( $RT::SystemUser );
+          $RT::Logger->debug($ace->Create(
+              RightName       => $right,
+              Object          => $QueueObj,
+              PrincipalType   => 'Group',
+              PrincipalId     => $AdminCc->Id,
+          ));
+      }
+      
+      1;
+    CustomPrepareCode: 1;
+    Description: CreateProject
+    Queue: NewProject
+    ScripAction: User Defined
+    ScripCondition: On Resolve
+    Stage: TransactionCreate
+    Template: Blank
+  - Description: Default Approval
+    Queue: LostPassword
+    ScripAction: Create Tickets
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: DefaultApproval
+  - Description: SendNotification
+    Queue: LostPassword
+    ScripAction: Autoreply To Requestors
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: RecoverPassword
+  - Description: Complete
+    Queue: NewProject
+    ScripAction: Autoreply To Requestors
+    ScripCondition: On Resolve
+    Stage: TransactionCreate
+    Template: CreateProject
+  - CustomIsApplicableCode: |
+      $self->TicketObj->Type eq 'ticket'
+          and not grep { $_->Type eq 'Comment' } @{$self->TicketObj->TransactionBatch};
+    Description: BatchNotify
+    Queue: 0
+    ScripAction: Notify Requestors, Ccs and AdminCcs
+    ScripCondition: User Defined
+    Stage: TransactionBatch
+    Template: BatchReply
+  - CustomIsApplicableCode: |
+      $self->TicketObj->Type eq 'ticket'
+          and grep { $_->Type eq 'Comment' } @{$self->TicketObj->TransactionBatch};
+    Description: CommentNotify
+    Queue: 0
+    ScripAction: Notify Owner, Ccs and AdminCcs as Comment
+    ScripCondition: User Defined
+    Stage: TransactionBatch
+    Template: BatchReply
+  - Description: MemberChange
+    Queue: MemberChange
+    ScripAction: Notify Owner
+    ScripCondition: On Resolve
+    Stage: TransactionCreate
+    Template: MemberChange
+  - Description: Default Approval
+    Queue: MemberChange
+    ScripAction: Create Tickets
+    ScripCondition: On Create
+    Stage: TransactionCreate
+    Template: DefaultApproval

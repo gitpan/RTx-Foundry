@@ -38,5 +38,94 @@ sub CustomFields {
     return ($cfs);
 }
 
+sub LoadByUnixName {
+    my ($self, $UnixName) = @_;
+    my $Queues = RT::Queues->new($self->CurrentUser);
+    $Queues->RowsPerPage(1);
+    $Queues->Columns('id', 'DefaultDueIn');
+    my $tcfv = $Queues->Join(
+	TYPE   => 'left',
+	ALIAS1 => 'main',
+	FIELD1 => 'DefaultDueIn',
+	TABLE2 => 'TicketCustomFieldValues',
+	FIELD2 => 'Ticket'
+    );
+    my $cf = $Queues->Join(
+	TYPE   => 'left',
+	ALIAS1 => $tcfv,
+	FIELD1 => 'CustomField',
+	TABLE2 => 'CustomFields',
+	FIELD2 => 'id'
+    );
+    $Queues->Limit(
+	ALIAS => $tcfv,
+	FIELD => 'Content',
+	VALUE => $UnixName,
+    );
+    $Queues->Limit(
+	ALIAS => $cf,
+	FIELD => 'Name',
+	VALUE => 'UnixName',
+    );
+    $Queues->LimitToEnabled;
+    $Queues->OrderBy( FIELD => 'id' );
+
+    my $Queue = $Queues->First;
+    return $self->LoadById($Queue ? $Queue->id : 0);
+}
+
+use constant FunctionsMap => (
+    [ Basics        => 'Basics'           # loc
+  ],[ Members       => 'Members'          # loc
+  ],[ News          => 'News'             # loc
+  ],[ Upload        => 'Release Plans'    # loc
+  ],[ Forum         => 'Forums'           # loc
+  ],[ CustomField   => 'Tracker Fields'   # loc
+  ],[ Jobs          => 'Help Wanted'      # loc
+  ],
+);
+
+sub FunctionsACL {
+    my ($self, $role) = @_;
+    return (map $_->[0], +FunctionsMap) if $role eq 'admin';
+    return split(/\s+/, $self->Attribute("ACL-$role"));
+}
+
+sub FunctionItems {
+    my ($self, $function) = @_;
+    my $Items = RT::Tickets->new($self->CurrentUser);
+    $Items->LimitQueue( VALUE => "Project$function" );
+    $Items->Limit(
+        FIELD => 'IssueStatement',
+        VALUE => $self->Id
+    ) if $self->Id;
+    $Items->OrderBy( FIELD => 'Id', ORDER => 'DESC' );
+
+    # XXX - for jobs, limit its lifetime visibility - XXX
+
+    return $Items;
+}
+
+sub CreateFunctionItem {
+    my ($self, $function, $args) = @_;
+
+    my ($Item, @rv) = HTML::Mason::Commands::CreateTicket(
+        %$args, Queue => "Project$function",
+    );
+    $Item->Id or die @rv;
+    $Item->__Set( Field => 'IssueStatement', Value => $self->Id );
+
+    return $Item;
+}
+
+sub LoadFunctionItem {
+    my ($self, $function, $id) = @_;
+
+    my $Item = RT::Ticket->new($self->CurrentUser);
+    $Item->Load($id) or return;
+    $Item->QueueObj->Name == "Project$function" or return;
+    $Item->__Value('IssueStatement') == $self->Id or return;
+    return $Item;
+}
 
 1;

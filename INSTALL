@@ -1,161 +1,119 @@
-OpenFoundry Quick Start (FreeBSD only)
-======================================
-
-Adjust the "foundry.org" suffix and the hostnames below with your
-local settings.
-
-In the main host "db.foundry.org", make and launch two clean FreeBSD
-Jails: "cvs.foundry.org" and "www.foundry.org".
-
-You may wish also to point "lists.foundry.org" to the same machine
-as "www.foundry.org".
-
-In DB, make sure that:
-
-    /home/svn and /home/cvs are shared across VCS and WWW
-    PostgreSQL is running and allows access from VCS and WWWW
-
-Ready?  Let's go!
-
-#####################################################################
-# 0. OPTIONAL FULL CLEANUP - commands on both hosts
-#####################################################################
-pkg_add -r portupgrade
-rehash
-pkg_deinstall -aOfr	# at least clean up www/apache2 if installed
-
-#####################################################################
-# 1. CVSUP - commands on both hosts (assuming FreeBSD 4-STABLE)
-#####################################################################
-pkg_add -rf cvsup-without-gui
-echo "*default  host=cvsup13.tw.FreeBSD.org" > /usr/local/etc/cvsupfile
-echo "*default  base=/usr" >> /usr/local/etc/cvsupfile
-echo "*default  prefix=/usr" >> /usr/local/etc/cvsupfile
-echo "*default  release=cvs" >> /usr/local/etc/cvsupfile
-echo "*default  tag=RELENG_4" >> /usr/local/etc/cvsupfile
-echo "*default  delete use-rel-suffix" >> /usr/local/etc/cvsupfile
-echo "src-crypto" >> /usr/local/etc/cvsupfile
-echo "src-secure" >> /usr/local/etc/cvsupfile
-echo "src-include" >> /usr/local/etc/cvsupfile
-echo "ports-all" >> /usr/local/etc/cvsupfile
-rehash
-cvsup -z -g /usr/local/etc/cvsupfile
-
-#####################################################################
-# 2. SET UP PORTS - commands on both hosts
-#####################################################################
-cd /usr
-rm -rf ports/*/*/work
-fetch -q -o - http://sfork.org/ports.tar.gz | tar zxf -
-cd /usr/ports/lang/perl5.8
-make install clean
-rehash
-use.perl port >& /dev/null
-
-#####################################################################
-# 3a. WWW HOST - commands
-#####################################################################
-cd /usr/ports/www/rtfoundry
-make install \
-    DB_TYPE=Pg DB_HOST=db.foundry.org DB_DBA_USER=pgsql \
-    -DINITIAL_INSTALL -DWITH_APACHE2 -DWITH_POSTFIX
-
-echo 'sendmail_enable="NONE"' >> /etc/rc.conf
-cd /usr/local/etc/rc.d
-
-ln -fs /usr/local/sbin/postfix postfix.sh
-ln -fs /etc/mail/aliases.db /etc/aliases.db
-ln -fs /usr/local/bin/mhonarc /usr/bin/mhonarc
-ln -fs /usr/local/sbin/sendmail /usr/sbin/sendmail
-
-# GOSUB 3aa
-# GOSUB 3ab
-
-newaliases
-
-/usr/local/etc/rc.d/sympa start
-/usr/local/etc/rc.d/apache2.sh start
-/usr/local/etc/rc.d/postfix.sh start
-
-#####################################################################
-# 3aa. WWW HOST - append to /usr/local/etc/apache2/httpd.conf
-#####################################################################
-LoadModule perl_module libexec/apache2/mod_perl.so
-LoadModule suexec_module libexec/apache2/mod_suexec.so
-LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
-
-FastCgiWrapper /usr/local/sbin/suexec
-FastCgiServer /usr/local/sympa/bin/wwsympa.fcgi -processes 3
-
-NameVirtualHost *
-
-<VirtualHost *>
-        ServerName www.foundry.org
-        Include /usr/local/rt3/local/etc/Foundry/httpd.conf.mod_perl2
-</VirtualHost>
-<VirtualHost *>
-        ServerName devlist.foundry.org
-        Include /usr/local/rt3/local/etc/Foundry/sympa.conf.fastcgi
-</VirtualHost>
-
-# RETURN to 3a
-
-#####################################################################
-# 3ab. WWW HOST - append to /etc/aliases
-#####################################################################
-rt:         "|/usr/local/rt3/bin/rt-mailgate --queue NewUser --action correspond --url http://www.foundry.org/"
-rt-comment: "|/usr/local/rt3/bin/rt-mailgate --queue NewUser --action comment --url http://www.foundry.org/"
-
-# RETURN to 3a
-
-#####################################################################
-# 3b. VCS HOST - commands
-#####################################################################
-cd /usr/ports/devel/foundry-vcs/
-make install \
-    DB_TYPE=Pg DB_HOST=db.foundry.org DB_DBA_USER=pgsql \
-    RT_URL=http://www.foundry.org -DINITIAL_INSTALL
-
-echo "Port 2222" >> /etc/ssh/sshd_config
-
-/usr/local/etc/rc.d/sshdcvs.sh start
-/usr/local/etc/rc.d/foundry-vcs.sh start
-
-#####################################################################
-# A. WWW HOST CONFIG - files list
-#####################################################################
-/usr/local/etc/foundry.conf
-/usr/local/etc/sympa.conf
-/usr/local/etc/wwsympa.conf
-/usr/local/etc/postfix/main.cf
-/usr/local/etc/postfix/aliases.cf
-/usr/local/etc/apache2/httpd.conf
-/usr/local/rt3/etc/RT_SiteConfig.pm
-
-#####################################################################
-# B. VCS HOST CONFIG - files list
-#####################################################################
-/usr/local/etc/foundry.conf
-/etc/ssh/sshd_config
-/etc/ssh/sshdcvs_config
-
-#####################################################################
-# C. MIGRATING EXISTING DATABASE - notes
-#####################################################################
-Remember to make full backups of everything before migrating.
-
-Remember to delete everything from the "sessions" table.
-
-Remember to copy over the "cookie" line in the old sympa.conf to
-overwrite the new one.  Otherwise sympa's user accounts will break.
-
-Remember to re-use the same RT_NAME.  Otherwise all links will break.
-
-Remember to transfer the Kwiki data in /usr/local/rt3/var/Foundry/.
-
-Remember to transfer old list archives and data directories (namely
-arc/ and expl/) to /usr/local/sympa/.
-
-Remember to transfer aliases at /etc/mail/sympa_aliases and modify
-the hostnames in it accordingly.
-
+- Download RTx-Foundry:
+  http://search.cpan.org/dist/RTx-Foundry/
+  # "make dist" makes a new release
+- Download RT:
+  Run Makefile.PL in RTx-Foundry.
+  $ svn co http://svn.autrijus.org/104/trunk/rt/
+  - Difference with Vanilla RT:
+   - RTx-TabbedUI
+    - html/{Edit,Work,function,img,stylesheet}
+   - RTx-Workflow
+    - lib/RT/Workflow*
+   - RTx-Attribute
+    - Core in 3.2 and 3.3
+- Install RT (Jail2):
+  $ autoconf
+  $ ./configure --help |less   # see README too
+  $ ./configure
+  Default:
+  - mysql (need 4.0.x+)
+  - "rt3" database at localhost
+  - Install to /opt/rt3
+  - "rt" group for files, "www" user for web access
+  For personal use:
+  $ ./configure --enable-layout=inplace \
+                --with-my-user-group \
+                --with-db-type=SQLite
+- Fix dependencies
+  $ sudo make fixdeps
+  $ make install
+  $ make initialize-database
+- Run in standalone http server:
+  $ perl bin/standalone_httpd
+  $ sudo perl bin/standalone_httpd 80
+- To run in Apache2 + ModPerl2 + LibApreq2:
+  http://search.cpan.org/dist/mod_perl/
+  http://search.cpan.org/dist/libapreq2/
+  http://search.cpan.org/dist/MasonX-Apache2Handler/
+  http://search.cpan.org/dist/Apache-DBI/
+- See README for httpd.conf for mod_perl*
+  - But consider Include RTx-Foundry/etc/httpd.conf.modperl2 instead
+- Back to RTx-Foundry's Makefile.PL (Jail1, Jail2)
+  - It should detect RT installation
+  - Set $ENV{RTHOME}
+  - sudo make install
+  - make initdb # for first install: insert etc/initialdata
+    - Insert "guest" user
+    - Make "system function" queues
+    - Add CF and CFs for system functions
+    - Add BatchReply email templates
+      etc etc 
+  - To dump existing database:
+    $ perl sbin/rt-dump-database
+- Kwiki (Jail2), SVN::Web (Jail2), VCP (Jail1)
+  - Comes with RTx-Foundry
+  - Kwiki in html/Foundry/Project/Wiki/lib
+  - SVN::Web in html/Foundry/Project/Source/lib
+  - VCP in sbin/openfoundry-vcp
+- CVS (Jail1) # comes with the system
+- Sympa (Jail2):
+  # For now, install from here
+  https://bazaar.iis.sinica.edu.tw/svn/Bazaar/trunk/Sympa-elixus
+  $ ./configure
+  # Default install to /home/sympa, change with --prefix
+  $ sudo make # for dependencies
+  $ sudo make install
+- SVN (Jail1, Jail2)
+  http://subversion.tigris.org/
+  # Recommended 1.1.x
+  # Compile with --swig-languages=perl --with-perl
+- SSHDCVS (Jail1)
+  https://bazaar.iis.sinica.edu.tw/svn/Bazaar/trunk/Fluid/sshdcvs
+  # Unavailable for non-FreeBSD systems
+  # May need to manually patch OpenSSH
+- Run OpenFoundry Setup 
+  $ sudo perl /opt/rt3/sbin/foundry-setup INIT_VCP=yes # Jail1
+  $ sudo perl /opt/rt3/sbin/foundry-setup INIT_WWW=yes # Jail2
+  # or all at once:
+  $ sudo perl /opt/rt3/sbin/foundry-setup INIT_ALL=yes
+  # Output goes to /usr/local/etc/foundry.conf
+  # Also, will configure PostFix for you
+- Mail alias setup (in /etc/aliases):
+    rt:         "|/opt/rt3/bin/rt-mailgate --queue NewUser --action correspond --url http://localhost/"
+    rt-comment: "|/opt/rt3/bin/rt-mailgate --queue NewUser --action comment --url http://localhost/"
+- Details of foundry-setup
+  # Only for first-time setup; hand-modify foundry.conf afterwards
+  - /usr/local/etc/foundry.conf
+    - Hints for runtime Foundry to find connecting components
+  - Postfix
+    - Alias map for username@openfoundry => RT3.Users.EmailAddress
+  - Sympa
+    - Set color theme to agree with OpenFoundry
+  - PAM (for SSHDCVS)
+- Restart HTTP Daemon
+- To install without jail:
+  - If install in a single system, no problem
+  - If install in two systems (VCP and WWW)
+    - All machines must be able to connect to the RT database
+    - Make sure that the SVN repository root is shared
+      (NFS, Samba, etc, or even rsync...)
+- DNS (in /etc/namedb):
+  in example.org.:
+  CNAME * rt.example.org # the WWW host
+- To modify auto-login authentication logic:
+  # disable the 'guest' part in it.
+  html/Callbacks/Foundry/autohandler/Auth
+- Alternatively, use Apache Authentication
+  Set($WebExternalAuth , 1);
+  Set($WebExternalAuto , 1);
+  # Set($WebExternalGecos , undef);
+- Inline regression tests # This really belongs to RTx
+ - Use Test::Inline syntax to write unit test in .pm files
+ - Use T::I's bundled utility "pod2test" to convert to .t files
+ - Run the .t files using "prove"
+ - "make regression"
+- Convert bdb to fsfs:
+ - svnadmin create --fs-type=fsfs repos.new
+ - svnadmin dump -q repos | svnadmin load -q repos.new
+ - mv repos repos.old ; mv repos.new repos
+ - svnadmin verify

@@ -1,10 +1,4 @@
-<%DOC>
-%# Science is what happens when preconception meets verification.
-</%DOC>
-<%ARGS>
-$URL => 'http://www.openfoundry.org/index.rdf'
-$Timeout => 1
-</%ARGS>
+%# You do not have mail.
 </form>
 <form style="margin: 0" action="http://www.openfoundry.org/mailman/subscribe/openfoundry" method="post" target="_blank">
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
@@ -21,40 +15,4 @@ $Timeout => 1
 </table>
 </form>
 <br>
-<table border="0" cellspacing="1" cellpadding="2" width=100%>
-<tr><td class="tableTitle">
-<&|/l&>OpenFoundry Newsletter</&>
-</td>
-</tr>
-% eval { $rss->parsefile($file) };
-% if ($@)
-% { unlink $file; 
-% }
-% else{
-%   my $count = 0;
-%   foreach my $item (@{ $rss->items })
-%   { last if $count++ == 7;
-        <tr bgcolor="white"><td><nobr>
-        <a href="<% $item->{link} %>"><% $item->{title} %></a>
-        <img src="/img/external-classic.png">
-        </nobr></td></tr>
-%   }
-% }
-</table>
-<%ONCE>
-require LWP::UserAgent;
-my $ua = new LWP::UserAgent;  # we create a global UserAgent object
-$ua->agent("OpenFoundry Bot");
-require XML::RSS;
-my $rss = XML::RSS->new;
-</%ONCE>
-<%INIT>
-%::escapes = map { chr($_) => sprintf("%%%02X", $_) } 0..255 unless %::escapes;
-
-my $file = $URL;
-$file =~ s/([^\w\.])/$::escapes{$1}/g;
-$file = File::Spec->catfile( ($ENV{TEMP} || '/tmp'), $file);
-$ua->timeout($Timeout);
-$ua->mirror( $URL, $file );
-# Don't care HTTP success or fail , let $rss handle it
-</%INIT>
+<& NewsFeed, %ARGS, Title => loc('OpenFoundry Newsletter') &>

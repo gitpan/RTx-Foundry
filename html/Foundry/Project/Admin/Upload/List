@@ -53,7 +53,7 @@
 if (UNIVERSAL::isa($List, 'DBIx::SearchBuilder')) {
     my $Count = $List->Count;
     $List->FirstRow($Begin + 1);
-    $List->RowsPerPage($Size);
+    # $List->RowsPerPage($Size);
     $List->RedoSearch;
     my $CurList = $List->ItemsArrayRef || [];
     $List = [ ((undef) x $Begin ), @$CurList, ((undef) x ($Count - @$CurList - $Begin )) ];
