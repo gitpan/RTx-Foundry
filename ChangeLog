@@ -1,3 +1,9 @@
+[Changes for 0.00_17 - October 24, 2004]
+
+Drastically simplified Apache setup; mod_proxy is no longer
+needed, and all three services (rt, sympa, svn) can now be
+hosted on a single virtual host.
+
 [Changes for 0.00_14 - October 16, 2004]
 
 Switched to SVK for synchronizing internal CVS and remote

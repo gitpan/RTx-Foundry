@@ -58,7 +58,7 @@ use.perl port >& /dev/null
 cd /usr/ports/www/rtfoundry
 make install \
     DB_TYPE=Pg DB_HOST=db.foundry.org DB_DBA_USER=pgsql \
-    -DINITIAL_INSTALL -DWITH_APACHE2 -DWITH_POSTFIX
+    -DINITIAL_INSTALL -DWITH_APACHE2 -DWITH_POSTFI
 
 echo 'sendmail_enable="NONE"' >> /etc/rc.conf
 cd /usr/local/etc/rc.d

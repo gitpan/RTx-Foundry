@@ -1,4 +1,4 @@
-DocumentRoot /usr/local/rt3/share/html
+DocumentRoot "/usr/local/rt3/share/html"
 
 <Directory "/usr/local/rt3/share/html">
     Allow from all
@@ -44,3 +44,5 @@ Alias /Foundry/Download/ /usr/local/rt3/var/Foundry/download/
 #    SetHandler perl-script
 #    PerlHandler RT::Mason
 #</LocationMatch>
+
+# vim: filetype=apache foldmethod=marker shiftwidth=4 expandtab

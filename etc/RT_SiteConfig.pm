@@ -1,6 +1,7 @@
 package RT;
 
-eval { require "/usr/local/rt3/local/etc/Foundry/foundry.conf" };
+eval { require "/usr/local/rt3/local/etc/Foundry/foundry.conf"; 1 }
+    or eval { require "/usr/local/etc/foundry.conf"; 1 };
 
 Set($rtname, $ENV{RT_NAME} || 'OSSF');
 Set($Timezone, $ENV{TZ} || 'Asia/Taipei');

@@ -59,13 +59,11 @@ Base URL for the web server.  Usually "http://WEB_HOST" will do.
 
 SVNROOT
 
-Base directory for Subversion repositories.  Note that the actual
-directory used for OpenFoundry will be $SVNROOT/foundry-repos/.
+Base directory for Subversion repositories.
 
 CVSROOT
 
-Base directory for CVS repositories.  Note that the actual
-directory used for OpenFoundry will be $CVSROOT/foundry-repos/.
+Base directory for CVS repositories.
 
 CVSUSER
 
@@ -141,6 +139,15 @@ elsif ( $db_type =~ /^mysql$/i ) {
     $db_module = 'mysql';
     $db_pam_module = 'pam_mysql';
 }
+elsif ($db_type =~ /^sqlite$/i) {
+    $db_type = 'SQLite';
+}
+elsif ($db_type =~ /^oracle$/i) {
+    $db_type = 'Oracle';
+}
+elsif ($db_type =~ /^sybase$/i) {
+    $db_type = 'Sybase';
+}
 else {
     die "DB_TYPE '$db_type' unsupported";
 }
@@ -215,6 +222,8 @@ sub foundry_conf {
 }
 
 sub pam_conf {
+    return if $db_type ne 'mysql' and $db_type ne 'Pg';
+
     my %params = (
 	host		=> $db_host,
 	user		=> $db_dba_user,

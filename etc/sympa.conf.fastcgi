@@ -1,11 +1,18 @@
 DocumentRoot "/usr/local/sympa"
+
 AddDefaultCharset UTF-8
 DirectoryIndex wws
 Options +Indexes
 
+LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
 <Location /wws>
     SetHandler fastcgi-script
 </Location>
 
-SuexecUserGroup sympa sympa
-ScriptAlias /wws /usr/local/sympa/bin/wwsympa.fcgi
+<Directory "/usr/local/sympa">
+    Allow from all
+</Directory>
+
+ScriptAlias /wws /usr/local/sympa/bin/wwsympa-wrapper
+
+# vim: filetype=apache foldmethod=marker shiftwidth=4 expandtab

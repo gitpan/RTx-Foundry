@@ -17,7 +17,7 @@ out from this URL, using SVK or Subversion:
 
 For SVK support, grab a copy of VCP-0.9-autrijus here:
 
-    http://search.cpan.org/dist/VCP-autrijus-snapshot/
+    http://search.cpan.org/dist/VCP-autrijus-snapshot-0.9/
 
 More detailed installation guides will be available in
 English soon, including how to set up your RT_SiteConfig.pm
@@ -57,6 +57,7 @@ features( 'SVK support' => [
     'VCP'		    => 0.9,
     'SVN::Simple::Edit'	    => 0,
     'SVN::Mirror'	    => 0.46,
+    'SVN::Web'	            => 0,
     'SVK'		    => 0.21,
     'Proc::PID_File'	    => 0,
     'VCP::Dest::svk'	    => 0,
