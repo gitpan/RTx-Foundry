@@ -1,0 +1,38 @@
+<%INIT>
+;;; #_#
+use Algorithm::Accounting;
+use List::Util qw(sum);
+
+my $TicketAcc = Algorithm::Accounting->new
+    (fields => [qw(Queue tickets status)],
+     field_groups => [
+	 [qw(Queue tickets)],
+	 [qw(Queue status tickets)],
+	]
+    );
+
+if($QueueId) {
+  my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+  $Tickets->Limit( FIELD => 'Queue', VALUE => $QueueId );
+  while (my $Ticket = $Tickets->Next) {
+    $TicketAcc->append_data([[$QueueId,'tickets', $Ticket->Status ]]);
+  }
+} else {
+  my $Projects = $m->comp('ProjectQueues');
+  while(my $Project = $Projects->Next) {
+    my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+    $Tickets->Limit( FIELD => 'Queue', VALUE => $Project->Id );
+    while (my $Ticket = $Tickets->Next) {
+      $TicketAcc->append_data([[$Project->Id,'tickets', $Ticket->Status ]]);
+    }
+  }
+}
+
+return $TicketAcc;
+</%INIT>
+<%ARGS>
+$QueueId => undef
+</%ARGS>
+<%FLAGS>
+inherit => undef
+</%FLAGS>

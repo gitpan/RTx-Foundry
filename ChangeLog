@@ -1,3 +1,8 @@
+[Changes for 0.00_18 - November 15, 2004]
+
+Added "Accountability" statistic charts from Gugod, as well
+as many UI fixes from sika.
+
 [Changes for 0.00_17 - October 24, 2004]
 
 Drastically simplified Apache setup; mod_proxy is no longer

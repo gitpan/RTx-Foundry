@@ -12,18 +12,17 @@
       <td colspan="4" class="tableTitle"><nobr><&|/l&>File</&></nobr></td>
     </tr>
     <tr><td align="left" colspan="4">
+	<nobr><&|/l&>Description</&>:
+	<input <% $disabled %> name="Description" size=60 value="<% $Description %>"></nobr><br>
 	<nobr><&|/l&>File</&>:
 % if ($Item) {
 	<input readonly name="Filename" size=10 value="<% $Item->Filename %>">
 	<input type="hidden" name="File" value="<% eval { $Transaction->Id } %>">
 % } else {
-	<input <% $disabled %> type="file" name="Attach" size=10>
+	<input <% $disabled %> type="file" name="Attach" size=20>
 % }
 	</nobr>
-	<nobr><&|/l&>Description</&>:
-	<input <% $disabled %> name="Description" size=10 value="<% $Description %>"></nobr>
 % if ($Item) {
-	<br>
 	<nobr>
 	<&|/l&>Status</&>:
 	<select name="FileStatus">
@@ -83,7 +82,7 @@ if ($Parent) {
 	    # unshift (@{$documents{$attach->Filename}}, $attach);
 	    $documents{$attach->Filename} = $attach;
 	    $description{$attach->Id} = $subject;
-	    $url{$attach->Id} = "?Queue=$Queue&id=" . $Parent->Id . "&File=" . $trans->Id;
+	    $url{$attach->Id} = "?Queue=$Queue;View=Upload;Release=" . $Parent->Id . ";File=" . $trans->Id;
 	    next unless $Transaction and $Transaction->Id == $trans->Id and !$ARGS->{'Action-Upload'};
 	    $Item ||= $attach;
 	    $Description ||= $subject;

@@ -2,6 +2,8 @@
 %#        You can lead a horse to water, but if you can get him to float
 %#	on his back, you've got something.
 <%INIT>
+$m->flush_buffer if $RT::DoFlush;
+
 my $basepath = $m->fetch_comp("/Foundry/Project/Wiki/index.html")->source_dir;
 my $pwd = "$RT::VarPath/Foundry/kwiki/$Repository";
 my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
@@ -63,6 +65,7 @@ if ($Script) {
 
 chdir $save_pwd;
 
+$m->flush_buffer if $RT::DoFlush;
 </%INIT>
 <%ARGS>
 $Repository

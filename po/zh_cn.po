@@ -679,11 +679,11 @@ msgstr "版本选项"
 
 #: html/Foundry/Search/Simple:5 html/Foundry/Search/index.html:3
 msgid "Simple Query"
-msgstr ""
+msgstr "简明搜寻"
 
 #: html/Foundry/Policy/autohandler:5 html/Foundry/Policy/index.html:3
 msgid "Site Policy"
-msgstr ""
+msgstr "使用条款"
 
 #: html/Foundry/Project/Admin/Upload/Upload:43
 #: html/Foundry/Project/Download/List:11
@@ -705,7 +705,7 @@ msgstr "开始"
 
 #: html/Foundry/Project/Admin/Upload/List:11
 msgid "Start Date"
-msgstr ""
+msgstr "起始日期"
 
 #: html/Foundry/Elements/Stats:5 html/Foundry/Project/Admin/autohandler:48
 msgid "Statistics"
@@ -880,7 +880,7 @@ msgstr ""
 
 #: html/Foundry/Project/Admin/ACL/index.html:14
 msgid "Who can see the download area"
-msgstr ""
+msgstr "下载区浏览限制"
 
 #: html/Foundry/Home/NewProject/index.html:63
 msgid "Within 72 hours, you will receive notification of further instructions."
@@ -2189,3 +2189,43 @@ msgstr "空的档案库"
 
 msgid "To work with a repository, please use one of these tools"
 msgstr "请使用下列工具之一，对这些档案库进行存取"
+
+msgid "CVS => Subversion(RO)"
+msgstr "CVS(读写)=>Subversion(只读)"
+
+msgid "Subversion (R/W)"
+msgstr "Subversion(读写)"
+
+msgid "Remote => Subversion(RO)"
+msgstr "站外(读写)=>Subversion(只读)"
+
+msgid "Remote Repository"
+msgstr "站外(读写)"
+
+msgid "Version Control System"
+msgstr "版本控制系统"
+
+msgid "Remote Repository"
+msgstr "站外版本库"
+
+msgid "Subversion Repository"
+msgstr "Subversion 版本库"
+
+msgid "You may enter multiple email addresses here, separated by commas"
+msgstr "若想要一次输入多人的电子信箱，请使用逗点加以区隔"
+
+msgid "Anybody"
+msgstr "任何人"
+
+msgid "Delete"
+msgstr "停用"
+
+msgid "Roadmap"
+msgstr "里程一览"
+
+msgid "AllEvents"
+msgstr "事件一览"
+
+msgid "Events"
+msgstr "事件"
+

@@ -42,7 +42,8 @@ my $s = "?Queue=$ARGS{Queue}";
 
 my $UserObj = $session{CurrentUser}->UserObj;
 my $IsAdmin = $QueueObj->HasAdminCc($UserObj)
-           || $UserObj->HasRight( Right => 'SuperUser', Object => $QueueObj );
+           || $UserObj->HasRight( Right => 'SuperUser', Object => $RT::System );
+
 my $ProjectRole = (
     $IsAdmin ? 'admin' : ($QueueObj->HasCc($UserObj) ? 'member' : '')
 );

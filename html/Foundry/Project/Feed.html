@@ -12,7 +12,7 @@ xmlns="http://my.netscape.com/rdf/simple/0.9/">
 % while (my $Item = $Items->Next) {
 <item>
 <title><% $Item->FunctionQueueObj->Name %> - <% $Item->Subject %></title>
-<link><% $RT::WebBaseURL %>/Foundry/Project/<% $Function %>.html?id=<%$Item->Id|n%>&amp;Queue=<%$Item->__Value('IssueStatement')|n%></link>
+<link><% $RT::WebBaseURL %>/Foundry/Project/Item.html?Function=<% $Function %>;Queue=<%$Item->__Value('IssueStatement')|n%>;id=<%$Item->Id|n%></link>
 </item>
 % }
 </rdf:RDF>
@@ -23,13 +23,13 @@ $r->content_type('text/xml');
 my $QueueObj = RT::Queue->new($RT::SystemUser);
 $QueueObj->Load($Queue) if $Queue;
 my $Items = $QueueObj->FunctionItems($Function);
-$Items->RowsPerPage(5);
+$Items->RowsPerPage($Limit);
 </%INIT>
 <%ARGS>
 $Queue => undef
+$Limit => 5
 $Function
 </%ARGS>
 <%FLAGS>
 inherit => undef
 </%FLAGS>
-

@@ -1,0 +1,25 @@
+<h3><% loc($Function) %>: <% $Item->Subject %></h3>
+% if ($Item->QueueObj->CustomFields->Count) {
+<& /Work/Tickets/Elements/ShowCustomFields, Ticket => $Item, ReadOnly => 1, Loc => 1 &>
+% }
+<tr><td>
+% require HTML::FromText;
+% my $content = HTML::FromText::text2html( $Item->FirstContent, bullets => 1, metachars => 1, urls => 1, email => 1, bold => 0, underline => 0, paras => 1, blockcode => 1);
+<% $content |n %>
+</td></tr>
+</table>
+<hr>
+<&|/l&>Created</&>: <% $Item->CreatedObj->AsString %>
+|
+<a href="index.html?Queue=<% $QueueObj->Id %>"><&|/l&>Back to Previous</&></a>
+<%INIT>
+my $Item = $QueueObj->LoadFunctionItem($Function => $id) or return;
+</%INIT>
+<%ARGS>
+$QueueObj
+$Function
+$id
+</%ARGS>
+<%ATTR>
+Tab2	=> 'Summary'
+</%ATTR>

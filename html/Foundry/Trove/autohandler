@@ -18,7 +18,7 @@
 <%INIT>
 @RT::Tabs = (
     map { $_ => "/Foundry/Trove/?Type=$_" }
-    'Overview', 'Maturity', 'Platform', 'License', 'ProgrammingLanguage', 'IntendedAudience', 'ACM Level 2'
+    'Overview', 'Maturity', 'Platform', 'License', 'ProgrammingLanguage', 'IntendedAudience',
 );
 
 my $action = $m->base_comp->attr('Action');
@@ -30,4 +30,5 @@ $Type	=> 'Overview'
 <%ATTR>
 Action	=> undef
 Method	=> undef
+AutoFlush   => undef
 </%ATTR>

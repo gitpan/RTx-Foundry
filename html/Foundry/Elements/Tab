@@ -25,6 +25,7 @@
   </tr>
 </table>
 </td></tr></table>
+% $m->flush_buffer if $RT::DoFlush;
 <%INIT>
 my @Tabs= (
 'Homepage'	    => '/Foundry/',
@@ -35,7 +36,7 @@ my @Tabs= (
 if ($session{CurrentUser}->UserObj->HasRight(Object => $RT::System, Right => 'SuperUser')) {
     push @Tabs, (
 'Site Admin'	    => "/Edit/?SiteAdmin",
-#'Foundry Statistics'    => "/Foundry/Accountability/",
+'Foundry Statistics'    => "/Foundry/Accountability/",
     )
 };
 if ($Text and !grep {$_ eq $Text} @Tabs) {

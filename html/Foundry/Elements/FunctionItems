@@ -1,0 +1,56 @@
+%# Ankh if you love Isis.
+</form>
+<form action="index.html" method="post">
+<input type="hidden" name="Queue" value="<% $QueueObj->Id %>">
+% if ($id) {
+<h3><&|/l, loc(lc($Function)) &>Edit a [_1] item</&></h3>
+%# .... XXX ....
+% } else {
+<h3><&|/l, loc(lc($Function)) &>Post a [_1] item</&></h3>
+<& /Work/Tickets/Create.html,
+    Queue => "Project$FunctionItems",
+    NoUI => 1,
+    NoCF => { Attachments => 1 } &>
+% }
+</form>
+% my $Items = $QueueObj->FunctionItems($Function);
+% if ($Items->Count) {
+<hr>
+<form action="index.html" method="POST">
+<table>
+<tr><td colspan="2">
+<h3><&|/l, loc(lc($Function)) &>Existing [_1] items</&></h3>
+</td></tr>
+%  while (my $Item = $Items->Next) {
+<tr>
+%# <td><a href="index.html?id=<% $Item->Id %>"><% $Item->Subject %></a> # -- XXX
+<td><% $Item->Subject %>
+(<% $Item->CreatedObj->AsString =~ /(^\S+)/g %>)
+</td>
+<td><& /Edit/Elements/Button, Name => "DeleteItem-".$Item->Id, Image => "funcDelete", Text => "Delete" &></td>
+</tr>
+%  }
+</table>
+</form>
+% }
+<%INIT>
+if ($id eq 'new') {
+    $QueueObj->CreateFunctionItem($Function => \%ARGS);
+    undef $id;
+}
+elsif ($id) {
+    # UpdateFunctionItem
+}
+else {
+    foreach my $key (sort keys %ARGS) {
+        $key =~ /^DeleteItem-(\d+)(?:\.x)?$/ or next;
+        my $Item = $QueueObj->LoadFunctionItem($Function => $1) or next;
+        $Item->Delete;
+    }
+}
+</%INIT>
+<%ARGS>
+$QueueObj
+$Function
+$id => undef
+</%ARGS>

@@ -1,6 +1,6 @@
 %# If this fortune didn't exist, somebody would have invented it.
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
-<tr><td class="tableTitle"><% $Title %> <em>(<a href="<% $URL %>">RSS</a>)</em></td></tr>
+<tr><td class="tableTitle"><a href="<% $URL %>"><img src="/Foundry/Icons/rss.png" border="0" align="right"></a><% $Title %></td></tr>
 % eval { $rss->parsefile($file) };
 % if ($@)
 % { unlink $file; 
@@ -8,13 +8,17 @@
 % else{
 %   my $count = 0;
 %   foreach my $item (@{ $rss->items })
-%   { last if $count++ == 7;
+%   { last if $count++ == $Limit;
         <tr bgcolor="white"><td><nobr>
         <a href="<% $item->{link} %>"><% $item->{title} %></a>
         <img src="/img/external-classic.png">
         </nobr></td></tr>
 %   }
 % }
+%# XXX Correctly link to a real "More" page.
+<!--
+<tr style="background: transparent"><td align="right"><em><a href="<% $URL %>"><&|/l&>More</&>...</a></em></td></tr>
+-->
 </table>
 <%ONCE>
 require LWP::UserAgent;
@@ -37,4 +41,5 @@ $ua->mirror( $URL, $file );
 $URL => 'http://www.openfoundry.org/index.rdf'
 $Timeout => 1
 $Title => '...'
+$Limit => 7
 </%ARGS>

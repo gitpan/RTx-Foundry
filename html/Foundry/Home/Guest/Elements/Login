@@ -39,7 +39,7 @@
     </TR>
 </TABLE>
 <%ARGS>
-$MD5Auth => 1
+$MD5Auth => 0
 </%ARGS>
 </%METHOD>
 <%ATTR>

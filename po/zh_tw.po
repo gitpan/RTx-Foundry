@@ -679,11 +679,11 @@ msgstr "版本選項"
 
 #: html/Foundry/Search/Simple:5 html/Foundry/Search/index.html:3
 msgid "Simple Query"
-msgstr ""
+msgstr "簡明搜尋"
 
 #: html/Foundry/Policy/autohandler:5 html/Foundry/Policy/index.html:3
 msgid "Site Policy"
-msgstr ""
+msgstr "使用條款"
 
 #: html/Foundry/Project/Admin/Upload/Upload:43
 #: html/Foundry/Project/Download/List:11
@@ -705,7 +705,7 @@ msgstr "開始"
 
 #: html/Foundry/Project/Admin/Upload/List:11
 msgid "Start Date"
-msgstr ""
+msgstr "起始日期"
 
 #: html/Foundry/Elements/Stats:5 html/Foundry/Project/Admin/autohandler:48
 msgid "Statistics"
@@ -880,7 +880,7 @@ msgstr ""
 
 #: html/Foundry/Project/Admin/ACL/index.html:14
 msgid "Who can see the download area"
-msgstr ""
+msgstr "下載區瀏覽限制"
 
 #: html/Foundry/Home/NewProject/index.html:63
 msgid "Within 72 hours, you will receive notification of further instructions."
@@ -2210,4 +2210,22 @@ msgstr "站外版本庫"
 
 msgid "Subversion Repository"
 msgstr "Subversion 版本庫"
+
+msgid "You may enter multiple email addresses here, separated by commas"
+msgstr "若想要一次輸入多人的電子信箱，請使用逗點加以區隔"
+
+msgid "Anybody"
+msgstr "任何人"
+
+msgid "Delete"
+msgstr "停用"
+
+msgid "Roadmap"
+msgstr "里程一覽"
+
+msgid "AllEvents"
+msgstr "事件一覽"
+
+msgid "Events"
+msgstr "事件"
 

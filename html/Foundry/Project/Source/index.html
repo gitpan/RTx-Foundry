@@ -13,7 +13,7 @@ SVN::Web::set_config({
     reposparent	    => "$RT::VarPath/Foundry/svn",
     tmpdir	    => $tmpdir,
     templatedir	    => "$basepath/template",
-    map ( "\L$_\E_class" => "SVN::Web::$_" ),
+    map +( "\L$_\E_class" => "SVN::Web::$_" ),
 	qw(Branch Branch Checkout Diff Log Revision RSS Template)
 });
 
@@ -24,7 +24,8 @@ $path   ||= '';
 
 #return if $m->cache_self( key => join('/', $repos, $action, $path), '1m' );
 
-my $is_verbatim = ($action =~ /^(?:checkout|diff)$/);
+my $is_verbatim = ($action =~ /^(?:checkout|diff|rss)$/);
+$m->flush_buffer if $RT::DoFlush and !$is_verbatim;
 
 eval {
     SVN::Web::run({
@@ -60,9 +61,10 @@ else {
         $RT::SubversionHost =~ s/rt|www/svn/i;
     }
 
-    my $uri = "http://svn.openfoundry.org/$repos/";
+    my $uri = "http://$RT::SubversionHost/repos/$repos/";
     $m->print("<hr>");
     $m->print(loc("Subversion Repository"), ": <a href='$uri'>$uri</a>");
+    $m->flush_buffer if $RT::DoFlush;
 }
 </%PERL>
 <%ATTR>

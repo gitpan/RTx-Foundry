@@ -1,0 +1,70 @@
+<& Header, TabText => 'Project Statistics' &>
+% my ($ym,$label,$data);
+
+% $ym = $TicketAcc->result('status');
+<h1><% loc("Ticket Status Distribution") %></h1>
+<img src="Graph/Pie?Label=<% freeze(keys %$ym)  | u %>&Data=<% freeze(values %$ym) | u %>" />
+
+% if ($SVNAcc) {
+%   for(qw(year-momth)) {
+%     $ym = $SVNAcc->result('year-month');
+%     $label = freeze(sort keys %$ym);
+%     $data  = freeze(map{$ym->{$_}}sort keys %$ym);
+<hr />
+<h1><% $title{$_} %></h1>
+<img src="Graph/Linespoints?Label=<% $label | u %>&Data=<% $data | u %>" />
+<p><% $desc{$_} %></p>
+<p><% loc("See more activity") %></p>
+%   }
+
+%    for(qw(author path)) {
+%      $ym = $SVNAcc->result($_);
+%     $label = freeze(sort keys %$ym);
+%     $data  = freeze(map{$ym->{$_}}sort keys %$ym);
+<hr />
+<h1><% $title{$_} %></h1>
+<img src="Graph/Pie?Label=<% $label | u %>&Data=<% $data | u %>" />
+<p><% $desc{$_} %></p>
+%    }
+% } else {
+<p style="color:#700;"><% loc("(This project doesn't have version control log on openfoundry.org, unable to generate statistics chart.)") %></p>
+% }
+
+
+<& Footer &>
+<%INIT>
+use FreezeThaw qw(freeze);
+use Log::Accounting::SVN;
+
+return unless $QueueId;
+
+my $base = "$RT::VarPath/Foundry/svn";
+my $QueueObj = RT::Queue->new( $session{'CurrentUser'});
+$QueueObj->Load($QueueId);
+my $repopath = $QueueObj->Name;
+my $UnixName = $QueueObj->OriginObj->CustomFieldValue('UnixName') or return;
+my $repo = "$base/$UnixName";
+
+my $SVNAcc = undef;
+if(-d $repo) {
+  eval {
+    $SVNAcc = Log::Accounting::SVN->new(repository => $repo, quiet => 1)->process;
+  }
+}
+
+my $TicketAcc = $m->comp('TicketAcc', QueueId => $QueueId);
+
+my %title = (
+    'year-month' => loc("Commits per month"),
+    'author'	=> loc("Commits per-author"),
+    'path'	=> loc("Commits per-path"),
+);
+my %desc = (
+    'year-month' => loc("Count the number of commits in the order of time"),
+    'author'	 => loc("Count the number of commits of each developers, basically showing the degree of involvement of everyone."),
+    'path'	 => loc("Count the number of commits under different paths, so one can tell which directories are more important relatively"),
+);
+</%INIT>
+<%ARGS>
+$QueueId
+</%ARGS>

@@ -82,6 +82,8 @@ use constant FunctionsMap => (
   ],[ Forum         => 'Forums'           # loc
   ],[ CustomField   => 'Tracker Fields'   # loc
   ],[ Jobs          => 'Help Wanted'      # loc
+  ],[ Citations     => 'Citations'        # loc
+  ],[ References    => 'References'       # loc
   ],
 );
 

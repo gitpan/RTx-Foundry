@@ -1,3 +1,9 @@
+# Load Modules {{{
+<IfModule !mod_perl.c>
+LoadModule perl_module libexec/apache2/mod_perl.so
+</IfModule>
+# }}}
+
 DocumentRoot "/usr/local/rt3/share/html"
 
 <Directory "/usr/local/rt3/share/html">

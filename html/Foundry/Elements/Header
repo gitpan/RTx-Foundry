@@ -37,6 +37,7 @@ TD.button:hover { border-top: 1px solid white; border-left: 1px solid white; bor
 >
 <table width="99%" align="center" border=2 bgcolor="#C4E1F0"><tr><td>
 <table width="100%" align="center" border=0><tr><td>
+% $m->flush_buffer if $RT::DoFlush;
 <%INIT>
 return if $m->notes('Header'); $m->notes('Header' => 1); # counter-reentrant
 $Action =~ s!//+!/!g;

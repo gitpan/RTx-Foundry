@@ -19,6 +19,16 @@ For SVK support, grab a copy of VCP-0.9-autrijus here:
 
     http://search.cpan.org/dist/VCP-autrijus-snapshot-0.9/
 
+For Gantt chart and accountability graphs support, please
+download ming_uni.ttf.gz here:
+
+    http://info.gov.hk/digital21/chi/hkscs/download/ming_uni.ttf.gz
+
+Extract it using "gunzip", and rename the resulting ming_uni.ttf
+into this file:
+
+    /usr/local/share/fonts/TrueType/minguni.ttf
+
 More detailed installation guides will be available in
 English soon, including how to set up your RT_SiteConfig.pm
 based on the sample etc/RT_SiteConfig.pm shipped here.
@@ -43,6 +53,7 @@ requires(
     'Email::Valid'              => 0,
     'MIME::Base64'              => 0,
     'HTML::Mason'               => 0,
+    'HTML::FromText'            => 0,
     'XML::RSS'                  => 0,
     'Project::Gantt'            => 0,
     'HTML::CalendarMonthSimple' => 0,
@@ -63,6 +74,14 @@ features( 'SVK support' => [
     'VCP::Dest::svk'	    => 0,
     'VCP::Source::cvsbk'    => 0,
     'URI'		    => 0,
+] );
+
+features( 'Accountability graphs' => [
+    -default => 0,
+    'GD::Graph::bars3d'     => 0,
+    'Imager::Graph::Pie'    => 0,
+    'FreezeThaw'            => 0,
+    'Log::Accounting::SVN'  => 0,
 ] );
 
 auto_install( -default => 0 );

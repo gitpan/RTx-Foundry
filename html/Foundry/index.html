@@ -18,7 +18,7 @@
      <br>
      <& /Foundry/Elements/NewsFeed, Title => loc('Latest News'), URL => "$FeedURI?Function=News;Flavor=RSS" &>
      <br>
-     <& /Foundry/Elements/NewsFeed, Title => loc('Latest Jobs'), URL => "$FeedURI?Function=Jobs;Flavor=RSS" &>
+     <& /Foundry/Elements/NewsFeed, Title => loc('Latest Jobs'), URL => "$FeedURI?Function=Jobs;Flavor=RSS", Limit => 3 &>
      <br>
      <& /Foundry/Elements/TopDownloads, Rows => 10 &>
     </td>

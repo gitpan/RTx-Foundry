@@ -6,7 +6,7 @@
               </tr>
 			  <tr> 
 			    <td class="poptable" bgcolor="#C4E1F0">
-% $m->call_next;
+% $m->call_next if $ACL{$Function} or $Function eq 'Stats';
 			    </td>
 			  </tr>
 			</table>
@@ -34,10 +34,11 @@ my $Map = [
 
 my @items = $QueueObj->FunctionsMap;
 my %ACL = map { ($_ => 1) } $QueueObj->FunctionsACL($ProjectRole);
+$ACL{ACL} = ($ProjectRole eq 'admin');
 
 foreach my $item (@items) {
     my $link = $prefix . (($item->[0] eq 'Basics') ? '' : $item->[0]);
-    push @$Map, ($link => $item->[1]) if $ACL{$item->[0] || 'Basics'};
+    push @$Map, ($link => $item->[1]) if $ACL{$item->[0]};
 }
 
 push @$Map, (
@@ -53,6 +54,11 @@ $url =~ s/\w+\.html$//;
 if ($url =~ m{List\.html/wws/\w+/(.*)}) {
     push @$Map, $1 => $1;
     $url = $1;
+}
+
+my $Function = 'Basics';
+if ($r->uri =~ m{/Project/Admin/(\w+)}) {
+    $Function = $1;
 }
 
 </%INIT>

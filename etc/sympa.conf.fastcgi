@@ -1,10 +1,16 @@
+# Load Modules {{{
+<IfModule !fastcgi.c>
+LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
+</IfModule>
+# }}}
+
 DocumentRoot "/usr/local/sympa"
+FastCgiServer /usr/local/sympa/bin/wwsympa-wrapper -processes 3
 
 AddDefaultCharset UTF-8
 DirectoryIndex wws
 Options +Indexes
 
-LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
 <Location /wws>
     SetHandler fastcgi-script
 </Location>

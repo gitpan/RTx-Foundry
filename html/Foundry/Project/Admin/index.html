@@ -10,7 +10,7 @@
 </td></tr>
 % }
 <table><tr><td>
-<& /Work/Tickets/Elements/EditCustomFields, Ticket => $QueueObj->OriginObj, Loc => 1  &>
+<& /Work/Tickets/Elements/EditCustomFields, Ticket => $QueueObj->OriginObj, Loc => 1, ReadOnly => $ReadOnly &>
 </td></tr></table>
 % my $olw_link = '<a href="#" onclick="'.$m->scomp('/Edit/Elements/NewWindow', 'http://gnu.iis.sinica.edu.tw/ossf/license_wizard.php?lang='.$session{CurrentUser}->LanguageHandle->language_tag, 700, 560).'">';
 % my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
@@ -26,30 +26,46 @@
 <&|/l&>Enabled (Unchecking this box disables this queue)</&>
 % }
 </td></tr>
+% if (!$ReadOnly) {
 <tr><td align="center">
 <br>
 <input type="submit" value="<&|/l&>Submit</&>" name="Action-Submit">
 </td></tr>
+% }
 <& /Foundry/Elements/LicenseFunctions &>
 <%INIT>
 my @Error;
+
+my @ACL = $QueueObj->FunctionsACL($ProjectRole);
+if (!grep { $_ eq 'Basics' } @ACL) {
+    # thou shalt not be here. redirect happily.
+    $m->print(
+	"<script>location.href='/Foundry/Project/Admin/".
+	($ACL[0] || 'Stats').
+	"/?Queue=".$QueueObj->Id."';</script>"
+    );
+    return;
+}
 
 if ($ARGS{'Action-Submit'} or grep /AddMoreEntry-/, keys %ARGS) {
     $QueueObj->SetDisabled($Enabled ? 0 : 1) if $DoEnabled;
 
     my $id = $QueueObj->OriginObj->Id;
+
+    # UnixName can not be modified.
     $ARGS{"Ticket-$id-CustomField-".RT::CustomField->NameToId('UnixName')."-Values"}
 	= $QueueObj->OriginObj->CustomFieldValue('UnixName');
-    my ($ProjectName, $UnixName, $Rationale, $Description, $Platform,
-	$License, $Language, $Audience
-    ) = @ARGS{
+
+    my ($ProjectName, $UnixName) = @ARGS{
 	map "Ticket-$id-CustomField-".RT::CustomField->NameToId($_, "NewProject")."-Values",
-	qw( ProjectName UnixName Rationale PublicDescription Platform
-	    License ProgrammingLanguage IntendedAudience )
+	qw( ProjectName UnixName )
     };
 
-    push @Error, loc('Missing mandatory fields')
-	unless $ProjectName and $Description and $Platform and $License and $Language and $Audience;
+    my $CFs = $QueueObj->OriginObj->QueueObj->CustomFields;
+    while (my $CF = $CFs->Next) {
+        my $pattern = $CF->Attribute('Pattern') or next;
+        push @Error, loc('Missing mandatory fields') . ': ' . loc($CF->DescriptionOrName) unless $ARGS{"Ticket-$id-CustomField-".$CF->Id."-Values"} =~ $pattern;
+    }
 
     push @Error, loc(
 	'ID must be 3-15 characters of lower-case letters or digits, beginning with a letter'
@@ -71,6 +87,8 @@ if ($ARGS{'Action-Submit'} or grep /AddMoreEntry-/, keys %ARGS) {
 </%INIT>
 <%ARGS>
 $QueueObj
+$ProjectRole
 $DoEnabled  => 0
 $Enabled    => 0
+$ReadOnly   => 0
 </%ARGS>

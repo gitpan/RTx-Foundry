@@ -1,3 +1,6 @@
+# Purge all global scrips before importing ours.
+my $scrips = $RT::Scrips->new($RT::SystemUser);
+$scrips->LimitToGlobal; $_->Delete for @{ $scrips->ItemsArrayRef || [] };
 no strict;use YAML;*_=YAML::Load(do{local$/;<DATA>});@$_=@{$_{$_}}for keys%_;1
 __DATA__
 --- #YAML:1.0
@@ -420,6 +423,7 @@ CustomFields:
         SortOrder: 8
   - Attributes:
       Hints: Optional; fill in an email address or URL
+      HTMLAttr: href
     Description: Contact Info
     Name: ContactInfo
     Queue: NewProject
@@ -452,7 +456,10 @@ CustomFields:
       - Description: Other
         Name: Other
         SortOrder: 6
-  - Description: Homepage Redirection
+  - Attributes:
+      Hints: Optional; fill in a URL
+      HTMLAttr: href
+    Description: Homepage Redirection
     Name: RedirectURL
     Queue: NewProject
     SortOrder: 16
@@ -713,11 +720,21 @@ CustomFields:
     Queue: 0
     SortOrder: 35
     Type: LabelAttachments
-  - Description: Version
+  - Description: "Release Version"
     Name: Version
     Queue: ProjectEvents
     SortOrder: 1
     Type: SelectVersion
+  - Description: "Starts"
+    Name: EventStarts
+    Queue: ProjectEvents
+    SortOrder: 2
+    Type: FreeformDate
+  - Description: "Due"
+    Name: EventDue
+    Queue: ProjectEvents
+    SortOrder: 3
+    Type: FreeformDate
   - Description: 'Job Title'
     Name: JobTitle
     Queue: ProjectJobs
@@ -760,6 +777,12 @@ Queues:
   - Description: Open Foundry System
     Disabled: 1
     Name: ProjectJobs
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: ProjectCitations
+  - Description: Open Foundry System
+    Disabled: 1
+    Name: ProjectReferences
 ScripActions:
   - Argument: Owner,Cc,AdminCc
     Description: |-
@@ -773,6 +796,7 @@ ScripActions:
 Templates:
   - Content: >
       Subject: Confirm Registration
+      
       
       {loc('Thank you for registering on the [_1] web site.', $RT::Organization)}
       
@@ -794,6 +818,7 @@ Templates:
     Queue: NewUser
   - Content: >
       Subject: Registration complete
+      
       
       {loc('You are now a registered user on [_1].', $RT::Organization)}
       
@@ -1012,6 +1037,7 @@ Templates:
   - Content: >+
       Subject: Reset Password
       
+      
       {loc('Please visit this URL to reset your password on [_1]:',
       $RT::Organization)}
           { $RT::WebBaseURL }/Foundry/Home/Guest/Recover.html?token={
@@ -1052,6 +1078,7 @@ Templates:
     Queue: NewProject
   - Content: >
       Subject: Project Created
+      
       
       {loc('Thank you for choosing [_1].', $RT::Organization)}
       

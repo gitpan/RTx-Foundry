@@ -27,7 +27,7 @@ my $filename = (
 )[1];
 
 my $skin = Project::Gantt::Skin->new(
-    font => '/usr/X11R6/lib/X11/fonts/TrueType/ming_uni.ttf',
+    font => '/usr/local/share/fonts/TrueType/minguni.ttf',
     background => 'transparent',
     doTitle => 0,
 );
@@ -44,11 +44,12 @@ my $me= $chart->addResource( name => $session{CurrentUser}->Name );
 # walk ticket tree?
 # my $trip = $chart->addSubProject( description => 'Vacation');
 
+my $found;
 while (my $item = $Events->Next) {
     my $Owner = $item->OwnerObj;
     my $res = ($res{$Owner->Id} ||= $chart->addResource( name => $Owner->Name ));
-    my $start = $item->CustomFieldValue('EventStarts');
-    my $end = $item->CustomFieldValue('EventDue');
+    my $start = $item->CustomFieldValue('EventStarts') or next;
+    my $end = $item->CustomFieldValue('EventDue') || $start;
     $start =~ s/\D/-/g; $end =~ s/\D/-/g;
 
     $chart->addTask(
@@ -57,6 +58,12 @@ while (my $item = $Events->Next) {
         start       =>      $start,
         end         =>      $end,
     );
+    $found++;
+}
+
+if (!$found) {
+    $m->print(Image::Dot::dot_PNG_RGBA(0, 0, 0, 0));
+    return;
 }
 
 $chart->display();

@@ -1,0 +1,8 @@
+%# Any sufficiently advanced bug is indistinguishable from a feature.
+%#                -- Rich Kulawiec
+<hr>
+<a href="?Queue=<% $Queue %>;Release=<% $Parent->Id %>">&lt;&lt; <&|/l&>Back to Previous</&></a>
+<%ARGS>
+$Parent => undef
+$Queue
+</%ARGS>

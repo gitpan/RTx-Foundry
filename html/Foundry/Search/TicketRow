@@ -2,7 +2,7 @@
 
 <SPAN class="search">
 <TR bgcolor="white">
-% my $uri = "/Foundry/Project/Tracker/?Queue=".$Ticket->QueueObj->Id.";id=".$Ticket->Id;
+% my $uri = "/Foundry/Project/Tracker/Display.html?Queue=".$Ticket->QueueObj->Id."&id=".$Ticket->Id;
 % $uri = '' if $Ticket->QueueObj->Disabled;
 <TD align="center" ROWSPAN="2">
 % if ($uri) {
@@ -23,7 +23,9 @@
 <TD><%$Ticket->Owner == $RT::Nobody->Id ? loc('Nobody') : $Ticket->OwnerObj->Name%></TD>
 <TD><%$Ticket->Priority%></TD>
 </TR>
-<TR bgcolor="white"><TD><%$Ticket->Requestors->MemberEmailAddressesAsString%></TD>
+<TR bgcolor="white"><TD><%
+    join ',', map $_->Name, @{ $Ticket->Requestors->UserMembersObj->ItemsArrayRef || [] }
+%></TD>
 <TD><%$Ticket->CreatedObj->AgeAsString || '-'%></TD>
 <TD><%$Ticket->ToldObj->AgeAsString || '-'%></TD>
 <TD><%$Ticket->LastUpdatedObj->AgeAsString || '-'%></TD>

@@ -1,5 +1,5 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 9128 2004-10-14T03:22:36.227039Z autrijus  $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 10068 2004-11-04T15:06:47.552987Z autrijus  $
 
 #
 # exec myself, take care the PID file
@@ -34,8 +34,9 @@ mkpath([$tmp], 0, 0755) unless -d $tmp;
 chmod(0777, $tmp);
 exit if hold_pid_file("$tmp/syncdata.lock");
 
-eval { require "$FindBin::Bin/../etc/foundry.conf" };
-eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" };
+eval { require "/usr/local/etc/foundry.conf" }                                  || eval { require "$FindBin::Bin/../etc/foundry.conf" }
+|| eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" }
+|| die $@;
 
 my ($svn_base) = grep { defined and -d } (
     $ENV{SVNROOT}, 

@@ -7,8 +7,8 @@ local settings.
 In the main host "db.foundry.org", make and launch two clean FreeBSD
 Jails: "cvs.foundry.org" and "www.foundry.org".
 
-You may wish also to point "lists.foundry.org" to the same machine
-as "www.foundry.org".
+You may wish also to point "lists.foundry.org" and "svn.foundry.org"
+to the same machine as "www.foundry.org".
 
 In DB, make sure that:
 
@@ -80,22 +80,16 @@ newaliases
 #####################################################################
 # 3aa. WWW HOST - append to /usr/local/etc/apache2/httpd.conf
 #####################################################################
-LoadModule perl_module libexec/apache2/mod_perl.so
-LoadModule suexec_module libexec/apache2/mod_suexec.so
-LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
 
-FastCgiWrapper /usr/local/sbin/suexec
 FastCgiServer /usr/local/sympa/bin/wwsympa.fcgi -processes 3
-
 NameVirtualHost *
-
 <VirtualHost *>
         ServerName www.foundry.org
-        Include /usr/local/rt3/local/etc/Foundry/httpd.conf.mod_perl2
-</VirtualHost>
-<VirtualHost *>
-        ServerName devlist.foundry.org
+        ServerAlias lists.foundry.org
+        ServerAlias svn.foundry.org
         Include /usr/local/rt3/local/etc/Foundry/sympa.conf.fastcgi
+        Include /usr/local/rt3/local/etc/Foundry/subversion.conf
+        Include /usr/local/rt3/local/etc/Foundry/httpd.conf.mod_perl2
 </VirtualHost>
 
 # RETURN to 3a

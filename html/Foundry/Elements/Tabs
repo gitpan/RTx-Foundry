@@ -28,6 +28,7 @@
 </table>
 % return if $Recurse;
 </td></tr></table>
+% $m->flush_buffer if $RT::DoFlush;
 <%INIT>
 my @Tabs = @RT::Tabs;
 </%INIT>

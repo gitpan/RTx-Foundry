@@ -1,0 +1,33 @@
+<%INIT>
+use Imager::Graph::Pie;
+use Imager::Font;
+# '/usr/X11R6/lib/X11/fonts/bitstream-vera/Vera.ttf',
+
+my $fontfile = '/usr/local/share/fonts/TrueType/minguni.ttf';
+my $chart = Imager::Graph::Pie->new;
+my $font  = Imager::Font->new( aa=>1,file => $fontfile);
+
+my $img = $chart->draw(
+    labels   => $Label,
+    data     => $Data,
+    style    => 'fount_lin',
+#    back => '00000000',
+#    channels => 4,
+    features => [qw/labels labelspc pieblur outline dropshadow/],
+    width    => $Width,
+    height   => $Height,
+    font     => $font,
+   );
+
+my $imgout;
+$img->write(type=>"png",data => \$imgout) || die "oops";
+
+$r->content_type('image/png');
+$m->print($imgout);
+</%INIT>
+<%ARGS>
+$Width
+$Height
+$Label
+$Data
+</%ARGS>

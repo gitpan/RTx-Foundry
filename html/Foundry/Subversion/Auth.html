@@ -7,7 +7,7 @@ $CurrentUser->Load($user);
 
 $CurrentUser->Id or $m->abort(401);
 $CurrentUser->IsPassword($password) or $m->abort(401);
-$uri =~ m{([^/]+)} or $m->abort(404);
+$uri =~ m{(?:/repos/)?([^/]+)} or $m->abort(404);
 
 my $UnixName = $1;
 my $QueueObj = RT::Queue->new($RT::SystemUser);

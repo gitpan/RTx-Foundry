@@ -176,6 +176,9 @@ select_field=emailaddress
 where_field=name
 hosts=${db_host}
 );
+    close $ALIASES;
+
+    chmod 0600, '/usr/local/etc/postfix/aliases.cf';
 }
 
 sub sympa_conf {

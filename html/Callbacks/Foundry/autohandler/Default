@@ -22,14 +22,15 @@ if ($hostname ne $RT::WebHost and $hostname =~ /^(\w+)\Q.$RT::Host\E$/i) {
 }
 
 unless (
-    $RT::Reentrant == 1 or
     $r->uri =~ m{^/(?:REST|Foundry|img|function|stylesheet)/|^/Work/Tickets/Attachment/} or
     eval { $session{CurrentUser}->UserObj->HasRight(
 	Right => 'SuperUser', Object => $RT::System
     ) }
 ) {
-    local $RT::Reentrant = 1;
-    $m->subexec('/Foundry/index.html');
+    $m->comp(
+	"/Foundry/Elements/Redirect",
+	URL => "http://$RT::WebHost/Foundry/"
+    );
     $m->abort;
 }
 </%INIT>

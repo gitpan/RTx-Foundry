@@ -12,5 +12,5 @@ $m->notes( HIColor => '#D1FAFC' );
 $m->call_next(%ARGS, Action => $Action);
 </%INIT>
 <%ATTR>
-AutoFlush => 1
+AutoFlush => undef
 </%ATTR>

@@ -1,0 +1,15 @@
+%# One way to stop a runaway horse is to bet on him.
+<%INIT>
+
+@RT::Tabs = (
+    'Site Statistics'   => '/Foundry/Accountability/',
+    'Top Projects'	    => '/Foundry/Accountability/topprojects.html',
+);
+
+$m->call_next(%ARGS);
+
+</%INIT>
+<%ATTR>
+Action	=> undef
+Method	=> undef
+</%ATTR>

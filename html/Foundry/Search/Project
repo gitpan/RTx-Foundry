@@ -45,7 +45,7 @@ $List = [
     grep {
 	index(lc($_->Name), $query) > -1
 	    or 
-	index(lc($_->OriginObj->CustomFieldValue('UnixName')), $query) > -1
+	eval { index(lc($_->OriginObj->CustomFieldValue('UnixName')), $query) > -1 }
     } @{$List->ItemsArrayRef}
 ];
 

@@ -1,0 +1,17 @@
+%# This is your fortune.
+<& /Edit/Elements/List,
+    %ARGS,
+    Data  => [
+	[ '20%', loc('Creator'),	sub { $_[0]->{Name} }, '', 30 ],
+	[ '75%', loc('Project Name'),	sub { $_[1]->{Name} }, '', 30 ],
+    ],
+    Size    => 14,
+    Class   => 'tableFixed',
+&>
+<%INIT>
+</%INIT>
+<%ARGS>
+$Begin	=> 0
+$ARGS	=> {}
+</%ARGS>
+

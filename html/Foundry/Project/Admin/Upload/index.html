@@ -148,7 +148,10 @@ elsif ($Subject and $Starts) {
 my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
 $Tickets->LimitQueue( VALUE => $QueueObj->Id );
 $Tickets->LimitType( VALUE => 'release' );
-$Tickets->OrderBy( FIELD => 'Starts', ORDER => 'DESC' );
+$Tickets->OrderByCols(
+    { FIELD => 'Starts', ORDER => 'DESC' },
+    { FIELD => 'Id', ORDER => 'DESC' },
+);
 </%INIT>
 <%ARGS>
 $QueueObj
