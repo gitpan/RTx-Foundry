@@ -15,3 +15,6 @@ if (my $obj = $m->comp("/Work/Tickets/Attachment", %ARGS, NoUI => 1)) {
 }
 $m->abort;
 </%PERL>
+<%ATTR>
+AutoFlush => 0
+</%ATTR>

@@ -294,6 +294,7 @@ sbin/openfoundry-lib/VCP/Utils/cvs.pm
 sbin/openfoundry-lib/VCP/Utils/p4.pm
 sbin/openfoundry-lib/VCP/Utils/svn.pm
 sbin/openfoundry-lib/VCP/Utils/vss.pm
+sbin/openfoundry-setup
 sbin/openfoundry-svn-pre-revprop-change
 sbin/openfoundry-svn-start-commit
 sbin/openfoundry-syncdata

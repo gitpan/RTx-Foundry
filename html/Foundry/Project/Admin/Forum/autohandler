@@ -40,7 +40,7 @@ $jar->set_cookie(
     0, 'sympauser', "$email:$md5", '/',
     URI->new($wws)->host, URI->new($wws)->port,
     0, 0, 1, 0
-);
+) unless $u->Name eq 'guest';
 
 our ($Get, $Post) = map {
     my $method = $_;
@@ -94,3 +94,6 @@ $tag =~ s/.*-//;
 $tag = 'us' if $tag eq 'en';
 $Post->( "/", { action => 'set_lang', lang => $tag } );
 </%SHARED>
+<%ATTR>
+AutoFlush => 0
+</%ATTR>

@@ -11,3 +11,6 @@ $ARGS{Queue} = $ARGS{Queue}[0] if ref $ARGS{Queue};
 $m->notes( HIColor => '#D1FAFC' );
 $m->call_next(%ARGS, Action => $Action);
 </%INIT>
+<%ATTR>
+AutoFlush => 1
+</%ATTR>

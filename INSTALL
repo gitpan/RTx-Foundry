@@ -9,9 +9,21 @@ In DB, make sure that:
     /home/svn and /home/cvs are shared across VCS and WWW
     PostgreSQL is running and allows access from VCS and WWWW
 
+First, CVSUp both WWW and VCS machines to latest ports trees.  Here's one
+way to do it for FreeBSD-STABLE:
+
+    cd /usr/ports/net/cvsup-without-gui
+    make install
+
+    cd /usr/src
+    fetch ftp://freebsd.csie.nctu.edu.tw/pub/CVSup/cvsupfile-stable 
+    /usr/local/bin/cvsup -g -z -L 2 /usr/src/cvsupfile-stable
+
 In WWW, do this as root:
 
     cd /usr
+    rm -rf /usr/ports/*/*-elixus
+    rm -rf /usr/ports/lang/perl5.8
     fetch -q -o - http://p4.elixus.org/snap/rt-ports.tar.gz | tar zxf -
     fetch -q -o - http://p4.elixus.org/snap/sympa-ports.tar.gz | tar zxf -
 
@@ -21,7 +33,7 @@ In WWW, do this as root:
 
     cd /usr/ports/www/openfoundry/
     make install -DINITIAL_INSTALL DB_TYPE=Pg DB_HOST=db.example.org \
-		 DB_DBA_USER=pgsql MASTER_SITE_OVERRIDE='' -DWITH_APACHE2 
+		 DB_DBA_USER=pgsql MASTER_SITE_OVERRIDE='' -DWITH_APACHE2
 
     vim /usr/local/rt3/etc/RT_SiteConfig.pm
     echo "Include /usr/local/rt3/local/etc/Foundry/httpd.conf.mod_perl2" \
@@ -33,6 +45,8 @@ In WWW, do this as root:
 In VCS, do this as root:
 
     cd /usr
+    rm -rf /usr/ports/*/*-elixus
+    rm -rf /usr/ports/lang/perl5.8
     fetch -q -o - http://p4.elixus.org/snap/rt-ports.tar.gz | tar zxf -
 
     cd /usr/ports/lang/perl5.8
@@ -51,4 +65,3 @@ In VCS, do this as root:
 
 Reboot both jails, and you will have a fully functioning OpenFoundry system.
 Enjoy!
-

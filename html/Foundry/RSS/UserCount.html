@@ -19,6 +19,7 @@ xmlns="http://my.netscape.com/rdf/simple/0.9/">
 $r->content_type('text/xml');
 
 my $Users = RT::Users->new($RT::SystemUser);
-$Users->Limit( FIELD => 'Password', OPERATOR => '!=', VALUE => '*NO-PASSWORD*');
+$Users->LimitToPrivileged;
+$Users->LimitToEnabled;
 my $UserCount = $Users->Count;
 </%INIT>

@@ -15,13 +15,13 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 17e3b0eea99abffe6ac71e65627413236e0b117a COPYING
-SHA1 2c288faa8138c9b7e9140d6be93fd9ee9aacca6a ChangeLog
-SHA1 588641be7922b93952ccd3bdd69167e3c9f6c88d INSTALL
-SHA1 f586c1f31e2a732d6eba2e3d2352b6c9695a3bc9 MANIFEST
-SHA1 80e37c2958dbc4bf5d7ffcd1d6aed8fcf1a5d982 META.yml
+SHA1 4e7ea6389ad4addc4d4fb7ac94d25fe1059e8cf9 ChangeLog
+SHA1 25a35a63923a2d1091c2882ef655f18d656984e7 INSTALL
+SHA1 765f13e754d1bf5a69d49f8f405f0a7dc3e7c90d MANIFEST
+SHA1 4f5a483efd866f0af20cf580654e5fd876d35697 META.yml
 SHA1 3b0968503c0fe42b1418071532d92d9ea0328bf7 Makefile.PL
 SHA1 cf1da5d528011a0d97db92b36303c7a2880de7c5 README
-SHA1 723eb046639eedae30e6a9e93852750d9ddca428 etc/RT_SiteConfig.pm
+SHA1 f06e46dc29dcdc6508a8b1c70bb047fa6f0e57ae etc/RT_SiteConfig.pm
 SHA1 b91a7a9fc2f75d9dc5ba74a553d99ced450d1a9a etc/httpd.conf.mod_perl2
 SHA1 e04b30fa869e69296d5684e4ba817fb0914f8e11 etc/initialdata
 SHA1 5f17997e39ecc66ef139cb822c32519ac8ad9446 etc/openfoundry.conf.sample
@@ -57,7 +57,7 @@ SHA1 a6b5a3d950a6133067b19e5e11dc0d9c99f48a70 html/Foundry/Home/Guest/Elements/L
 SHA1 75d9271a5250dd660918998ece46a4a567d5c2c3 html/Foundry/Home/Guest/Elements/NewPassword
 SHA1 a34a0479ea09f21e6beb2a07421ccf073afb54bc html/Foundry/Home/Guest/Elements/ShowRegister
 SHA1 85a1bd2a80229a393d676bfb1e8ddeeef57ca710 html/Foundry/Home/Guest/Recover.html
-SHA1 4c8749cdf788964a5ce6829da0e5838054d0d3d1 html/Foundry/Home/Guest/Register.html
+SHA1 ace9ac030169f47a086e52dfe9f51bafb7aa8947 html/Foundry/Home/Guest/Register.html
 SHA1 83e544bf1cc25f3243406c118e22b9dde0e28ed6 html/Foundry/Home/Guest/Reminder.html
 SHA1 0d3f5a19261aa3cf468d76347bf7e02669f9785e html/Foundry/Home/Guest/Verify.html
 SHA1 c6350b72df03b717359575907dcf3524be00fe7b html/Foundry/Home/Guest/autohandler
@@ -96,7 +96,7 @@ SHA1 4f80657d46bf9dcfa8afbdc8653c61beaf3ce8aa html/Foundry/Policy/autohandler
 SHA1 aed8d7dc460d1b85d7a9265edda0e40ace3cda3b html/Foundry/Policy/index.html
 SHA1 3e66b9c198d0fc4e08cfbb8d415f9cee597a532b html/Foundry/Project/Admin/CustomField/index.html
 SHA1 1cab20e5cae99d1e166455c880ebb806b90a5044 html/Foundry/Project/Admin/Forum/List.html
-SHA1 9bde8a399c62c4f7dc620dc957eb843d25a4f5f4 html/Foundry/Project/Admin/Forum/autohandler
+SHA1 b6b42b6045d163a535559b25fbd01ab5d5ec7342 html/Foundry/Project/Admin/Forum/autohandler
 SHA1 726a2238ee85f6cf01079bb93f3b3be972850036 html/Foundry/Project/Admin/Forum/index.html
 SHA1 e200cbc0fb99171df7c998bbdcaa6274553fe9a9 html/Foundry/Project/Admin/Members/EditQueueWatchers
 SHA1 8612759439396a3c545710c276adcd0af0d59174 html/Foundry/Project/Admin/Members/SelectUsers
@@ -112,11 +112,11 @@ SHA1 d7cc5ef4b79ee7ce73e78d217dc870dadfdeec3b html/Foundry/Project/Admin/index.h
 SHA1 88e671a77869dc200e73a59302da406480f5a448 html/Foundry/Project/Doc/List.html
 SHA1 61837c3d2d18d2e2fbf5f70202d75dc76a53467f html/Foundry/Project/Doc/autohandler
 SHA1 fd7f3e5002547d97fe6bbf3c0d556dd1bda81c24 html/Foundry/Project/Doc/index.html
-SHA1 4935308131aa066639d8ffed8b3ad292d2391605 html/Foundry/Project/Download/Attachment
+SHA1 75aa9339d527442af2dd2853fd70fe371611c087 html/Foundry/Project/Download/Attachment
 SHA1 c7c1193da1224d32399903a4263a13afea802317 html/Foundry/Project/Download/List
 SHA1 ac76ee1ab58069bfa46c0177d3f1b1548d081952 html/Foundry/Project/Download/autohandler
 SHA1 9022892f5dcb4248092f09f56dc88b171af0f138 html/Foundry/Project/Download/index.html
-SHA1 597ab7a27e991935e0f8c1c924a92a5ce5a0fce9 html/Foundry/Project/Forum/List.html
+SHA1 11fee784c2768e52bb9d23725d5d3c383d64d6b2 html/Foundry/Project/Forum/List.html
 SHA1 8d32e69d6581726e4f72c2b0b2fa732c49df668d html/Foundry/Project/Forum/autohandler
 SHA1 17184f902e41cf888099275862ef81b47b4e1f5d html/Foundry/Project/Forum/index.html
 SHA1 9cfe8229d679b30485cb6a046e524642d4d91109 html/Foundry/Project/News/autohandler
@@ -129,7 +129,7 @@ SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/ViewCV
 SHA1 ad7a86e72dbc39b369075edbfebb25f5c2dc8068 html/Foundry/Project/Source/ViewCVS/autohandler
 SHA1 6b08ce5c7ae8ae46470f91fd455fc32dec846ad3 html/Foundry/Project/Source/ViewCVS/index.html
 SHA1 86580c174fc247d957dc5c04af191208a86b40fd html/Foundry/Project/Source/autohandler
-SHA1 b35d95870a2af28d92be1950b48f2eff6c4c6939 html/Foundry/Project/Source/index.html
+SHA1 7d17500224742b62c789340231242875ea34daad html/Foundry/Project/Source/index.html
 SHA1 ca04b902e33d20932ad972da6c3b66af1875886a html/Foundry/Project/Source/lib/SVN/Web.pm
 SHA1 ff7d31497400a9b2413ec740bf6a66164600dbbf html/Foundry/Project/Source/lib/SVN/Web/Branch.pm
 SHA1 406b3269410fdb696173e369ffd7ed883a02f2d8 html/Foundry/Project/Source/lib/SVN/Web/Browse.pm
@@ -159,7 +159,7 @@ SHA1 6dc9681858c72ffa91c731816d0ea46249d12016 html/Foundry/Project/Tracker/index
 SHA1 f8824125031f15aa815187d9470bb9aff084717a html/Foundry/Project/Wiki/autohandler
 SHA1 9e2cc39960ff8d27600b6bef860e1fa02189d3f1 html/Foundry/Project/Wiki/blog.html
 SHA1 99e72a9eb3954bb86aa6a8a2018131dfadbf4a54 html/Foundry/Project/Wiki/config.yaml
-SHA1 bdfaec4f6a7900912a7e2e4e7fbc6090dabe2a7c html/Foundry/Project/Wiki/index.html
+SHA1 0772b74a5902773ead1ae9efa956f2a73aab1b55 html/Foundry/Project/Wiki/index.html
 SHA1 de4a3910e6f03713d5fa457a1763072f8c128e0e html/Foundry/Project/Wiki/javascript/Debug.js
 SHA1 3680487ea6d68e681868cdbaf7c4ade4ee825bf9 html/Foundry/Project/Wiki/javascript/Display.js
 SHA1 7b3c6790bc6cd1c45fb6ffac6843856c0afd4515 html/Foundry/Project/Wiki/javascript/Edit.js
@@ -215,7 +215,7 @@ SHA1 3a275f4348a2a6e7556f4b11b4f97cf034bf06a0 html/Foundry/RSS/NewProjects.html
 SHA1 829c26602410f327795b01ed2f8d9f18771f8314 html/Foundry/RSS/NewTickets.html
 SHA1 61d7ab4401ea230d51ad436ee192cbc306e77e40 html/Foundry/RSS/ProjectCount.html
 SHA1 480a72b21a70a86bc5e6b8d1f4b98c21efaee6a1 html/Foundry/RSS/TopDownloads.html
-SHA1 730cecdc71e81b37ec45d2bd6140cced2e547e42 html/Foundry/RSS/UserCount.html
+SHA1 96f5e5ea5e39cd49e256d58367e48c20d4c8df0a html/Foundry/RSS/UserCount.html
 SHA1 5f6edebc542bf16024c6d0f72d6b2fd7a272a51c html/Foundry/Search/Project
 SHA1 6d8773b24c915ad1d5c62b42c8dbdb02a319861c html/Foundry/Search/Ticket
 SHA1 222e52d349265749c39bd7f94b00384d664bb6db html/Foundry/Search/User
@@ -227,7 +227,7 @@ SHA1 15dbdd9213c3a6085bb17da2da4a6f81838e81c1 html/Foundry/Trove/index.html
 SHA1 8f0369cafa56f5b53b35df7aafcce9c652620a41 html/Foundry/User/List
 SHA1 08bea4ec9cbe7aa83c7bd3a6721ac6bb7f6f66e2 html/Foundry/User/autohandler
 SHA1 3f5e9f4b4c2d14dee27655bc2dca741d23cf0924 html/Foundry/User/index.html
-SHA1 b5693cb6c1be15e7a8d0bce9882f3545c1d92996 html/Foundry/autohandler
+SHA1 ed989c73ee6ac438988f9f7d8d2cfb0159c6b652 html/Foundry/autohandler
 SHA1 0624bfdaf15ea49a73fd4e7e7a719665eda2a08b html/Foundry/index.html
 SHA1 f855cb5eba769be4944cfdddb5aacb60f71455bc html/Foundry/layout.txt
 SHA1 516611014c1018d65b0b7188b77d216a7be44238 inc/ExtUtils/AutoInstall.pm
@@ -237,7 +237,7 @@ SHA1 adfc45c82642d3726cc2c871c49062c000ccb0e4 inc/Module/Install/Base.pm
 SHA1 8119fb04681f0085c6b466f592adc8d408861610 inc/Module/Install/Include.pm
 SHA1 876226cc896a285b2409db88d9033071c68cec50 inc/Module/Install/Makefile.pm
 SHA1 2a0dd241db019def435fde8537e600a182750824 inc/Module/Install/Metadata.pm
-SHA1 6c236fe4870329e5b9e29bbf16fdd252618600fd inc/Module/Install/RTx.pm
+SHA1 1e3ad8d5eb09756309484b623a033ffdfb0a2eeb inc/Module/Install/RTx.pm
 SHA1 acf1fd355f805442c195dc9dc4e764ad742862e1 inc/Module/Install/WriteAll.pm
 SHA1 9527abd17109a0b1d97c22db23d4da0db6871c68 lib/RT/Action/SendEmail_Local.pm
 SHA1 66962a460370424ed74e00177fb59ad000cfe0ba lib/RT/CustomField_Local.pm
@@ -246,9 +246,9 @@ SHA1 1093470960e95d72fec1214edcf49f977e9e01ca lib/RT/EmailParser_Local.pm
 SHA1 dffdbd989eb2d672ac1bf9099903b940510a2795 lib/RT/Queue_Local.pm
 SHA1 92f7fe53c25dd1265d0175452e3f9336f6bd667c lib/RT/Tickets_Local.pm
 SHA1 759f0d3f16d310cb52ecaf8612d3111b7d990bc8 lib/RT/User_Local.pm
-SHA1 b6918f65198f9ec39932f361b076d9ab8fb58a42 lib/RTx/Foundry.pm
-SHA1 2a3880ca09b9213225ab76a54306dcc404887382 po/zh_cn.po
-SHA1 0a1eca52b9c86fcd4ba2cbe8a4821ac5b113b277 po/zh_tw.po
+SHA1 bdea916dc4e799ed04e00c966e8cbd76779c17e2 lib/RTx/Foundry.pm
+SHA1 56755e72ab2638613119d0e5d26ab1c8c0ef8e8f po/zh_cn.po
+SHA1 50b1be1b7b2a55a7067205e2019cdcfb6489b6f0 po/zh_tw.po
 SHA1 01cb31f71ca79f506346997f57e4584159f9cd39 sbin/openfoundry-cvs-commitcheck
 SHA1 5e89060b29d3033aea3897fdd298e1ac6677c3d6 sbin/openfoundry-cvs2svn
 SHA1 12cacf5840ec19e6d04cd99658032bcc0b1f5203 sbin/openfoundry-initvcs
@@ -310,6 +310,7 @@ SHA1 b681f05f99efc5222d741861b37efb457f0c2b2e sbin/openfoundry-lib/VCP/Utils/cvs
 SHA1 210e9cd3212b112db2426b91d3980b3b2f1493c8 sbin/openfoundry-lib/VCP/Utils/p4.pm
 SHA1 77e2ac07bcaa9bfa24b448d9662bacd247fe57bf sbin/openfoundry-lib/VCP/Utils/svn.pm
 SHA1 1e8813b7950ee5c2a2bdc68affc202e7d48c4119 sbin/openfoundry-lib/VCP/Utils/vss.pm
+SHA1 dfb6c6d7e154b6ddb2ab98233011cfee1953f755 sbin/openfoundry-setup
 SHA1 504519c842b7202250315ef562069e4ce10da99c sbin/openfoundry-svn-pre-revprop-change
 SHA1 a0b785933085283d138ceeeefe72d783ef54e57c sbin/openfoundry-svn-start-commit
 SHA1 1556d6b612fd14b1484b6d69ef926cde2405a8c5 sbin/openfoundry-syncdata
@@ -803,7 +804,7 @@ SHA1 939e7660261159dd485e2edb35f24142170bed3d var/kwiki/.global/template/slide_p
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQFAIUIAtLPdNzw1AaARAnH/AJ9rGMGOkDu89mf2Q1ZUAg5taJatngCfQi4Z
-Icd2qK/BeJQlLnNeHMpgnvw=
-=9VfL
+iD8DBQFAJ+xYtLPdNzw1AaARAvH8AJ0RDiLHn1h2jlu7OCaSc4pwLDoZMQCggPUr
+4VFmg9vcJZ92sOdmtfbxDZ4=
+=CyUl
 -----END PGP SIGNATURE-----

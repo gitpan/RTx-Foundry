@@ -7,6 +7,9 @@
     Script	=> 'index.html',
     PageId	=> ($page_id || ($keywords ||= ('HomePage'))),
 &>
+<%ATTR>
+AutoFlush => 0
+</%ATTR>
 <%ARGS>
 $QueueObj
 $keywords => undef

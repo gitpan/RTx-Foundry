@@ -1011,6 +1011,9 @@ msgstr "新增 %1"
 msgid "About me"
 msgstr "自我描述"
 
+msgid "About Me"
+msgstr "自我描述"
+
 msgid "Backend"
 msgstr "後端"
 

@@ -1,5 +1,10 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #6 $ $Change: 9903 $ $DateTime: 2004/02/04 19:01:19 $
+# $Revision: #7 $ $Change: 9975 $ $DateTime: 2004/02/09 20:00:26 $
+
+[Changes for 0.00_08 - Feburary 10, 2004]
+
+Fix Attribute initialization problems; first draft of
+openfoundry-setup; synchronized with RT 3.0.9pre4.
 
 [Changes for 0.00_07 - Feburary 5, 2004]
 

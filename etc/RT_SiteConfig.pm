@@ -1,21 +1,22 @@
 package RT;
 
-Set($rtname, 'OSSF');
-Set($Timezone, 'Asia/Taipei');
-Set($Host, 'openfoundry.org');
+eval { require "/usr/local/etc/openfoundry.conf" };
 
-Set($WebHost, "rt.$Host");
-Set($CVSHost, "cvs.$Host");
-Set($EmailHost, "users.$Host");
-Set($DatabaseHost, "ssh.$Host");
+Set($rtname, $ENV{RT_NAME} || 'OSSF');
+Set($Timezone, $ENV{TZ} || 'Asia/Taipei');
+Set($Host, $ENV{HOST} || 'openfoundry.org');
 
-Set($DatabaseType, 'Pg');
-Set($DatabaseUser, 'pgsql');
-Set($DatabasePassword, '');
+Set($WebHost, $ENV{WEB_HOST} || "rt.$Host");
+Set($EmailHost, $ENV{EMAIL_HOST} || "users.$Host");
+Set($DatabaseHost, $ENV{DB_HOST} || "ssh.$Host");
+Set($DatabasePort, $ENV{DB_PORT} || '');
+
+Set($DatabaseType, $ENV{DB_TYPE} || 'Pg');
+Set($DatabaseUser, $ENV{DB_DBA_USER} || 'pgsql');
+Set($DatabasePassword, $ENV{DB_DBA_PASSWORD} || '');
 Set($DatabaseRTHost, $DatabaseHost);
 
-Set($SympaConfig, "/etc/sympa.conf");
-Set($NewProjectURL, "http://$CVSHost/newproject.pl?Name=");
+Set($SympaConfig, $ENV{SYMPA_CONFIG} || "/etc/sympa.conf");
 
 @EmailInputEncodings = qw(utf-8 big5 gb2312);
 

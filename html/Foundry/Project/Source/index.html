@@ -58,6 +58,9 @@ for (1 .. 3) {
 }
 $m->abort if $action eq 'checkout';
 </%PERL>
+<%ATTR>
+AutoFlush => 0
+</%ATTR>
 <%ARGS>
 $QueueObj
 </%ARGS>

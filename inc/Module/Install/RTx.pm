@@ -36,8 +36,8 @@ sub RTx {
             map {( "$_/rt3/lib", "$_/lib/rt3", "$_/lib" )} grep $_, @prefixes
         );
         until ( eval { require RT; $RT::LocalPath } ) {
-            warn "Cannot find the location of RT.pm that defines \$RT::LocalPath.\n";
-            $_ = prompt("Path to your RT.pm:") or exit;
+            warn "Cannot find the location of RT.pm that defines \$RT::LocalPath. ($@)\n";
+            $_ = $self->prompt("Path to your RT.pm:") or exit;
             push @INC, $_, "$_/rt3/lib", "$_/lib/rt3";
         }
     }
