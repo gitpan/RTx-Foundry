@@ -4,6 +4,12 @@
 <META HTTP-EQUIV="refresh" CONTENT='0;URL="<% $URL %>"'>
 </head><body></body></html>
 % return 0;
+<%INIT>
+if (!$INC{'Apache/compat.pm'}) {
+   $m->redirect($URL);
+   $m->abort;
+}
+</%INIT>
 <%ARGS>
 $URL
 </%ARGS>

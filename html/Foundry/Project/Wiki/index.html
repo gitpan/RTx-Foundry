@@ -1,6 +1,6 @@
 %# Never underestimate the bandwidth of a station wagon full of tapes.
 %# 		-- Dr. Warren Jackson, Director, UTCS
-% $r->header_out( Location => '/Foundry/Project/Wiki/'.$QueueObj->Id.'/index.html');
+% $r->headers_out->{Location} = '/Foundry/Project/Wiki/'.$QueueObj->Id.'/index.html';
 % $r->status(301);
 % $m->abort(301);
 <%ATTR>

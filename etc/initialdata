@@ -295,13 +295,13 @@ loc("(Contact project admins if you don\'t want to receive mails in this project
 }
 
 {
-    my @Batch = @{$Ticket->TransactionBatch};
+    my @Batch = grep $_->BriefDescription, @{$Ticket->TransactionBatch} or die;
     foreach my $Transaction (grep {!$_->ContentObj} @Batch) {
-        $OUT .= "* " . $Transaction->Description . "\\n";
+        $OUT .= "* " . $Transaction->Description . "\n";
     }
     foreach my $Transaction (grep {$_->ContentObj} @Batch) {
-        $OUT .= "* " . $Transaction->Description . "\\n\\n";
-        $OUT .= $Transaction->ContentObj->Content . "\\n\\n";
+        $OUT .= "* " . $Transaction->Description . "\n\n";
+        $OUT .= $Transaction->ContentObj->Content . "\n\n";
     }
 }
 
@@ -1295,6 +1295,13 @@ foreach my $right (@Rights) {
                     'Name' => 'IntendedAudience',
                     'Description' => 'Intended Audience'
                   },
+                  {
+                    'Type' => 'FreeformSingle',
+                    'SortOrder' => '16',
+                    'Queue' => 'NewProject',
+                    'Name' => 'RedirectURL',
+                    'Description' => 'Homepage Redirection'
+                  }
                   {
                     'Type' => 'SelectResolution',
                     'Values' => [

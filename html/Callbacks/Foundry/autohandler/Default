@@ -3,9 +3,35 @@
 <%INIT>
 $RT::Foundry = 1;
 
+my $hostname = $r->hostname;
+if ($hostname ne $RT::WebHost and $hostname =~ /^(\w+)\Q.$RT::Host\E$/i) {
+    my $Origins = RT::Tickets->new($session{CurrentUser});
+    $Origins->LimitCustomField(
+	CUSTOMFIELD => 'UnixName',
+	QUEUE => 'NewProject',
+	VALUE => $1,
+    );
+
+    if ( $Origins->Count == 1) {
+	my $QueueObj = RT::Queue->new($session{CurrentUser});
+	if ($QueueObj->Load($Origins->First->CustomFieldValue('ProjectName')) and not $QueueObj->Disabled) {
+	    $m->comp(
+		"/Foundry/Elements/Redirect",
+		URL => $Origins->First->CustomFieldValue('RedirectURL') || "http://$RT::WebHost/Foundry/Project/?Queue=" . $QueueObj->Id
+	    );
+	    $m->abort;
+	}
+    }
+
+    $m->comp(
+	"/Foundry/Elements/Redirect",
+	URL => "http://$RT::WebHost/Foundry/"
+    );
+}
+
 unless (
     $RT::Reentrant == 1 or
-    $r->uri =~ m{^/REST/|^/Foundry/|^/Work/Tickets/Attachment/|\.css$} or
+    $r->uri =~ m{^/REST/|^/Foundry/|^/Work/Tickets/Attachment/} or
     eval { $session{CurrentUser}->UserObj->HasRight(
 	Right => 'SuperUser', Object => $RT::System
     ) }

@@ -2,7 +2,7 @@
 # $Revision: #15 $ $Change: 10088 $ $DateTime: 2004/02/18 00:22:05 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_10';
+$RTx::Foundry::VERSION = '0.00_11';
 
 1;
 
@@ -12,16 +12,12 @@ RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.00_10 of RTx::Foundry, released July 11,
-2004.
+This document describes version 0.00_11 of RTx::Foundry, released
+September 9, 2004.
 
 =head1 SYNOPSIS
 
 Not at the moment.  See L<http://rt.openfoundry.org/> for a demo.
-
-Currently, the only way to install RT Foundry is from the ports files in
-L<http://rt.openfoundry.org/Foundry/Project/Download/?Queue=OpenFoundry>,
-which requires a FreeBSD system to run on.
 
 =head1 DESCRIPTION
 

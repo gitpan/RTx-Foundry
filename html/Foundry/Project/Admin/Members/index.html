@@ -56,8 +56,11 @@
 % foreach (@InviteResult) {
 <tr><td colspan="4">* <% $_ %></td></tr>
 % }
-<tr><td class="tableTitle" width="10%"><nobr><&|/l&>Email</&></nobr></td>
-    <td bgcolor="white" colspan="3"><input name="InviteEmail" style="width: 100%" value="<% $InviteEmail %>"></td></tr>
+<tr><td class="tableTitle" width="10%"><nobr><&|/l&>Email</&></nobr><br><nobr><&|/l&>(one or more)</&></nobr></td>
+    <td bgcolor="white" colspan="3">
+%#    <input name="InviteEmail" style="width: 100%" value="<% $InviteEmail %>">
+    <textarea name="InviteEmail" style="width: 100%" rows=3><% $InviteEmail %></textarea>
+    </td></tr>
 <%DOC>
 <tr><td class="tableTitle" width="10%"><nobr><&|/l&>Invite Letter</&></nobr></td>
     <td bgcolor="white" colspan="3"><textarea name="InviteLetter" wrap="hard" cols="50" rows="4" style="width: 100%"><% $InviteLetter %></textarea></td></tr>
@@ -126,21 +129,26 @@ $QueueObj->CurrentUser($RT::SystemUser); # instant priv escalation!
 my $MyPrincipalId = $session{CurrentUser}->UserObj->PrincipalObj->Id;
 my @InviteResult;
 
-if ($IsAdmin and $ARGS{'Action-Invite'}) { INVITE: {
+use Email::Valid;
+use Email::Address;
+
+if ($IsAdmin and $ARGS{'Action-Invite'}) {
+  my @bad_email;
+  foreach my $obj (Email::Address->parse($InviteEmail)) { INVITE: {
+    push @bad_email, $obj;
     # First, make sure we have a valid email.
-    use Email::Valid;
-    $InviteEmail = Email::Valid->address( -address => $InviteEmail );
-    if (!$InviteEmail) {
-	push @InviteResult, loc("Invalid email address");
+    my $email = Email::Valid->address( -address => $obj->address );
+    if (!$email) {
+	push @InviteResult, loc("Invalid email address: [_1]", $obj);
 	last INVITE;
     }
 
     # Next, make sure that email does not already exist in the system.
     my $User = RT::User->new($RT::SystemUser);
-    $User->LoadByEmail( $InviteEmail );
+    $User->LoadByEmail( $email );
     if ($User->Id and $User->Privileged) {
 	($UserField, $UserOp, $UserString) = ('Name', '=', $User->Name);
-	push @InviteResult, loc("This email address already exists"),
+	push @InviteResult, loc("The email address [_1] already exists", $email),
 			    loc("Please use the form above to add this staff directly");
 	last INVITE;
     }
@@ -161,8 +169,8 @@ if ($IsAdmin and $ARGS{'Action-Invite'}) { INVITE: {
     }
     else {
 	$User->Create(
-	    Name => $InviteEmail,
-	    EmailAddress => $InviteEmail,
+	    Name => $email,
+	    EmailAddress => $email,
 	    Privileged => 0
 	);
     }
@@ -179,10 +187,13 @@ if ($IsAdmin and $ARGS{'Action-Invite'}) { INVITE: {
 	Requestor => [ $session{CurrentUser}->UserObj->Id ],
 	Owner => $User->Id,
     );
-    push @InviteResult, loc("Invitation sent to [_1]", $InviteEmail),
+    push @InviteResult, loc("Invitation sent to [_1]", $email),
 			'(' . loc("This invitation will expire in 14 days.") . ')';
-    $InviteEmail = $InviteRole = '';
-} }
+    pop @bad_email;
+  } }
+  $InviteRole = '' if !@bad_email;
+  $InviteEmail = join("\n", @bad_email);
+}
 elsif ($IsAdmin) {
     my ($code, $msg);
 

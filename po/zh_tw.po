@@ -1125,7 +1125,7 @@ msgstr ""
 "Commons所提供的 %1，但此僅供您作為參考之用。"
 
 msgid "Creative Commons License Wizard"
-msgstr "Creative Commons License Wizard"
+msgstr "Creative Commons 授權條款選擇指引"
 
 msgid "Other OSI Approved..."
 msgstr "其他 OSI 認可的授權..."
@@ -1150,4 +1150,13 @@ msgstr "若要訂閱這個論壇，請寄信到"
 
 msgid "To unsubscribe from this mailing list, send email to"
 msgstr "若要退訂這個論壇，請寄信到"
+
+msgid "Full-Text Search"
+msgstr "全文檢索"
+
+msgid "RedirectURL"
+msgstr "首頁轉址"
+
+msgid "Homepage Redirection"
+msgstr "首頁轉址"
 

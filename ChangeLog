@@ -1,5 +1,6 @@
-# $File: //depot/RT/osf/ChangeLog $
-# $Revision: #7 $ $Change: 9975 $ $DateTime: 2004/02/09 20:00:26 $
+[Changes for 0.00_11 - September 9, 2004]
+
+Snapshot release before refactoring into RT 3.3.
 
 [Changes for 0.00_10 - July 11, 2004]
 

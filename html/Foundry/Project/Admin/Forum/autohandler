@@ -66,7 +66,7 @@ our ($Get, $Post) = map {
 	    # Send out things verbatim
 	    $m->clear_buffer;
 	    $r->content_type($ua->ct);
-	    $ua->res->headers->scan(sub {$r->header_out(@_)});
+	    $ua->res->headers->scan(sub {$r->headers_out->{$_[0]} = $_[1]});
 	    $r->print($ua->res->content);
 	    $m->flush_buffer;
 	    $m->abort;

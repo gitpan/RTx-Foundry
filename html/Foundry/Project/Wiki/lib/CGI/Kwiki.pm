@@ -100,7 +100,7 @@ sub handler {
         $r->method('GET');
         $r->headers_in->unset('Content-length');
         $r->headers_out->{'Location'} = $html->{redirect};
-        $r->status(307);
+        $r->status(302);
         $r->send_http_header if $r->can('send_http_header');
     }
     else {

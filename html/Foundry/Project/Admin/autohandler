@@ -32,10 +32,13 @@ my $Map = [
     ''			    => 'Queue=' . $QueueObj->Id,
     $prefix		    => 'Basics',		# loc
     $prefix . "Members/"    => 'Members',		# loc
+    $prefix . "News/"      => 'News',		# loc
     $prefix . "Upload/"     => 'Release Files',		# loc
     $prefix . "Forum/"   => 'Forums',		# loc
     $prefix . "CustomField/"      => 'Tracker Fields',		# loc
+    $prefix . "Jobs/"      => 'Help Wanted',		# loc
     $prefix . "Stats/"      => 'Statistics',		# loc
+    $prefix . "ACL/"      => 'Access control',		# loc
 ];
 
 my $url = $r->uri;
