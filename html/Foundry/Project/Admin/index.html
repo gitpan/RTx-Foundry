@@ -35,7 +35,7 @@ if ($ARGS{'Action-Submit'}) {
     my ($ProjectName, $UnixName, $Rationale, $Description, $Platform,
 	$License, $Language, $Audience
     ) = @ARGS{
-	map "Ticket-$id-CustomField-".RT::CustomField->NameToId($_)."-Values",
+	map "Ticket-$id-CustomField-".RT::CustomField->NameToId($_, "NewProject")."-Values",
 	qw( ProjectName UnixName Rationale PublicDescription Platform
 	    License ProgrammingLanguage IntendedAudience )
     };

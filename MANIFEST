@@ -35,6 +35,7 @@ html/Foundry/Home/Elements/ShowTerm
 html/Foundry/Home/Guest/autohandler
 html/Foundry/Home/Guest/Elements/Login
 html/Foundry/Home/Guest/Elements/NewPassword
+html/Foundry/Home/Guest/Elements/ShowRegister
 html/Foundry/Home/Guest/index.html
 html/Foundry/Home/Guest/Recover.html
 html/Foundry/Home/Guest/Register.html
@@ -69,6 +70,7 @@ html/Foundry/Icons/unknown.png
 html/Foundry/index.html
 html/Foundry/layout.txt
 html/Foundry/Logout.html
+html/Foundry/Policy/index.html
 html/Foundry/Project/Admin/autohandler
 html/Foundry/Project/Admin/CustomField/index.html
 html/Foundry/Project/Admin/Forum/autohandler
@@ -130,6 +132,7 @@ html/Foundry/Project/Tracker/List
 html/Foundry/Project/Tracker/SelectOwner
 html/Foundry/Project/Tracker/SelectSearch
 html/Foundry/Project/Tracker/SelectStatus
+html/Foundry/Project/Tracker/Tabs
 html/Foundry/Project/Tracker/TicketRow
 html/Foundry/Project/Tracker/Update.html
 html/Foundry/Project/Wiki/autohandler
@@ -767,6 +770,7 @@ var/kwiki/.global/metabase/protected/HomePage
 var/kwiki/.global/metabase/protected/NewsItem1
 var/kwiki/.global/metabase/protected/NewsItem2
 var/kwiki/.global/metabase/protected/NewsItem3
+var/kwiki/.global/metabase/public/.exists
 var/kwiki/.global/template/basic_footer.html
 var/kwiki/.global/template/blog_entry.html
 var/kwiki/.global/template/blog_footer.html

@@ -8,7 +8,15 @@ use Digest::MD5;
 use HTTP::Cookies;
 
 if (!$RT::SympaSecret) {
-    open my $conf, $RT::SympaConfig ||= "/etc/sympa.conf" or die $!;
+    foreach my $dir (qw(
+        /etc/sympa.conf
+        /usr/local/etc/sympa.conf
+        /home/sympa/etc/sympa.conf
+    )) {
+        $RT::SympaConfig = $dir if -e $dir and !-e $RT::SympaConfig;
+    }
+
+    open my $conf, $RT::SympaConfig or die $!;
     while (<$conf>) {
 	$RT::SympaURL = $1 if /^\s*wwsympa_url\s+(.+?)\s*$/;
 	$RT::SympaSecret = $1 if /^\s*cookie\s+(.+?)\s*$/;

@@ -19,15 +19,6 @@ Set($NewProjectURL, "http://$CVSHost/newproject.pl?Name=");
 
 @EmailInputEncodings = qw(utf-8 big5 gb2312);
 
-Set($PAMDatabaseType, 'Pg');
-Set($PAMDatabaseHost, 'ssh.openfoundry.org');
-Set($PAMDatabaseUser, 'pgsql');
-Set($PAMDatabasePassword, 'pgsql');
-Set($PAMDatabaseName, 'system');
-Set($PAMDatabaseTable, 'auth');
-Set($PAMDatabaseUserColumn, 'id');
-Set($PAMDatabasePasswordColumn, 'passwd');
-
 Set($Organization, $rtname);
 Set($WebBaseURL, "http://$WebHost");
 Set($TicketBaseURI, "fsck.com-rt://$RT::rtname/ticket/");

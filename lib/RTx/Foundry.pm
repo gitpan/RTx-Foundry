@@ -1,14 +1,19 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #6 $ $Change: 9443 $ $DateTime: 2003/12/25 15:23:06 $
+# $Revision: #8 $ $Change: 9653 $ $DateTime: 2004/01/10 13:49:49 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_04';
+$RTx::Foundry::VERSION = '0.00_05';
 
 1;
 
 =head1 NAME
 
 RTx::Foundry - Base classes for the OpenFoundry system
+
+=head1 VERSION
+
+This document describes version 0.00_05 of RTx::Foundry, released
+January 10, 2004.
 
 =head1 SYNOPSIS
 
@@ -272,7 +277,7 @@ With collaborations from:
 
 =head1 COPYRIGHT
 
-Copyright 2003 by Industrial Development Bureau,
+Copyright 2003, 2004 by Industrial Development Bureau,
 Taiwan Ministry of Economic Affairs
 
 (Except where explicitly superseded by other copyright notices)

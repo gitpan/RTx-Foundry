@@ -15,12 +15,12 @@ while (my $Item = $Tickets->Next) {
     my $transactions = $Item->Transactions;
     while (my $trans = $transactions->Next) {
 	my $attachments = $trans->Attachments;
-	$attachments->Columns( qw( Id Filename ContentType Headers Subject ) );
-	my $subject = $trans->Subject;
+	# $attachments->Columns( qw( Id Filename ContentType Headers Subject ) );
+	my $subject;
 	while (my $attach = $attachments->Next) {
+	    $subject ||= $attach->Subject;
 	    next unless ($attach->Filename);
-	    # most recent at the top
-	    # unshift (@{$documents{$attach->Filename}}, $attach);
+
 	    $documents{$attach->Filename} = $attach;
 	    $description{$attach->Id} = $subject;
 	    $url{$attach->Id} = join(

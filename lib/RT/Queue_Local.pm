@@ -23,4 +23,20 @@ sub OriginObj {
     $Ticket;
 }
 
+sub CustomFields {
+    my $self = shift;
+
+    my $cfs = RT::CustomFields->new( $self->CurrentUser );
+    if ( $self->CurrentUserHasRight('SeeQueue') ) {
+	if ($self->Disabled and $self->Description eq 'Open Foundry System') {
+	    $cfs->LimitToQueue( $self->Id );
+	}
+	else {
+	    $cfs->LimitToGlobalOrQueue( $self->Id );
+	}
+    }
+    return ($cfs);
+}
+
+
 1;

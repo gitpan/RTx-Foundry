@@ -1,6 +1,6 @@
 #line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.2/Module/Install/RTx.pm"
 # $File: //member/autrijus/Module-Install-RTx/lib/Module/Install/RTx.pm $ $Author: autrijus $
-# $Revision: #7 $ $Change: 9412 $ $DateTime: 2003/12/25 09:13:55 $ vim: expandtab shiftwidth=4
+# $Revision: #8 $ $Change: 9428 $ $DateTime: 2003/12/25 13:19:26 $ vim: expandtab shiftwidth=4
 
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
@@ -61,10 +61,19 @@ sub RTx {
     print "./$_\t=> $path{$_}\n" for sort keys %path;
     my $args = join(', ', map "q($_)", %path);
 
-    $self->postamble(<< ".");
+    my $postamble = << ".";
 install ::
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
+
+    if ($path{var} and -d $RT::MasonDataDir) {
+        my ($uid, $gid) = (stat($RT::MasonDataDir))[4, 5];
+        $postamble .= << ".";
+\t\$(NOECHO) chown -R $uid:$gid $path{var}
+.
+    }
+
+    $self->postamble($postamble);
 
     if (-e 'etc/initialdata') {
         print "For first-time installation, type 'make initialize-database'.\n";
@@ -80,4 +89,4 @@ initialize-database ::
 
 __END__
 
-#line 154
+#line 163

@@ -1,5 +1,11 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #4 $ $Change: 9443 $ $DateTime: 2003/12/25 15:23:06 $
+# $Revision: #5 $ $Change: 9651 $ $DateTime: 2004/01/10 13:46:44 $
+
+[Changes for 0.00_05 - January 10, 2003]
+
+Fix initial permissions for Kwiki data.
+
+Fix initialization problems with SetAttribute calls.
 
 [Changes for 0.00_04 - December 25, 2003]
 

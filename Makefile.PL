@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # $File: //depot/RT/osf/Makefile.PL $ $Author: autrijus $
-# $Revision: #3 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
+# $Revision: #4 $ $Change: 9651 $ $DateTime: 2004/01/10 13:46:44 $
 
 use 5.008;
 use inc::Module::Install;
@@ -30,10 +30,11 @@ license	('gpl');
 requires(
 #   'RTx::Attribute'	=> 0,
 #   'RTx::TabbedUI'	=> 0,
-    'WWW::Mechanize'	=> 0,
-    'Email::Valid'	=> 0,
-    'MIME::Base64'	=> 0,
-    'HTML::Mason'	=> 0,
+    'WWW::Mechanize'	    => 0,
+    'Email::Valid'	    => 0,
+    'MIME::Base64'	    => 0,
+    'HTML::Mason'	    => 0,
+    'DBIx::SearchBuilder'   => 0.96,
 );
 
 &WriteAll( check_nmake => 0, sign => 1 );
