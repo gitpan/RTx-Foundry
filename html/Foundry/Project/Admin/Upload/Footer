@@ -1,7 +1,11 @@
 %# Any sufficiently advanced bug is indistinguishable from a feature.
 %#                -- Rich Kulawiec
 <hr>
+% if ($Parent and $Parent->Id) {
 <a href="?Queue=<% $Queue %>;Release=<% $Parent->Id %>">&lt;&lt; <&|/l&>Back to Previous</&></a>
+% } else {
+<a href="?Queue=<% $Queue %>">&lt;&lt; <&|/l&>Back to Previous</&></a>
+% }
 <%ARGS>
 $Parent => undef
 $Queue

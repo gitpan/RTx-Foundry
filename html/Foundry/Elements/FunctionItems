@@ -8,7 +8,7 @@
 % } else {
 <h3><&|/l, loc(lc($Function)) &>Post a [_1] item</&></h3>
 <& /Work/Tickets/Create.html,
-    Queue => "Project$FunctionItems",
+    Queue => "Project$Function",
     NoUI => 1,
     NoCF => { Attachments => 1 } &>
 % }

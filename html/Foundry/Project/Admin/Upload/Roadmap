@@ -16,7 +16,8 @@
 <td><% eval { $item->StartsObj->AsDate } %></td>
 </tr>
 % }
-</td>
+</tbody>
+</table>
 <%ARGS>
 $Tickets
 </%ARGS>

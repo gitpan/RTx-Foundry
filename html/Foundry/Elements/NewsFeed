@@ -1,6 +1,11 @@
 %# If this fortune didn't exist, somebody would have invented it.
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
-<tr><td class="tableTitle"><a href="<% $URL %>"><img src="/Foundry/Icons/rss.png" border="0" align="right"></a><% $Title %></td></tr>
+<tr><td class="tableTitle">
+<table border="0" cellspacing="0" cellpadding="0" width=100%>
+<tr><td width="36">&nbsp;</td>
+<td align="center"><% $Title %></td>
+<td width="36"><a href="<% $URL %>"><img alt="RSS" title="<&|/l&>RSS Feed</&>" src="/Foundry/Icons/rss.png" border="0" align="right"></a></td></tr>
+</table></td></tr>
 % eval { $rss->parsefile($file) };
 % if ($@)
 % { unlink $file; 

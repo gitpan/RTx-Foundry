@@ -9,7 +9,8 @@ Set($Host, $ENV{HOST} || 'openfoundry.org');
 
 Set($WebHost, $ENV{WEB_HOST} || "rt.$Host");
 Set($EmailHost, $ENV{EMAIL_HOST} || "users.$Host");
-Set($DatabaseHost, $ENV{DB_HOST} || "ssh.$Host");
+Set($DatabaseHost, $ENV{DB_HOST} || "db.$Host");
+Set($DatabaseName, $ENV{DB_NAME} || 'rt3');
 Set($DatabasePort, $ENV{DB_PORT} || '');
 
 Set($DatabaseType, $ENV{DB_TYPE} || 'Pg');

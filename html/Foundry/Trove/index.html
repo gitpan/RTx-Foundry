@@ -3,7 +3,7 @@
 	<tr>
 % my $Callback;
 % if (@$Map2) {
-%     $Callback = sub { $m->comp('Tabs2', Name => 'Map2', Map => $Map2, URL => "?Type=$Type&Value=" . CGI::Util::escape($Value) ) };
+%     $Callback = sub { $m->comp('Tabs2', Name => 'Map2', Map => $Map2, URL => "?Type=$Type;Value=" . CGI::Util::escape($Value) ) };
 % } else {
 %     $Queues->LimitToEnabled
 % }
@@ -15,7 +15,7 @@
 % if ($Type eq 'Overview' or ($Type and $Value)) {
     <& List, List => $Queues, Begin => $Begin, ARGS => \%ARGS &>
 % } else {
-<&|/l&>Please select one of the category types above.</&>
+<&|/l&>Please select one of the category types first.</&>
 % }
 		    </td>
 		</tr>
@@ -69,8 +69,10 @@ while (my $V = $CFValues->Next) {
     );
 
     require CGI::Util;
-    if ($Values->Count) {
-	push @$Map2, "?Type=$Type&Value=" . CGI::Util::escape($V->Name), loc($V->Description) . '(' . $Values->Count . ')';
+    if ($Values->Count or 1) {
+        my $descr = loc($V->Description);
+        $descr =~ s/\.\.\.$//;
+	push @$Map2, "?Type=$Type;Value=" . CGI::Util::escape($V->Name), $descr . '(' . $Values->Count . ')';
 	$Value ||= $V->Name;
     }
 

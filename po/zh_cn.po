@@ -918,7 +918,7 @@ msgstr "您的项目已送交 %1 管理员处理。"
 
 #: html/Foundry/Home/Guest/autohandler:19
 msgid "Your username or password is incorrect"
-msgstr ""
+msgstr "您的帐号或口令有误"
 
 #: html/Foundry/Project/Tracker/FilterStatus:6
 msgid "all"
@@ -2273,3 +2273,6 @@ msgstr "中文-语言处理"
 
 msgid "Other-Miscellaneous"
 msgstr "其它-未分类"
+
+msgid "Please select one of the category types first."
+msgstr "请先选择一项分类。"

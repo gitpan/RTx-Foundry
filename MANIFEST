@@ -1,5 +1,6 @@
 ChangeLog
 COPYING
+etc/create_topics.pl
 etc/devwww.conf
 etc/foundry.conf.sample
 etc/httpd.conf.mod_perl2

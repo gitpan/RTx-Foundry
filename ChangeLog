@@ -1,8 +1,20 @@
+[Changes for 0.00_20 - November 17, 2004]
+
+DB_NAME is finally recognized correctly this time.
+
+Added References and Citations functional queues.
+
+Trove UI cleanup; all categories are now shown by default.
+
+Subversion authentication now works correctly for ModPerl2.
+
+Various other UI cleanups.
+
 [Changes for 0.00_19 - November 16, 2004]
 
 Switched to the much more robust XML::Simple format for initialdata.
 
-RT_NAME is now a config parameter.
+DB_NAME is now a config parameter.
 
 More l10n, UI and accountability fixes.
 

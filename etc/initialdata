@@ -1169,6 +1169,85 @@ __DATA__
     <Type>LabelContent</Type>
   </CustomFields>
   <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Primary Authors</Description>
+    <Name>CitationAuthors</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Project Title</Description>
+    <Name>CitationTitle</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>License</Description>
+    <Name>CitationLicense</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>href</HTMLAttr>
+    </Attributes>
+    <Description>URL</Description>
+    <Name>CitationURL</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Release Date</Description>
+    <Name>CitationDate</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>FreeformDate</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <OnCreate>hidden</OnCreate>
+      <OnUpdate>hidden</OnUpdate>
+    </Attributes>
+    <Description>Content</Description>
+    <Name>CitationContent</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Source</Description>
+    <Name>ReferenceSource</Name>
+    <Queue>ProjectReferences</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <OnCreate>hidden</OnCreate>
+      <OnUpdate>hidden</OnUpdate>
+    </Attributes>
+    <Description>Subject</Description>
+    <Name>ReferenceSubject</Name>
+    <Queue>ProjectReferences</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
     <Description>Release Version</Description>
     <Name>Version</Name>
     <Queue>ProjectEvents</Queue>
@@ -1273,6 +1352,16 @@ __DATA__
     <Description>Open Foundry System</Description>
     <Disabled>1</Disabled>
     <Name>ProjectJobs</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectCitations</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectReferences</Name>
   </Queues>
   <ScripActions>
     <Argument>Owner,Cc,AdminCc</Argument>

@@ -20,9 +20,9 @@
 %   if ($k eq $Skip) {
 	<% $label %>
 %   } elsif ($k eq $Show or $canon->($k) eq $canon->($URL)) {
-	<a style='color: black; font-weight: bold' href="<% $Show ? (($ARGS{url} || $url) . "?Show=$k") : (($k=~/\?/) ? "$k&" : "$k?") %><% $ARGS{Begin} ? "&Begin=$ARGS{Begin}" : '' %><% $ARGS{User} ? "&User=$ARGS{User}" : '' %><% $ARGS{Group} ? "&Group=$ARGS{Group}" : '' %><% $postfix %>"><% $label %></a> <% $sum %>
+	<a style='color: black; font-weight: bold' href="<% $Show ? (($ARGS{url} || $url) . "?Show=$k") : (($k=~/\?/) ? "$k;" : "$k?") %><% $ARGS{Begin} ? ";Begin=$ARGS{Begin}" : '' %><% $ARGS{User} ? ";User=$ARGS{User}" : '' %><% $ARGS{Group} ? ";Group=$ARGS{Group}" : '' %><% $postfix %>"><% $label %></a> <% $sum %>
 %  } else {
-	<a style='text-decoration: underline' href="<% $Show ? (($ARGS{url} || $url) . "?Show=$k") : (($k=~/\?/) ? "$k&" : "$k?") %><% $ARGS{Begin} ? "&Begin=$ARGS{Begin}" : '' %><% $ARGS{User} ? "&User=$ARGS{User}" : '' %><% $ARGS{Group} ? "&Group=$ARGS{Group}" : '' %><% $postfix %>"><% $label %></a> <% $sum %>
+	<a style='text-decoration: underline' href="<% $Show ? (($ARGS{url} || $url) . "?Show=$k") : (($k=~/\?/) ? "$k;" : "$k?") %><% $ARGS{Begin} ? ";Begin=$ARGS{Begin}" : '' %><% $ARGS{User} ? ";User=$ARGS{User}" : '' %><% $ARGS{Group} ? ";Group=$ARGS{Group}" : '' %><% $postfix %>"><% $label %></a> <% $sum %>
 %  }
 </nobr></li>
 % }

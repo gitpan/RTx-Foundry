@@ -27,7 +27,7 @@ sub RTx {
     my $prefix = $ENV{PREFIX};
     @ARGV = grep { /PREFIX=(.*)/ ? (($prefix = $1), 0) : 1 } @ARGV;
 
-    if ($prefix) {
+    if ($prefix and 0) {
         $RT::LocalPath = $prefix;
         $INC{'RT.pm'} = "$RT::LocalPath/lib/RT.pm";
     }
