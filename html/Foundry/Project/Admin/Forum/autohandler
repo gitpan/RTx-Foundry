@@ -26,6 +26,12 @@ if (!$RT::SympaSecret) {
 my $u = $session{'CurrentUser'}->UserObj;
 my $email = $u->Name . "\@$RT::EmailHost";
 
+# XXX - Also subscribe with this (no_mail) to avoid bounces?
+#       we need also to update the no_mail subscriptions in sympa
+#       whenever the user changes her email address.
+#       Is there a better way to it?
+# my $email = $u->EmailAddress;
+
 my $md5 = Digest::MD5->new;
 $md5->add($email . $RT::SympaSecret);
 $md5 = substr( unpack("H*", $md5->digest) , -8 );
@@ -73,6 +79,7 @@ our ($Get, $Post) = map {
 	$m->notes( RV => $rv );
 
 	$rv =~ s/(\bACTION=")\/wws(".*>)/$1$RT::BaseURL$2/gi;
+	$rv =~ s{\b\('(/wws[^']*')}{('$RT::BaseURL$1}gi;
 	$rv =~ s{\bHREF="(/wws[^>]*>)}{<A HREF="$RT::BaseURL$1}gi;
 	$rv =~ s{\bACTION="(/wws[^>]*>)}{ACTION="$RT::BaseURL$1}gi;
 	$rv =~ s{\bHREF="(?! )([^/][^>]*>)}{<A HREF="$RT::BaseURL$base$1}gi;
@@ -91,7 +98,7 @@ our ($Get, $Post) = map {
 
 my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
 $tag =~ s/.*-//;
-$tag = 'us' if $tag eq 'en';
+$tag = 'us' unless $tag =~ /^(?:cn|tw)$/;
 $Post->( "/", { action => 'set_lang', lang => $tag } );
 </%SHARED>
 <%ATTR>

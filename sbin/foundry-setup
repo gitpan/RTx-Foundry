@@ -60,12 +60,12 @@ Base URL for the web server.  Usually "http://WEB_HOST" will do.
 SVNROOT
 
 Base directory for Subversion repositories.  Note that the actual
-directory used for Foundry will be $SVNROOT/foundry-repos/.
+directory used for OpenFoundry will be $SVNROOT/foundry-repos/.
 
 CVSROOT
 
 Base directory for CVS repositories.  Note that the actual
-directory used for Foundry will be $CVSROOT/foundry-repos/.
+directory used for OpenFoundry will be $CVSROOT/foundry-repos/.
 
 CVSUSER
 
@@ -175,7 +175,7 @@ sub sympa_conf {
     return unless -e "/usr/local/etc/sympa.conf";
     open my $SYMPA, '>>', '/usr/local/etc/sympa.conf';
     print $SYMPA qq(
-# Foundry-specific settings
+# OpenFoundry-specific settings
 dark_color      #0F6080
 selected_color  #0F6080
 light_color     #D3DCE3

@@ -77,6 +77,9 @@ my $src = eval {
 my $checkin = loc('n/a');
 $checkin = ($1 - 1) if $src =~ /of revision (\d+)/;
 </%INIT>
+<%ATTR>
+AutoFlush => 0
+</%ATTR>
 <%ARGS>
 $QueueObj
 </%ARGS>

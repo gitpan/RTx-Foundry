@@ -1,0 +1,43 @@
+<script language="javascript"><!--
+
+function foundry_license_check (item) {
+    var t0 = item.parentNode.parentNode;
+    var t1 = t0.nextSibling;
+    if (t1.tagName != 'TR') { t1 = t1.nextSibling; }
+    var t2 = t1.nextSibling;
+    if (t2.tagName != 'TR') { t2 = t2.nextSibling; }
+
+    var s0 = t0.style;
+    var s1 = t1.style;
+    var s2 = t2.style;
+
+    var i1 = t1.getElementsByTagName('select')[0];
+    var i2 = t2.getElementsByTagName('input')[0];
+
+    if (item.value.indexOf("...") >= 0) {
+	s1.display = s0.display;
+	s2.display = s0.display;
+    }
+    else if (item.value.indexOf("!") >= 0) {
+	s1.display = 'none';
+	s2.display = 'none';
+	i1.value = i2.value = '';
+    }
+    else {
+	s1.display = 'none';
+	s2.display = s0.display;
+	i1.value = '';
+    }
+}
+
+{
+    var fields = document.getElementsByTagName('select');
+    for (var i = 0 ; i < fields.length ; i++) {
+	var txt = fields[i].getAttribute('onchange');
+	if (txt) {
+	    foundry_license_check(fields[i]);
+	}
+    }
+}
+
+</script>

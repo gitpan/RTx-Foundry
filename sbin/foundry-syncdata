@@ -1,6 +1,5 @@
 #!/usr/local/bin/perl
-# $File: //depot/RT/osf/sbin/foundry-syncdata $ $Author: autrijus $
-# $Revision: #11 $ $Change: 10131 $ $DateTime: 2004/02/18 08:48:36 $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 5703 2004-06-21T06:24:52.405226Z autrijus  $
 
 use strict;
 use FindBin;
@@ -29,6 +28,9 @@ my ($cvs_base) = grep { defined and -d } (
     '/home/cvs',
     '/usr/depot/cvsrepo'
 ) or die "Cannot find CVSROOT";
+
+my $www_user = $ENV{WWWUSER} || 'www';
+my $www_group = $ENV{WWWGROUP} || 'www';
 
 $svn_base .= "/foundry-repos";
 $cvs_base .= "/foundry-repos";
@@ -121,7 +123,10 @@ foreach my $name (@{$projects||[]}) {
     mkdir $cvs_name unless -d $cvs_name;
     chmod(0777, $cvs_name);
 
-    system("svnadmin", "create", $svn_name) unless -d $svn_name;
+    unless ( -d $svn_name )
+    {  system("svnadmin", "create", $svn_name);
+       system("chown", "-R", "$www_user:$www_group", $svn_name);
+    }
     
     my $_start_commit = "$svn_name/hooks/start-commit";
     my $_pre_revprop_change = "$svn_name/hooks/pre-revprop-change";

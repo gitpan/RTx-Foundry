@@ -1,6 +1,5 @@
 #!/usr/local/bin/perl
-# $File: //depot/RT/osf/sbin/foundry-cvs2svn $ $Author: autrijus $
-# $Revision: #10 $ $Change: 10152 $ $DateTime: 2004/02/20 03:56:34 $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-cvs2svn 5703 2004-06-21T06:24:52.405226Z autrijus  $
 
 use strict;
 use FindBin;
@@ -41,7 +40,17 @@ chdir $svn_base;
 foreach my $dir (grep -d, <$cvs_base/*>) {
     $dir =~ s!.*/!!;
     next if $dir =~ /CVSROOT/;
-    next unless -d "$cvs_base/$dir" and glob("$cvs_base/$dir/*");
+    next unless -d "$svn_base/$dir";
+	# if the svn repository doesn't exist, skip
+
+    my @list_f = glob("$cvs_base/$dir/*"); # use list context to force glob() stateless!!!
+    if ( $#list_f == -1 )
+    {	my $poke_svn = `/usr/local/bin/svnlook youngest $svn_base/$dir`;
+	# poke the svn repository
+	print $dir, "\t", $poke_svn , $/;
+	next if $poke_svn > 0;
+	# if the initialize layout done, next 
+    }
 
     print $dir, $/;
     system("chown", "cvs", "$cvs_base/$dir");

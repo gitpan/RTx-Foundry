@@ -2,7 +2,7 @@
 # $Revision: #15 $ $Change: 10088 $ $DateTime: 2004/02/18 00:22:05 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.01';
+$RTx::Foundry::VERSION = '0.00_10';
 
 1;
 
@@ -12,8 +12,8 @@ RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.01 of RTx::Foundry, released
-March 28, 2004.
+This document describes version 0.00_10 of RTx::Foundry, released July 11,
+2004.
 
 =head1 SYNOPSIS
 
@@ -25,9 +25,19 @@ which requires a FreeBSD system to run on.
 
 =head1 DESCRIPTION
 
-The B<RT Foundry> project is the code behind Taiwan's B<OSSF> initiative,
-as part of the Free Software Promotion Project, executed by the Institute of
+The RT Foundry project is the code behind Taiwan's B<OSSF> initiative,
+as part of the Free Software Promotion Project executed by the Institute of
 Information Science, Academia Sinica (IIS).
+
+The initial goal of RT Foundry is to become the leading project in
+Taiwan to accumulate experience and knowledge of free software and open
+source code, and to establish a software program development website that
+can become a foundation platform for promoting free software. 
+
+The project will also organize local workshops and forums, and publish
+documents such as website manuals, translated terms and vocabulary,
+information on local free software talents and community events,
+comparison of common free software licenses, and Free Software FAQ. 
 
 =head1 DESIGN
 
@@ -36,7 +46,7 @@ Chinese in due time.
 
 =head2 Overview
 
-What is "RT Foundry"?
+What is RT Foundry?
 
  - Decentralized development environment
  - Modular services
@@ -226,7 +236,7 @@ Current status
   - RTx::Foundry
   - RTx::TabbedUI
   - RTx::Report
- - FreeBSD port (www/rtfoundry/) imminent
+ - FreeBSD port (www/openfoundry/) imminent
 
 Future Plans
 
@@ -239,7 +249,7 @@ Future Plans
 
 =head1 SEE ALSO
 
-RTx::Foundry Demo: L<http://rt.openfoundry.org/>
+RT Foundry Demo: L<http://rt.openfoundry.org/>
 
 OSSF Website: L<http://www.openfoundry.org/en/>
 
@@ -262,15 +272,15 @@ This project is sponsored by:
 Implemented by:
     OurInternet, Inc.
 
-Based on works contributed by:
+Based on works contributed from:
     104 Technology, Inc.
 
-In collaboration with:
-    Best Practical Solutions, LLC.
+With collaborations from:
+    Best Practical, LLC.
 
 =head1 COPYRIGHT
 
-Copyright 2004 by Academia Sinica, Taiwan.
+Copyright 2003, 2004 by Academia Sinica, Taiwan.
 
 (Except where explicitly superseded by other copyright notices)
 

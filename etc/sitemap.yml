@@ -1,9 +1,9 @@
 # $File: //depot/RT/osf/etc/sitemap.yml $ $Author: autrijus $
 # $Revision: #1 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
-# RT Foundry Site Map
+# OpenFoundry Site Map
 Home:
   - Announcements
-  - RT Foundry NewsLetter
+  - OpenFoundry NewsLetter
   - Foundry News
   - Statistics
   - Top Downloads

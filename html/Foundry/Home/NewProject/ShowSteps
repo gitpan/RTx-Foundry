@@ -5,6 +5,8 @@
 my @Steps = (
     'Term of Use Agreement',			# loc
     'Registration Info',			# loc
+    'Code License',	# loc
+    'Content License',     # loc
     'Completing first-time registration',	# loc
 );
 

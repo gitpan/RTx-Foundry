@@ -15,6 +15,7 @@
           <td valign="top"> 
 	    <& ShowSteps, Step => $Step &>
 % if ($Step == 0) {
+%     delete $session{NewProject};
 	    <& /Foundry/Home/Elements/ShowTerm, Template => 'TermOfProject' &>
 % } else {
 %	    foreach my $error (@Error) {
@@ -22,7 +23,40 @@
 %	    }
             <table width="100%" border="0" cellspacing="0" cellpadding="10">
 % if ($ARGS{id}) {
-%     $m->scomp('/Work/Tickets/Display.html', Queue => 'NewProject', %ARGS);
+%   if ($Step == 2) {
+		<input type="hidden" name="Step" value="2">
+		<input type="hidden" name="id" value="new">
+
+<p>
+<&|/l&>In this step, you will choose free/open source software license, under which the code (including source code and object code) of your project will be licensed. If you'd like to multiple-license your project, please fill in the license you'd like to choose in the "other" column. If your project contains no code, please click on "project contains no code".</&>
+
+<p>
+<&|/l&>In order to eliminate the possible legal disputes, please let us remind you that you attach a copy of the license that is chosen for the very version you're releasing when you release the project.</&>
+
+<p>
+% my $olw_link = '<a href="#" onclick="'.$m->scomp('/Edit/Elements/NewWindow', 'http://gnu.iis.sinica.edu.tw/ossf/license_wizard.php?lang='.$session{CurrentUser}->LanguageHandle->language_tag, 700, 560).'">';
+<&|/l, $olw_link.loc("OSSF License Wizard").'</a>' &>If you're not sure which free/open source software license you'd like to adopt, you might also like to utilize our [_1]. Please note that the suggestion provided by the Wizard is for your reference only.</&>
+
+                <& EditCustomFields, %{ $DualCFs{$Step} } &>
+%   } elsif ($Step == 3) {
+		<input type="hidden" name="Step" value="3">
+		<input type="hidden" name="id" value="new">
+
+<p>
+<&|/l&>In this step, you will choose a open content license, under which the content (eg. the documentation of your code, graphs, pictures, etc.), other than the code, of your project will be licensed. If you'd like to multiple-license your project, please fill in the license you'd like to choose in the "other" column. If your project contains only code, please click on "project contains only code".</&>
+
+<p>
+<&|/l&>In order to eliminate the possible legal disputes, please let us remind you that you attach a copy of the license that is chosen for the very version you're releasing when you release the project.</&>
+
+<p>
+% my $ccw_link = q(<a href="#" onclick="window.open('http://creativecommons.org/license/', '', 'left='+((screen.width-700)/2)+',top='+((screen.height-560)/2)+',width=700,height=560,resizable=no, scrollbars=yes,toolbar=no,location=no,status=no,menubar=no,modal=yes');">);
+<&|/l, $ccw_link.loc('Creative Commons License Wizard').'</a>' &>If you're not sure which open content license you'd like to adopt, you might also like to utilize the [_1]. Please note that the suggestion provided by the wizard is for your reference only.</&>
+
+                <& EditCustomFields, %{ $DualCFs{$Step} } &>
+%   } else {
+%      my $args = $session{NewProject};
+%      $args->{id} = 'new';
+%      $m->scomp('/Work/Tickets/Display.html', Queue => 'NewProject', %$args);
               <tr> 
                 <td class="tableEmboss" height="400" align="left" valign="top">
 <&|/l, $RT::Organization&>Your project has been submitted to the [_1] administrators.</&>
@@ -31,9 +65,10 @@
 <&|/l, $RT::Organization&>Thank you for choosing [_1].</&>
 		</td></tr>
 	    </table>
+%   }
 % } else {
 		<input type="hidden" name="Step" value="1">
-		<& /Work/Tickets/Create.html, Queue => 'NewProject', NoUI => 1, Subject => 'New Project Registration', %ARGS, NoCF => { Notes => 1, Attachments => 1 }, Loc => 1 &>
+		<& /Work/Tickets/Create.html, SubmitText => 'Next Step', Queue => 'NewProject', NoUI => 1, Subject => 'New Project Registration', %ARGS, NoCF => { map +($_ => 1), qw( Notes Attachments License LicenseOSI LicenseOther ContentLicense ContentLicenseCC ContentLicenseOther ) }, Loc => 1 &>
 % }
 
 % }
@@ -54,20 +89,22 @@ if ($Step == 1 and $Action eq 'Disagree') {
     return;
 }
 
-my ($ProjectName, $UnixName, $Rationale, $Description, $Platform,
-    $License, $Language, $Audience
-) = @ARGS{
-    map "CustomField-".RT::CustomField->NameToId($_, 'NewProject')."-Values",
-    qw( ProjectName UnixName Rationale PublicDescription Platform
-	License ProgrammingLanguage IntendedAudience )
-};
-
 my @Error;
+my %DualCFs = (
+    2 => { CF => ['License', 'LicenseOSI', 'LicenseOther'], Descr => ['Licensing your code as' ] },
+    3 => { CF => ['ContentLicense', 'ContentLicenseCC', 'ContentLicenseOther'], Descr => ['Licensing your content as' ] },
+);
 
-if ($ARGS{id}) {
+if ($ARGS{id} and $Step == 1) {
+    my ($ProjectName, $UnixName, $Rationale, $Description, $Platform, $Language, $Audience) = @ARGS{
+        map "CustomField-".RT::CustomField->NameToId($_, 'NewProject')."-Values",
+        qw( ProjectName UnixName Rationale PublicDescription Platform
+            ProgrammingLanguage IntendedAudience )
+    };
+
     push @Error, loc('Missing mandatory fields')
 	unless $ProjectName and $UnixName and $Rationale and
-	       $Description and $Platform and $License and
+	       $Description and $Platform and
 	       $Language and $Audience;
 
     push @Error, loc('ID must be 3-15 characters of lower-case letters or digits, beginning with a letter')
@@ -80,6 +117,29 @@ if ($ARGS{id}) {
     $Step = 2 if $ARGS{id};
 }
 
+if ($Step == 2 or $Step == 3) {
+    if (my $val = $ARGS{
+	"CustomField-".
+	RT::CustomField->NameToId($DualCFs{$Step}{CF}[0], 'NewProject').
+	"-Values"
+    }) {
+	if ($val !~ /\.\.\.$/ or $ARGS{
+	    "CustomField-".
+	    RT::CustomField->NameToId($DualCFs{$Step}{CF}[1], 'NewProject').
+	    "-Values"
+	}) {
+	    my $args = $session{NewProject};
+	    $args->{$_} = $ARGS{$_} for keys %ARGS;
+	    $session{NewProject} = $args;
+	    $Step++;
+	}
+    }
+    else {
+	my $args = $session{NewProject};
+	$args->{$_} = $ARGS{$_} for keys %ARGS;
+	$session{NewProject} = $args;
+    }
+}
 </%INIT>
 <%ARGS>
 $user => ""

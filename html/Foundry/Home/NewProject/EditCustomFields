@@ -1,0 +1,55 @@
+%# "The last time somebody said, `I find I can write much better with a
+%# word processor.', I replied, `They used to say the same thing about drugs.'
+%#                 -- Roy Blount, Jr.
+<table cellpadding=0 cellspacing=2 border=0>
+% foreach my $idx (0 .. $#CF) {
+<tr valign="top">
+    <td width=65><nobr><img src="/img/3Dtoolbar.png" width="3" height="18" align="absmiddle"><% $descr[$idx] %>&nbsp;</nobr></td>
+    <td><img src="/img/arrow_DarkBlue.png" width="5" height="9" align="absmiddle"></td>
+    <td><% $html[$idx] |n %></td>
+</tr>
+% }
+</td></tr>
+<tr><td align="center" colspan="3">
+  <input name="Submit-Create" type="submit" value="<&|/l&>Next Step</&>" onclick="this.disabled = true; document.getElementById('Action-Create').value='1'; this.form.submit();">
+  <input type="hidden" id="Action-Create" name="Action-Create" value="">
+  <br>
+</td></tr>
+</table>
+<& /Foundry/Elements/LicenseFunctions &>
+<%INIT>
+my ($id, @name, @html, @descr);
+
+foreach my $idx (0 .. $#CF) {
+    my $cf = $CF[$idx];
+    my $obj = RT::CustomField->new($session{CurrentUser});
+    $obj->Load(RT::CustomField->NameToId($cf, $Queue));
+    $id ||= $obj->Id;
+
+    my $cf_key = ("CustomField-" . $obj->Id . "-Values");
+    my $value = (exists($ARGS{$cf_key}) ? $ARGS{$cf_key} : $obj->Attribute('Default'));
+
+    my $descr;
+    $descr = loc($Descr[$idx]) if length $Descr[$idx];
+    $descr ||= loc($obj->Description || $obj->Name);
+
+    my $html = $m->scomp(
+	'/Work/Tickets/Elements/EditCustomField', 
+	Name		=> "CustomField-".$obj->Id,
+	CustomField	=> $obj,
+	NamePrefix	=> "CustomField-",
+	Value		=> $value,
+	Queue		=> $Queue,
+	Loc		=> 1,
+    );
+
+    $html[$idx] = $html;
+    $name[$idx] = "CustomField-".$obj->Id."-Values";
+    $descr[$idx] = $descr;
+}
+</%INIT>
+<%ARGS>
+@CF => ()
+@Descr => ()
+$Queue => 'NewProject',
+</%ARGS>

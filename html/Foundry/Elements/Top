@@ -7,7 +7,7 @@
       <table width="100%" border="0" cellspacing="0" cellpadding="0" height="24">
         <tr> 
           <td width="20%"><nobr>
-	    &nbsp;<font color="white" size="2"><% $RT::Organization %> - <&|/l&>RT Foundry System</&></font>
+	    &nbsp;<font color="white" size="2"><% $RT::Organization %> - <&|/l&>OpenFoundry System</&></font>
 	  </nobr></td>
 	  <td align="right" style="color:white">
 	    <& TopSearch &>

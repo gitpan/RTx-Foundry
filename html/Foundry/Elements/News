@@ -1,10 +1,13 @@
 %# Science is what happens when preconception meets verification.
+<%ARGS>
+$Rows   => 5 
+</%ARGS>
 
-<table border="0" cellspacing="1" cellpadding="2" width=100%>
+<table border="0" cellspacing="1" cellpadding="2" width="100%">
 <tr><td class="tableTitle"><&|/l&>Foundry News</&></td></tr>
 % my $count = 0;
 % foreach my $item (@items) {
-%     last if $count++ == 2;
+%     last if $count++ == $Rows;
 <tr bgcolor="white"><td><nobr>
 <a href="?<% Encode::encode(latin1 => Encode::encode_utf8($item)) |u %>"><% $item %></a>
 </nobr></td></tr>

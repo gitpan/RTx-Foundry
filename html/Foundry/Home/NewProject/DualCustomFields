@@ -1,0 +1,91 @@
+%# "The last time somebody said, `I find I can write much better with a
+%# word processor.', I replied, `They used to say the same thing about drugs.'
+%#                 -- Roy Blount, Jr.
+<script><!--
+function cf_disable_<% $id %> (cf) {
+    document.getElementById(cf).style.display='none';
+}
+function cf_enable_<% $id %> (cf) {
+    document.getElementById(cf).style.display='inline';
+}
+function flip_<% $id %> (item) {
+    if (item.value == "<% $TriggerSelect %>") {
+        cf_enable_<% $id %>('cf-freeform-<% $id %>');
+        cf_enable_<% $id %>('cf-select-<% $id %>');
+    }
+    else if (item.value == "<% $TriggerNone %>") {
+        cf_disable_<% $id %>('cf-freeform-<% $id %>');
+        cf_disable_<% $id %>('cf-select-<% $id %>');
+    }
+    else {
+        cf_enable_<% $id %>('cf-freeform-<% $id %>');
+        cf_disable_<% $id %>('cf-select-<% $id %>');
+    }
+}
+--></script>
+
+<table cellpadding=0 cellspacing=2 border=0>
+% foreach my $idx (0, 1) {
+<tr valign="top">
+    <td width=65><nobr><img src="/img/3Dtoolbar.png" width="3" height="18" align="absmiddle"><% $descr[$idx] %>&nbsp;</nobr></td>
+    <td><img src="/img/arrow_DarkBlue.png" width="5" height="9" align="absmiddle"></td>
+    <td>
+%   if ($idx == 0) {
+%     $m->print($html[0]);
+%     $m->print("<span id='cf-select-$id' style='display:none'>", $html[1], '</span>');
+%   } else {
+      <span id="cf-freeform-<% $id %>" style="display:inline">
+          <input style="width:150" name="<% $name[1] %>" size="15">
+      </span>
+%   }
+</td></tr>
+% }
+</td></tr>
+<tr><td align="center" colspan="3">
+  <input name="Submit-Create" type="submit" value="<&|/l&>Next Step</&>" onclick="this.disabled = true; document.getElementById('Action-Create').value='1'; this.form.submit();">
+  <input type="hidden" id="Action-Create" name="Action-Create" value="">
+  <br>
+<script><!--
+flip_<% $id %>(document.getElementById('<% $name[0] %>'));
+--></script>
+</td></tr>
+</table>
+<%INIT>
+my ($id, @name, @html, @descr);
+
+foreach my $idx (0, 1) {
+    my $cf = $CF[$idx];
+    my $obj = RT::CustomField->new($session{CurrentUser});
+    $obj->Load(RT::CustomField->NameToId($cf, $Queue));
+    $id ||= $obj->Id;
+
+    my $cf_key = ("CustomField-" . $obj->Id . "-Values");
+    my $value = (exists($ARGS{$cf_key}) ? $ARGS{$cf_key} : $obj->Attribute('Default'));
+
+    my $descr;
+    $descr = loc($Descr[$idx]) if length $Descr[$idx];
+    $descr ||= loc($obj->Description || $obj->Name);
+
+    my $html = $m->scomp(
+	'/Work/Tickets/Elements/EditCustomField', 
+	Name		=> "CustomField-".$obj->Id,
+	CustomField	=> $obj,
+	NamePrefix	=> "CustomField-",
+	Value		=> $value,
+	Queue		=> $Queue,
+	Loc		=> 1,
+    );
+    $html =~ s/<select\b/<select onchange="flip_$id(this)"/ if $idx == 0;
+
+    $html[$idx] = $html;
+    $name[$idx] = "CustomField-".$obj->Id."-Values";
+    $descr[$idx] = $descr;
+}
+</%INIT>
+<%ARGS>
+@CF => ()
+@Descr => ()
+$TriggerSelect
+$TriggerNone
+$Queue => 'NewProject',
+</%ARGS>

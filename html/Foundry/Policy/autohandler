@@ -2,7 +2,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link type="text/css" href="/stylesheet/style.css" rel="stylesheet">
-  <title>RT Foundry - <&|/l&>Site Policy</&></title>
+  <title>OpenFoundry - <&|/l&>Site Policy</&></title>
 </head>
 <body style="color: rgb(0, 0, 0); background-color: rgb(221, 238, 255);"
  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -15,11 +15,11 @@
  height="24">
         <tbody>
           <tr>
-            <td> &nbsp;<font color="white" size="2">RT Foundry</font> </td>
+            <td> &nbsp;<font color="white" size="2">OpenFoundry</font> </td>
             <td align="center" style="color: white;"> <br>
             </td>
-            <td align="right" style="color: white;"> <a href="/Foundry/" style="color: white;"><img src="/img/home.png" width="15" height="15"
- align="middle" border="0" alt="[^]">Home</a> | <a style="color: white;" href="/Foundry/Help/">Help index</a> &nbsp; </td>
+            <td align="right" style="color: white;"> <a href="http://rt.openfoundry.org/Foundry/" style="color: white;"><img src="http://rt.openfoundry.org/img/home.png" width="15" height="15"
+ align="middle" border="0" alt="[^]">Home</a> | <a style="color: white;" href="http://rt.openfoundry.org/Foundry/Help/">Help index</a> &nbsp; </td>
           </tr>
         </tbody>
       </table>

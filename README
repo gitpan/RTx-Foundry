@@ -2,7 +2,7 @@
 # $Revision: #6 $ $Change: 9903 $ $DateTime: 2004/02/04 19:01:19 $
 
 This is the README file for RTx::Foundry, the base classes for
-the "RT Foundry" online collaboration system.
+the OpenFoundry online collaboration system.
 
 Please type "perldoc RTx::Foundry" after installation to see
 the module usage information.

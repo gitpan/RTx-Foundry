@@ -1,24 +1,29 @@
-#line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.3/Module/Install/RTx.pm"
+#line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.4/Module/Install/RTx.pm"
 # $File: //member/autrijus/Module-Install-RTx/lib/Module/Install/RTx.pm $ $Author: autrijus $
-# $Revision: #12 $ $Change: 9841 $ $DateTime: 2004/02/01 20:07:17 $ vim: expandtab shiftwidth=4
+# $Revision: #17 $ $Change: 10722 $ $DateTime: 2004/05/31 16:38:57 $ vim: expandtab shiftwidth=4
 
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.05';
+$Module::Install::RTx::VERSION = '0.08';
 
 use strict;
 use FindBin;
-use File::Basename;
+use File::Glob ();
+use File::Basename ();
 
 sub RTx {
     my ($self, $name) = @_;
+    my $RTx = 'RTx';
+    $RTx = $1 if $name =~ s/^(\w+)-//;
+    my $fname = $name;
+    $fname =~ s!-!/!g;
 
-    $self->name("RTx-$name")
+    $self->name("$RTx-$name")
         unless $self->name;
     $self->abstract("RT $name Extension")
         unless $self->abstract;
-    $self->version_from (-e "$name.pm" ? "$name.pm" : "lib/RTx/$name.pm")
+    $self->version_from (-e "$name.pm" ? "$name.pm" : "lib/$RTx/$fname.pm")
         unless $self->version;
 
     my @prefixes = (qw(/opt /usr/local /home /usr /sw ));
@@ -42,6 +47,7 @@ sub RTx {
         }
     }
 
+    my $lib_path = File::Basename::dirname($INC{'RT.pm'});
     print "Using RT configurations from $INC{'RT.pm'}:\n";
 
     $RT::LocalVarPath	||= $RT::VarPath;
@@ -68,6 +74,14 @@ sub RTx {
     $path{lib} = "$RT::LocalPath/lib" unless %subdirs and !$subdirs{'lib'};
     print "./$_\t=> $path{$_}\n" for sort keys %path;
 
+    if (my @dirs = map { (-D => $_) } grep $path{$_}, qw(bin html sbin)) {
+        my @po = map { (-o => $_) } grep -f, File::Glob::bsd_glob("po/*.po");
+        $self->postamble(<< ".") if @po;
+lexicons ::
+\t\$(NOECHO) \$(PERL) -MLocale::Maketext::Extract::Run=xgettext -e \"xgettext(qw(@dirs @po))\"
+.
+    }
+
     my $postamble = << ".";
 install ::
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
@@ -80,6 +94,27 @@ install ::
 .
     }
 
+    my %has_etc;
+    if (File::Glob::bsd_glob("$FindBin::Bin/etc/schema.*")) {
+        # got schema, load factory module
+        $has_etc{schema}++;
+        $self->load('RTxFactory');
+        $self->postamble(<< ".");
+factory ::
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" -Minc::Module::Install -e"RTxFactory(qw($RTx $name))"
+
+dropdb ::
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" -Minc::Module::Install -e"RTxFactory(qw($RTx $name drop))"
+
+.
+    }
+    if (File::Glob::bsd_glob("$FindBin::Bin/etc/acl.*")) {
+        $has_etc{acl}++;
+    }
+    if (-e 'etc/initialdata') {
+        $has_etc{initialdata}++;
+    }
+
     $self->postamble("$postamble\n");
     if (%subdirs and !$subdirs{'lib'}) {
         $self->makemaker_args(
@@ -90,18 +125,34 @@ install ::
         $self->makemaker_args( INSTALLSITELIB => "$RT::LocalPath/lib" );
     }
 
-    if (-e 'etc/initialdata') {
-        print "For first-time installation, type 'make initialize-database'.\n";
-        my $lib_path = dirname($INC{'RT.pm'});
-        $self->postamble(<< ".");
-initialize-database ::
-\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" "$RT::BasePath/sbin/rt-setup-database" --action=insert --datafile=etc/initialdata
+    if (%has_etc) {
+        $self->load('RTxInitDB');
+        print "For first-time installation, type 'make initdb'.\n";
+        my $initdb = "initdb ::\n";
+        $initdb .= <<"." if $has_etc{schema};
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(schema))"
 .
+        $initdb .= <<"." if $has_etc{acl};
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(acl))"
+.
+        $initdb .= <<"." if $has_etc{initialdata};
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(insert))"
+.
+        $self->postamble("$initdb\n");
     }
+}
+
+sub RTxInit {
+    unshift @INC, substr(delete($INC{'RT.pm'}), 0, -5) if $INC{'RT.pm'};
+    require RT;
+    RT::LoadConfig();
+    RT::ConnectToDatabase();
+
+    die "Cannot load RT" unless $RT::Handle and $RT::DatabaseType;
 }
 
 1;
 
 __END__
 
-#line 182
+#line 234

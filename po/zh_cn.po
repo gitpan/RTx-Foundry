@@ -409,8 +409,8 @@ msgstr "操作系统"
 msgid "Open"
 msgstr "开启"
 
-msgid "RT Foundry Newsletter"
-msgstr "RT Foundry 电子报"
+msgid "OpenFoundry Newsletter"
+msgstr "OpenFoundry 电子报"
 
 msgid "Optional; fill in an email address or URL"
 msgstr "非必填; 可为 email 信箱或网址"
@@ -539,7 +539,7 @@ msgid "Project Type"
 msgstr "项目类别"
 
 msgid "Project metadata fields"
-msgstr "「项目信息」字段"
+msgstr "‘项目信息’字段"
 
 msgid "ProjectName"
 msgstr "项目标题"
@@ -629,7 +629,7 @@ msgid "Researcher"
 msgstr "研究人员"
 
 msgid "Reset password email template"
-msgstr "「重设口令」通知模板"
+msgstr "‘重设口令’通知模板"
 
 msgid "Resolved issues"
 msgstr "解决事项数"
@@ -706,8 +706,8 @@ msgstr "子组件"
 msgid "Subscribe"
 msgstr "订阅"
 
-msgid "Subscribe to RT Foundry Newsletter"
-msgstr "订阅 RT Foundry 电子报"
+msgid "Subscribe to OpenFoundry Newsletter"
+msgstr "订阅 OpenFoundry 电子报"
 
 msgid "Summary"
 msgstr "摘要"
@@ -767,10 +767,10 @@ msgid "Tracker Statistics"
 msgstr "待办事项分类统计"
 
 msgid "Tracker email templates"
-msgstr "「待办事项」通知模板"
+msgstr "‘待办事项’通知模板"
 
 msgid "Tracker metadata fields"
-msgstr "「待办事项」信息字段"
+msgstr "‘待办事项’信息字段"
 
 msgid "Under Construction."
 msgstr "此功能建置中。"
@@ -788,7 +788,7 @@ msgid "User"
 msgstr "使用者"
 
 msgid "User metadata fields"
-msgstr "「用户信息」字段"
+msgstr "‘用户信息’字段"
 
 msgid "Username"
 msgstr "登入名"
@@ -809,7 +809,7 @@ msgid ""
 "Version number must start with digit and consist of only digits, letters, "
 "dot and underscores, and does not end with a dot."
 msgstr ""
-"版本号开头须为「数字」，以「数字」加「点」加「英文字母」为组合，「点」不可为"
+"版本号开头须为‘数字’，以‘数字’加‘点’加‘英文字母’为组合，‘点’不可为"
 "结尾。"
 
 msgid "View document history"
@@ -833,7 +833,7 @@ msgstr "共同笔记"
 msgid ""
 "You are now a registered user on %1, the online development environment for "
 "Open Source projects."
-msgstr "您已成功注册为开放源码发展平台「%1」的使用者。"
+msgstr "您已成功注册为开放源码发展平台‘%1’的使用者。"
 
 msgid "You are now a registered user on %1."
 msgstr "您已成为 %1 上的注册使用者了。"
@@ -912,8 +912,8 @@ msgstr "以便充份利用 %1 提供的服务。"
 msgid "task"
 msgstr "工作事项"
 
-msgid "RT Foundry System"
-msgstr "RT Foundry 系统"
+msgid "OpenFoundry System"
+msgstr "OpenFoundry 系统"
 
 msgid "This project does not have any mailing lists yet."
 msgstr "本项目目前没有通信论坛。"
@@ -925,25 +925,25 @@ msgid "There is no need to reply to this message right now."
 msgstr "目前您毋须回复这封信件。"
 
 msgid "An administrator of '%1' has added you to its staff list."
-msgstr "「%1」项目的管理者已经将您加入该项目的团队中。"
+msgstr "‘%1’项目的管理者已经将您加入该项目的团队中。"
 
 msgid "An administrator of '%1' has invited you to its staff list."
-msgstr "「%1」项目的管理者邀请您加入项目团队。"
+msgstr "‘%1’项目的管理者邀请您加入项目团队。"
 
 msgid "Your role in the project will be '%1'."
-msgstr "您在该项目中即将担任「%1」的角色。"
+msgstr "您在该项目中即将担任‘%1’的角色。"
 
 msgid "Your role in the project is now '%1'."
-msgstr "您目前在项目中的角色为「%1」。"
+msgstr "您目前在项目中的角色为‘%1’。"
 
 msgid "If you have any questions, please contact '%1'."
-msgstr "如果有任何疑问，请联络「%1」。"
+msgstr "如果有任何疑问，请联络‘%1’。"
 
 msgid "An administrator of '%1' has changed your role in the staff list."
-msgstr "「%1」项目的管理者已经改变了您在项目团队中的角色。"
+msgstr "‘%1’项目的管理者已经改变了您在项目团队中的角色。"
 
 msgid "An administrator of '%1' has removed you from its staff list."
-msgstr "「%1」项目的管理者已经将您从项目团队中移除。"
+msgstr "‘%1’项目的管理者已经将您从项目团队中移除。"
 
 msgid "You no longer have staff privileges in the project."
 msgstr "您将不再具有该项目的团队相关权限。"
@@ -1002,7 +1002,8 @@ msgstr "已注册"
 msgid "This invitation will expire in 14 days."
 msgstr "这份邀请将在 14 天后失效。"
 
-msgid "(Contact project admins if you don't want to receive mails in this project.)"
+msgid ""
+"(Contact project admins if you don't want to receive mails in this project.)"
 msgstr "(若您不想再收到有关此项目的讯息，请联络项目管理者将您的帐号移除即可。)"
 
 msgid "Submit new %1"
@@ -1022,4 +1023,131 @@ msgstr "所有硬件"
 
 msgid "This account already exists"
 msgstr "此帐号已经存在"
+
+msgid "LicenseOther"
+msgstr "其它授权"
+
+msgid "LicenseOSI"
+msgstr "授权 (OSI)"
+
+msgid "Code License (OSI)"
+msgstr "程序码授权 (OSI)"
+
+msgid "ContentLicense"
+msgstr "图文授权"
+
+msgid "Content License"
+msgstr "图文授权"
+
+msgid "Code License"
+msgstr "程序码授权"
+
+msgid "ContentLicenseOther"
+msgstr "其它图文授权"
+
+msgid "ContentLicenseCC"
+msgstr "图文授权 (CC)"
+
+msgid "Content License (CC)"
+msgstr "图文授权 (CC)"
+
+msgid "Licensing your code as"
+msgstr "程序码授权选择"
+
+msgid "Other Code Licenses"
+msgstr "其它程序授权"
+
+msgid "Licensing your content as"
+msgstr "图文授权选择"
+
+msgid "Other Content Licenses"
+msgstr "其它图文授权"
+
+msgid "You may also consult the"
+msgstr "您也可以参考"
+
+msgid "License Wizard"
+msgstr "自由软体授权指引"
+
+msgid "Next Step"
+msgstr "下一步"
+
+msgid ""
+"In this step, you will choose free/open source software license, under which "
+"the code (including source code and object code) of your project will be "
+"licensed. If you'd like to multiple-license your project, please fill in the "
+"license you'd like to choose in the \"other\" column. If your project "
+"contains no code, please click on \"project contains no code\"."
+msgstr ""
+"在这个步骤中，您需要选择项目将来释出时，该项目的程序码（包含原始码及其目的"
+"码）所将采用的自由软体授权条款，如您欲以多重授权（multiple licenses）方式释"
+"出，请同时于‘其它程序授权’中填写您另采用之授权方式，若您的项目并不包含程序"
+"码，则请您选择‘项目不包含程序码’。"
+
+msgid ""
+"In order to eliminate the possible legal disputes, please let us remind you "
+"that you attach a copy of the license that is chosen for the very version "
+"you're releasing when you release the project."
+msgstr ""
+"当您在实际释出项目成果时，仍请您在其中包含一份该释出版本的授权条款文件，以减"
+"少未来所可能发生的法律争议。"
+
+msgid ""
+"If you're not sure which free/open source software license you'd like to "
+"adopt, you might also like to utilize our %1. Please note that the "
+"suggestion provided by the Wizard is for your reference only."
+msgstr ""
+"如果您尚不确定项目程序码应该选择何种授权条款，您可使用自由软体铸造场所提供的 "
+"%1，但此仅供您作为参考之用。"
+
+msgid "OSSF License Wizard"
+msgstr "自由软体授权指引"
+
+msgid ""
+"In this step, you will choose a open content license, under which the "
+"content (eg. the documentation of your code, graphs, pictures, etc.), other "
+"than the code, of your project will be licensed. If you'd like to multiple-"
+"license your project, please fill in the license you'd like to choose in the "
+"\"other\" column. If your project contains only code, please click on "
+"\"project contains only code\"."
+msgstr ""
+"在这个步骤中，您需要选择项目将来释出时，该项目除了程序码之外的其它著作类型"
+"（例如：程序的说明文件、图片），所将采用的开放授权条款，如您欲以多重授权"
+"（multiple-licenses）方式释出，请同时于‘其它图文授权’中填写您另采用之授权方"
+"式，若您的项目只有程序码，则请您选择‘项目仅包含程序码’。"
+
+msgid ""
+"If you're not sure which open content license you'd like to adopt, you might "
+"also like to utilize the %1. Please note that the suggestion provided by the "
+"wizard is for your reference only."
+msgstr ""
+"如果您尚不确定项目内的图文应该选择何种授权条款，我们建议您使用Creative "
+"Commons所提供的 %1，但此仅供您作为参考之用。"
+
+msgid "Creative Commons License Wizard"
+msgstr "Creative Commons License Wizard"
+
+msgid "Other OSI Approved..."
+msgstr "其它 OSI 认可的授权..."
+
+msgid "Public Domain"
+msgstr "公共财"
+
+msgid "Project contains no code"
+msgstr "项目不包含程序码"
+
+msgid "Same license as code"
+msgstr "与程序码的授权相同"
+
+msgid "Project contains only code"
+msgstr "项目仅包含程序码"
+
+msgid "To post a message to all the list members, send email to"
+msgstr "若要寄送邮件给所有论坛成员，请寄信到"
+
+msgid "To subscribe to this mailing list, send email to"
+msgstr "若要订阅这个论坛，请寄信到"
+
+msgid "To unsubscribe from this mailing list, send email to"
+msgstr "若要退订这个论坛，请寄信到"
 

@@ -3,7 +3,7 @@ COPYING
 etc/foundry.conf.sample
 etc/httpd.conf.mod_perl2
 etc/initialdata
-etc/rc.d/openfoundry-vcs.sh
+etc/rc.d/foundry-vcs.sh
 etc/RT_SiteConfig.pm
 etc/sitemap.yml
 etc/sympa.conf.fastcgi
@@ -21,6 +21,7 @@ html/Foundry/Elements/CheckUser
 html/Foundry/Elements/Footer
 html/Foundry/Elements/Header
 html/Foundry/Elements/Kwiki
+html/Foundry/Elements/LicenseFunctions
 html/Foundry/Elements/News
 html/Foundry/Elements/NewsLetter
 html/Foundry/Elements/Redirect
@@ -48,6 +49,8 @@ html/Foundry/Home/index.html
 html/Foundry/Home/MyHints
 html/Foundry/Home/MyRequests.html
 html/Foundry/Home/MyTickets.html
+html/Foundry/Home/NewProject/DualCustomFields
+html/Foundry/Home/NewProject/EditCustomFields
 html/Foundry/Home/NewProject/index.html
 html/Foundry/Home/NewProject/ShowSteps
 html/Foundry/Home/Preferences/index.html
@@ -135,6 +138,7 @@ html/Foundry/Project/Tracker/Update.html
 html/Foundry/Project/Wiki/autohandler
 html/Foundry/Project/Wiki/blog.html
 html/Foundry/Project/Wiki/config.yaml
+html/Foundry/Project/Wiki/dhandler
 html/Foundry/Project/Wiki/index.html
 html/Foundry/Project/Wiki/javascript/Debug.js
 html/Foundry/Project/Wiki/javascript/Display.js
@@ -201,6 +205,7 @@ html/Foundry/Trove/List
 html/Foundry/User/autohandler
 html/Foundry/User/index.html
 html/Foundry/User/List
+html/img/external-classic.png
 inc/ExtUtils/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
@@ -209,6 +214,7 @@ inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/RTx.pm
+inc/Module/Install/RTx/Factory.pm
 inc/Module/Install/WriteAll.pm
 INSTALL
 lib/RT/Action/SendEmail_Local.pm
@@ -762,7 +768,7 @@ var/kwiki/.global/metabase/protected/HomePage
 var/kwiki/.global/metabase/protected/NewsItem1
 var/kwiki/.global/metabase/protected/NewsItem2
 var/kwiki/.global/metabase/protected/NewsItem3
-var/kwiki/.global/metabase/public/.exists
+var/kwiki/.global/metabase/public/KwikiPrivacy
 var/kwiki/.global/template/basic_footer.html
 var/kwiki/.global/template/blog_entry.html
 var/kwiki/.global/template/blog_footer.html

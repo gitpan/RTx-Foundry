@@ -1,5 +1,8 @@
 %# "Pascal is not a high-level language."
 %# 		-- Steven Feiner
+<%ARGS>
+$Rows => 10
+</%ARGS>
 
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle"><&|/l&>Top Downloads</&></td></tr>
@@ -14,5 +17,5 @@
 my $Queues = RT::Queues->new($RT::SystemUser);
 $Queues->LimitToEnabled;
 $Queues->OrderByAttribute( NAME => 'Download', ORDER => 'DESC', NUMERIC => 1 );
-$Queues->RowsPerPage( 3 );
+$Queues->RowsPerPage( $Rows );
 </%INIT>

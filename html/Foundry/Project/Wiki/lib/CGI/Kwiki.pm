@@ -89,8 +89,6 @@ sub handler {
     my $base_directory = $_[1] || $r->location;
     chdir($base_directory) 
       or die "Can't chdir to '$base_directory'\n";
-    eval "use Apache::Constants qw(OK REDIRECT)";
-    die $@ if $@;
 
     my $driver = load_driver();
     $CGI::Kwiki::user_name = 
@@ -101,13 +99,13 @@ sub handler {
     if (ref $html) {
         $r->method('GET');
         $r->headers_in->unset('Content-length');
-        $r->header_out('Location' => $html->{redirect});
-        $r->status(&REDIRECT || 307);
-        $r->send_http_header;
+        $r->headers_out->{'Location'} = $html->{redirect};
+        $r->status(307);
+        $r->send_http_header if $r->can('send_http_header');
     }
     else {
         $r->print($driver->cookie->header, $html);
-        $r->status(&OK || 200);
+        $r->status(200);
     }
     return;
 }

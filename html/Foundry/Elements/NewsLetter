@@ -1,10 +1,15 @@
+<%DOC>
 %# Science is what happens when preconception meets verification.
-
+</%DOC>
+<%ARGS>
+$URL => 'http://www.openfoundry.org/index.rdf'
+$Timeout => 1
+</%ARGS>
 </form>
-<form style="margin: 0" action="http://ossf.iis.sinica.edu.tw/mailman/subscribe/openfoundry" method="post" target="_blank">
+<form style="margin: 0" action="http://www.openfoundry.org/mailman/subscribe/openfoundry" method="post" target="_blank">
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle">
-<&|/l&>Subscribe to RT Foundry Newsletter</&>
+<&|/l&>Subscribe to OpenFoundry Newsletter</&>
 </td></tr>
 <tr><td bgcolor="white" align="center">
     <&|/l&>Email</&>:
@@ -18,29 +23,38 @@
 <br>
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle">
-<&|/l&>RT Foundry Newsletter</&>
+<&|/l&>OpenFoundry Newsletter</&>
 </td>
-% my $count = 0;
-% foreach my $item (@{ $rss->items }) {
-%     last if $count++ == 7;
-<tr bgcolor="white"><td><nobr>
-<a href="<% $item->{link} %>"><% $item->{title} %></a>
-</nobr></td></tr>
+</tr>
+% eval { $rss->parsefile($file) };
+% if ($@)
+% { unlink $file; 
+% }
+% else{
+%   my $count = 0;
+%   foreach my $item (@{ $rss->items })
+%   { last if $count++ == 7;
+        <tr bgcolor="white"><td><nobr>
+        <a href="<% $item->{link} %>"><% $item->{title} %></a>
+        <img src="/img/external-classic.png">
+        </nobr></td></tr>
+%   }
 % }
 </table>
-<%INIT>
+<%ONCE>
+require LWP::UserAgent;
+my $ua = new LWP::UserAgent;  # we create a global UserAgent object
+$ua->agent("OpenFoundry Bot");
 require XML::RSS;
-require LWP::Simple;
-
+my $rss = XML::RSS->new;
+</%ONCE>
+<%INIT>
 %::escapes = map { chr($_) => sprintf("%%%02X", $_) } 0..255 unless %::escapes;
 
 my $file = $URL;
 $file =~ s/([^\w\.])/$::escapes{$1}/g;
 $file = File::Spec->catfile( ($ENV{TEMP} || '/tmp'), $file);
-my $rc = eval { LWP::Simple::mirror( $URL, $file ) };
-my $rss = XML::RSS->new;
-$rss->parsefile($file);
+$ua->timeout($Timeout);
+$ua->mirror( $URL, $file );
+# Don't care HTTP success or fail , let $rss handle it
 </%INIT>
-<%ARGS>
-$URL => 'http://ossf.iis.sinica.edu.tw/index.rdf'
-</%ARGS>

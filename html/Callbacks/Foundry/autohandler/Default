@@ -5,7 +5,7 @@ $RT::Foundry = 1;
 
 unless (
     $RT::Reentrant == 1 or
-    $r->uri =~ m{^/REST/|^/Foundry/|^/Work/Tickets/Attachment/} or
+    $r->uri =~ m{^/REST/|^/Foundry/|^/Work/Tickets/Attachment/|\.css$} or
     eval { $session{CurrentUser}->UserObj->HasRight(
 	Right => 'SuperUser', Object => $RT::System
     ) }

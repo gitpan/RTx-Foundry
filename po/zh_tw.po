@@ -409,8 +409,8 @@ msgstr "作業系統"
 msgid "Open"
 msgstr "開啟"
 
-msgid "RT Foundry Newsletter"
-msgstr "RT Foundry 電子報"
+msgid "OpenFoundry Newsletter"
+msgstr "OpenFoundry 電子報"
 
 msgid "Optional; fill in an email address or URL"
 msgstr "非必填; 可為 email 信箱或網址"
@@ -706,8 +706,8 @@ msgstr "子元件"
 msgid "Subscribe"
 msgstr "訂閱"
 
-msgid "Subscribe to RT Foundry Newsletter"
-msgstr "訂閱 RT Foundry 電子報"
+msgid "Subscribe to OpenFoundry Newsletter"
+msgstr "訂閱 OpenFoundry 電子報"
 
 msgid "Summary"
 msgstr "摘要"
@@ -912,8 +912,8 @@ msgstr "以便充份利用 %1 提供的服務。"
 msgid "task"
 msgstr "工作事項"
 
-msgid "RT Foundry System"
-msgstr "RT Foundry 系統"
+msgid "OpenFoundry System"
+msgstr "OpenFoundry 系統"
 
 msgid "This project does not have any mailing lists yet."
 msgstr "本專案目前沒有通信論壇。"
@@ -1002,7 +1002,8 @@ msgstr "已註冊"
 msgid "This invitation will expire in 14 days."
 msgstr "這份邀請將在 14 天後失效。"
 
-msgid "(Contact project admins if you don't want to receive mails in this project.)"
+msgid ""
+"(Contact project admins if you don't want to receive mails in this project.)"
 msgstr "(若您不想再收到有關此專案的訊息，請聯絡專案管理者將您的帳號移除即可。)"
 
 msgid "Submit new %1"
@@ -1022,4 +1023,131 @@ msgstr "所有硬體"
 
 msgid "This account already exists"
 msgstr "此帳號已經存在"
+
+msgid "LicenseOther"
+msgstr "其他授權"
+
+msgid "LicenseOSI"
+msgstr "授權 (OSI)"
+
+msgid "Code License (OSI)"
+msgstr "程式碼授權 (OSI)"
+
+msgid "ContentLicense"
+msgstr "圖文授權"
+
+msgid "Content License"
+msgstr "圖文授權"
+
+msgid "Code License"
+msgstr "程式碼授權"
+
+msgid "ContentLicenseOther"
+msgstr "其他圖文授權"
+
+msgid "ContentLicenseCC"
+msgstr "圖文授權 (CC)"
+
+msgid "Content License (CC)"
+msgstr "圖文授權 (CC)"
+
+msgid "Licensing your code as"
+msgstr "程式碼授權選擇"
+
+msgid "Other Code Licenses"
+msgstr "其他程式授權"
+
+msgid "Licensing your content as"
+msgstr "圖文授權選擇"
+
+msgid "Other Content Licenses"
+msgstr "其他圖文授權"
+
+msgid "You may also consult the"
+msgstr "您也可以參考"
+
+msgid "License Wizard"
+msgstr "自由軟體授權指引"
+
+msgid "Next Step"
+msgstr "下一步"
+
+msgid ""
+"In this step, you will choose free/open source software license, under which "
+"the code (including source code and object code) of your project will be "
+"licensed. If you'd like to multiple-license your project, please fill in the "
+"license you'd like to choose in the \"other\" column. If your project "
+"contains no code, please click on \"project contains no code\"."
+msgstr ""
+"在這個步驟中，您需要選擇專案將來釋出時，該專案的程式碼（包含原始碼及其目的"
+"碼）所將採用的自由軟體授權條款，如您欲以多重授權（multiple licenses）方式釋"
+"出，請同時於「其他程式授權」中填寫您另採用之授權方式，若您的專案並不包含程式"
+"碼，則請您選擇「專案不包含程式碼」。"
+
+msgid ""
+"In order to eliminate the possible legal disputes, please let us remind you "
+"that you attach a copy of the license that is chosen for the very version "
+"you're releasing when you release the project."
+msgstr ""
+"當您在實際釋出專案成果時，仍請您在其中包含一份該釋出版本的授權條款文件，以減"
+"少未來所可能發生的法律爭議。"
+
+msgid ""
+"If you're not sure which free/open source software license you'd like to "
+"adopt, you might also like to utilize our %1. Please note that the "
+"suggestion provided by the Wizard is for your reference only."
+msgstr ""
+"如果您尚不確定專案程式碼應該選擇何種授權條款，您可使用自由軟體鑄造場所提供的 "
+"%1，但此僅供您作為參考之用。"
+
+msgid "OSSF License Wizard"
+msgstr "自由軟體授權指引"
+
+msgid ""
+"In this step, you will choose a open content license, under which the "
+"content (eg. the documentation of your code, graphs, pictures, etc.), other "
+"than the code, of your project will be licensed. If you'd like to multiple-"
+"license your project, please fill in the license you'd like to choose in the "
+"\"other\" column. If your project contains only code, please click on "
+"\"project contains only code\"."
+msgstr ""
+"在這個步驟中，您需要選擇專案將來釋出時，該專案除了程式碼之外的其他著作類型"
+"（例如：程式的說明文件、圖片），所將採用的開放授權條款，如您欲以多重授權"
+"（multiple-licenses）方式釋出，請同時於「其他圖文授權」中填寫您另採用之授權方"
+"式，若您的專案只有程式碼，則請您選擇「專案僅包含程式碼」。"
+
+msgid ""
+"If you're not sure which open content license you'd like to adopt, you might "
+"also like to utilize the %1. Please note that the suggestion provided by the "
+"wizard is for your reference only."
+msgstr ""
+"如果您尚不確定專案內的圖文應該選擇何種授權條款，我們建議您使用Creative "
+"Commons所提供的 %1，但此僅供您作為參考之用。"
+
+msgid "Creative Commons License Wizard"
+msgstr "Creative Commons License Wizard"
+
+msgid "Other OSI Approved..."
+msgstr "其他 OSI 認可的授權..."
+
+msgid "Public Domain"
+msgstr "公共財"
+
+msgid "Project contains no code"
+msgstr "專案不包含程式碼"
+
+msgid "Same license as code"
+msgstr "與程式碼的授權相同"
+
+msgid "Project contains only code"
+msgstr "專案僅包含程式碼"
+
+msgid "To post a message to all the list members, send email to"
+msgstr "若要寄送郵件給所有論壇成員，請寄信到"
+
+msgid "To subscribe to this mailing list, send email to"
+msgstr "若要訂閱這個論壇，請寄信到"
+
+msgid "To unsubscribe from this mailing list, send email to"
+msgstr "若要退訂這個論壇，請寄信到"
 

@@ -31,8 +31,6 @@ my $CFValues = $CF->Values;
 my $Queues = RT::Queues->new($session{'CurrentUser'});
 
 while (my $V = $CFValues->Next) {
-    $Value ||= $V->Name;
-
     my $Values = RT::TicketCustomFieldValues->new($session{'CurrentUser'});
     $Values->LimitToCustomField( $CF->Id );
     $Values->Limit( FIELD => 'Content', VALUE => $V->Name );
@@ -71,7 +69,11 @@ while (my $V = $CFValues->Next) {
     );
 
     require CGI::Util;
-    push @$Map2, "?Type=$Type&Value=" . CGI::Util::escape($V->Name), loc($V->Description) . '(' . $Values->Count . ')';
+    if ($Values->Count) {
+	push @$Map2, "?Type=$Type&Value=" . CGI::Util::escape($V->Name), loc($V->Description) . '(' . $Values->Count . ')';
+	$Value ||= $V->Name;
+    }
+
     next unless ($Value and $V->Name eq $Value);
     while (my $Value = $Values->Next) {
 	my $Queue = RT::Queue->new($RT::SystemUser);

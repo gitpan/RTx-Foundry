@@ -25,6 +25,7 @@
 <& /Foundry/Elements/Footer &>
 <%INIT>
 my $QueueObj = RT::Queue->new($session{'CurrentUser'}); 
+$ARGS{Queue} = $1 if $r->uri =~ m{/Project/\w+/(\d+)/};
 $QueueObj->Load($ARGS{Queue}||=$session{LastQueue}||=1);
 $ARGS{Queue} = $session{LastQueue} = $QueueObj->Id || $session{LastQueue};
 my $s = "?Queue=$ARGS{Queue}";
@@ -34,7 +35,7 @@ my $s = "?Queue=$ARGS{Queue}";
 #   'News'		=> '/Foundry/Project/News/' . $s,
     'Tracker'		=> '/Foundry/Project/Tracker/' . $s,
     'Forums'		=> '/Foundry/Project/Forum/' . $s,
-    'Wiki'		=> '/Foundry/Project/Wiki/' . $s,
+    'Wiki'              => "/Foundry/Project/Wiki/$ARGS{Queue}/",
     'Version Control'	=> '/Foundry/Project/Source/' . $s,
     'Downloads'		=> '/Foundry/Project/Download/' . $s,
 );

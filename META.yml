@@ -1,6 +1,6 @@
 name: RTx-Foundry
-version: 0.01
-abstract: Base classes for the RT Foundry system
+version: 0.00_10
+abstract: Base classes for the OpenFoundry system
 author: Autrijus Tang <autrijus@autrijus.org>
 license: gpl
 distribution_type: module
@@ -18,4 +18,4 @@ no_index:
     - sbin
     - var
     - inc
-generated_by: Module::Install version 0.32
+generated_by: Module::Install version 0.33

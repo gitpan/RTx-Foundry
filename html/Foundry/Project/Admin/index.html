@@ -12,6 +12,12 @@
 <table><tr><td>
 <& /Work/Tickets/Elements/EditCustomFields, Ticket => $QueueObj->OriginObj, Loc => 1  &>
 </td></tr></table>
+% my $olw_link = '<a href="#" onclick="'.$m->scomp('/Edit/Elements/NewWindow', 'http://gnu.iis.sinica.edu.tw/ossf/license_wizard.php?lang='.$session{CurrentUser}->LanguageHandle->language_tag, 700, 560).'">';
+% my $ccw_link = q(<a href="#" onclick="window.open('http://creativecommons.org/license/', '', 'left='+((screen.width-700)/2)+',top='+((screen.height-560)/2)+',width=700,height=560,resizable=no, scrollbars=yes,toolbar=no,location=no,status=no,menubar=no,modal=yes');">);
+<ul>
+<li><&|/l, $olw_link.loc("OSSF License Wizard").'</a>' &>If you're not sure which free/open source software license you'd like to adopt, you might also like to utilize our [_1]. Please note that the suggestion provided by the Wizard is for your reference only.</&></li>
+<li><&|/l, $ccw_link.loc('Creative Commons License Wizard').'</a>' &>If you're not sure which open content license you'd like to adopt, you might also like to utilize the [_1]. Please note that the suggestion provided by the wizard is for your reference only.</&></li>
+</ul>
 % if ( $session{CurrentUser}->UserObj->HasRight( Right => 'SuperUser', Object => $QueueObj ) ) {
 <input type="checkbox" name="Enabled" <% $QueueObj->Disabled ? '' : 'CHECKED' %>>
 <input type="hidden" name="DoEnabled" value="1">
@@ -22,7 +28,7 @@
 <br>
 <input type="submit" value="<&|/l&>Submit</&>" name="Action-Submit">
 </td></tr>
-
+<& /Foundry/Elements/LicenseFunctions &>
 <%INIT>
 my @Error;
 
