@@ -6,7 +6,7 @@
 	    <& Display.html,
 		url => '/Work/Tickets/Create.html',
 		"CustomField-$TypeCF-Values" => $Type,
-		Queue => $QueueObj->Id, NoUI => 1, NoCF => {'Resolution'=>1,'TargetVersion'=>1}, Loc => 1, %ARGS &>
+		Queue => $QueueObj->Id, NoUI => 1, NoCF => {'Resolution'=>1,'TargetVersion'=>1}, Loc => 1, SelectOwner => 1, %ARGS &>
 % } elsif ($Action =~ /Comment|Respond|Open|Resolve/) {
 	    <& Update.html, %ARGS, NoUI => 1 &>
 % } elsif ($ARGS{id}) {

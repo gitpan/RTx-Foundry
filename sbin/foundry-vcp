@@ -1,6 +1,4 @@
 #!/usr/local/bin/perl -w
-# $File: //depot/RT/osf/sbin/foundry-vcp $ $Author: autrijus $
-# $Revision: #5 $ $Change: 10114 $ $DateTime: 2004/02/18 06:26:45 $
 
 use FindBin;
 use lib "$FindBin::Bin/foundry-lib";

@@ -38,6 +38,8 @@ my $s = "?Queue=$ARGS{Queue}";
     'Wiki'              => "/Foundry/Project/Wiki/$ARGS{Queue}/",
     'Version Control'	=> '/Foundry/Project/Source/' . $s,
     'Downloads'		=> '/Foundry/Project/Download/' . $s,
+    'Citations'		=> '/Foundry/Project/Citations/' . $s,
+    'References'	=> '/Foundry/Project/References/' . $s,
 );
 
 my $UserObj = $session{CurrentUser}->UserObj;

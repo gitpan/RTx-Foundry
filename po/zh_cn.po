@@ -390,6 +390,10 @@ msgstr "参与项目"
 msgid "Job"
 msgstr "徵人"
 
+#: html/Foundry/Project/Jobs.html:1
+msgid "Jobs"
+msgstr "徵才讯息"
+
 #: html/Foundry/Project/Tracker/List:8
 msgid "Last Updated"
 msgstr "前次更新"
@@ -1352,6 +1356,21 @@ msgstr "注册新使用者"
 msgid "MemberChange"
 msgstr "变更项目成员"
 
+msgid "ProjectNews"
+msgstr "项目新闻"
+
+msgid "ProjectEvents"
+msgstr "项目事件"
+
+msgid "ProjectJobs"
+msgstr "项目徵人"
+
+msgid "ProjectCitations"
+msgstr "项目引用"
+
+msgid "ProjectDownload"
+msgstr "项目下载"
+
 msgid "News"
 msgstr "新闻"
 
@@ -2276,3 +2295,91 @@ msgstr "其它-未分类"
 
 msgid "Please select one of the category types first."
 msgstr "请先选择一项分类。"
+
+msgid "References"
+msgstr "参考文献"
+
+msgid "Citations"
+msgstr "引用"
+
+msgid "Source"
+msgstr "来源"
+
+msgid "Primary Authors"
+msgstr "主要作者"
+
+msgid "Project Title"
+msgstr "项目名称"
+
+msgid "License"
+msgstr "授权"
+
+msgid "URL"
+msgstr "网址"
+
+msgid "Release Date"
+msgstr "释出日期"
+
+msgid "News Title"
+msgstr "新闻标题"
+
+msgid "News Content"
+msgstr "新闻内容"
+
+msgid "Post a %1 item"
+msgstr "新增一则%1"
+
+msgid "Edit a %1 item"
+msgstr "编辑一则%1"
+
+msgid "Existing %1 items"
+msgstr "现有的%1"
+
+msgid "Release Version"
+msgstr "释出版本"
+
+msgid "To add new releases, please use the 'Release Plans' tool."
+msgstr "如欲新增释出版本，请到‘规划释出’页面"
+
+msgid "Project Topic"
+msgstr "主题分类"
+
+msgid "Topic Suggestion"
+msgstr "分类建议"
+
+msgid "Feedbacks"
+msgstr "使用者建议"
+
+msgid "Feedback"
+msgstr "使用者建议"
+
+msgid "Queue"
+msgstr "项目"
+
+msgid "Purpose of Download"
+msgstr "下载目的"
+
+msgid "Cited Project Name"
+msgstr "引用之计画名称"
+
+msgid "Occupation"
+msgstr "行业别"
+
+msgid "Interests"
+msgstr "个人兴趣"
+
+msgid "IT Skills"
+msgstr "信息专长"
+
+msgid "IT skills"
+msgstr "信息专长"
+
+msgid "Registered on"
+msgstr "项目注册日期"
+
+msgid "Optional"
+msgstr "选填"
+
+msgid "Invalid date format"
+msgstr "日期格式错误（yyyy/mm/dd）"
+

@@ -17,7 +17,7 @@ sub OriginObj {
     my $Tickets = RT::Tickets->new($RT::SystemUser);
     $Tickets->LimitQueue( VALUE => 'NewUser' );
     $Tickets->LimitCustomField(
-	CUSTOMFIELD => 1,
+	CUSTOMFIELD => RT::CustomField->NameToId('Name', 'NewUser'),
 	VALUE	    => $self->Name,
     );
     return $Tickets->Last;

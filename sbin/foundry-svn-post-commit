@@ -3,6 +3,7 @@
 use strict;
 use FindBin;
 use LWP::Simple;
+use SVN::Notify::Config ();
 
 eval { require "/usr/local/etc/foundry.conf" }                                  || eval { require "$FindBin::Bin/../etc/foundry.conf" }
 || eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" }
@@ -18,15 +19,16 @@ $svn_base .= "/foundry-repos";
 my $rt_url = $ENV{RT_URL} || $ENV{WEB_HOST} or die 'Must specify $ENV{RT_URL}'.$/;
 $rt_url = "http://$rt_url" unless $rt_url =~ m!^[a-z]+://!;
 
-my ($repos, $user) = @ARGV;
-
+my ($repos, $revision) = @ARGV;
 my $project = $1 if $repos =~ m!([^/]+)/*\z!;
 
 exit 1 unless $project;
 
-my $content = get("$rt_url/REST/0.0/NoAuth/has_member?Queue=$project&User=$user");
+my $content = get("$rt_url/Foundry/Subversion/Notify.html?Queue=$project&Revision=$revision") or exit 1;
 
-exit 0 if $content =~ '^OK';
+require YAML;
+SVN::Notify::Config->import(
+    YAML::Load($content)
+);
 
-die "permission denied for user $user to commit to project $project";
-
+exit 0;

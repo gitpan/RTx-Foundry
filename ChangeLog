@@ -1,3 +1,13 @@
+[Changes for 0.00_21 - November 23, 2004]
+
+Subversion notification and snapshot support.
+
+Project admins may now require downloaders to fill in information.
+
+Per-member ACLs tunable by project admins.
+
+Sorted lists for Trove and Feedbacks display.
+
 [Changes for 0.00_20 - November 17, 2004]
 
 DB_NAME is finally recognized correctly this time.

@@ -34,13 +34,20 @@ while (my $Item = $Tickets->Next) {
     }
 
     my $count = 0;
+
     foreach my $key (sort keys %documents) {
 	my $Id = $documents{$key}->Id;
+        my $url = $url{$Id};
+
+        if ($QueueObj->DownloadACL('info') =~ /\d/) {
+            $url = "/Foundry/Project/Download/FillInfo.html?url=$url;Queue=".$QueueObj->Id
+        }
+
 	push @$List, {
 	    Id		=> $Id,
 	    ReleaseObj	=> $Item,
 	    Attachment	=> $documents{$key},
-	    URL		=> $url{$Id},
+	    URL		=> $url,
 	    Description	=> $description{$Id},
 	};
 	$count++;

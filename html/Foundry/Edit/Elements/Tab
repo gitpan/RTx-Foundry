@@ -29,6 +29,7 @@ my @AdminTabs = (
 # 'Group Setup'	    => '/Edit/Groups/',
 'Queue Setup'	    => "/Edit/Queues/",
 'Global Setup'	    => "/Edit/Global/Basic/",
+'Feedback'	    => "/Foundry/Edit/Feedbacks/",
 );
 </%INIT>
 <%ARGS>

@@ -1,0 +1,44 @@
+<& /Edit/Elements/104Header,
+    Buttons => [
+	Add => '',
+	Save => '',
+	Delete => 1,
+	Copy => '',
+	Search => '',
+	Help => '/NoAuth/docs/',
+    ],
+    Method => 'Post',
+&>
+
+<table width="97%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td><& /Edit/Elements/Tab, Text => 'Feedbacks' &></td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <table border="0" cellspacing="4" cellpadding="4" class="poptable" width="100%">
+% my $List = [];
+% while (my $Ticket = $Tickets->Next) {
+%	push @$List, $Ticket if $Ticket->CustomFieldValue('TopicSuggestion');
+% }
+<& /Edit/Elements/SortedList,
+    %ARGS,
+    Data  => [
+	[ '20%', loc('Requestor'),
+	    sub { $_[0]->FirstRequestor->Name } ],
+	[ '80%', loc('Topic Suggestion'),
+	    sub { $_[0]->CustomFieldValue('TopicSuggestion') } ],
+    ],
+    Link    => sub {}, 
+    Size    => 14,
+    List    => $List,
+    Delete  => 1,
+&>
+    </td>
+  </tr>
+</table>
+<& /Foundry/Elements/Footer &>
+<%INIT>
+my $Tickets = RT::Tickets->new($session{CurrentUser});
+$Tickets->LimitQueue( FIELD => 'Name', VALUE => 'NewProject');
+</%INIT>

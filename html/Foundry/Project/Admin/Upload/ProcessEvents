@@ -4,8 +4,23 @@
 <%INIT>
 if ($ARGS->{id} eq 'new' and length($ARGS->{Subject})) {
     my $Event = $QueueObj->CreateFunctionItem(Events => $ARGS);
+
+    if (!$Event) {
+        if (!length($ARGS->{Subject})) {
+            $m->notes( error => loc('Missing mandatory fields') );
+        }
+        else {
+            $m->notes( error => loc('Invalid date format') );
+        }
+        return;
+    }
+
     my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
     $Event->__Set( Field => 'Resolution', Value => $Parent->Id );
+
+    if ($Parent->Id) {
+        $Event->SetCustomFieldValue( Version => $Parent->Subject );
+    }
 
     foreach my $field (qw( EventStarts EventDue )) {
         $Event->SetCustomFieldValue( $field => $Now->AsDate )

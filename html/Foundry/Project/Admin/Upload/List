@@ -8,21 +8,25 @@
     <tr><td align="left" colspan="4">
 	<nobr><&|/l&>Version Number</&>: <input name="Subject" value="<% eval{ $Item->Subject } %>" size="10"></nobr>
 % my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
-	<nobr><&|/l&>Start Date</&>: <input name="Told" style="cursor: hand" size=10 value="<% $Item and  eval{ $Item->ToldObj->Unix > 1 and $Item->ToldObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
-	<nobr><&|/l&>Ideal Release</&>: <input name="Due" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->DueObj->Unix > 1 and $Item->DueObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
-	<nobr><&|/l&>Actual Release</&>: <input name="Starts" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->StartsObj->Unix > 1 and $Item->StartsObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+	<nobr><&|/l&>Start Date</&>: <input name="Told" style="cursor: hand" size=10 value="<% ($Item and eval{ $Item->ToldObj->Unix > 1 and $Item->ToldObj->AsDate }) || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+	<nobr><&|/l&>Ideal Release</&>: <input name="Due" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->DueObj->Unix > 1 and $Item->DueObj->AsDate } %>" <& /Work/Elements/Date &> ></nobr>
+<!--
+	<nobr><&|/l&>Actual Release</&>: <input name="Starts" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->StartsObj->Unix > 1 and $Item->StartsObj->AsDate } %>" <& /Work/Elements/Date &> ></nobr>
+-->
+    <nobr>
 % my $status = eval { $Item->Status };
 % if ($status and $status ne 'new') {
-	<nobr><&|/l&>Status</&>:
+        <&|/l&>Status</&>:
 	<select name="Status">
 %           foreach my $key ('open', 'resolved', 'deleted') {
 	    <option value="<% $key %>" <% ($status eq $key) ? 'selected' : '' %>>
 		<% loc($StatusMap{$key}) %>
 	    </option>
 %           }
-	</select></nobr>
+	</select>
 % }
 	<input type="submit" value="<&|/l&>Submit</&>">
+    </nobr>
     </td></tr>
     <tr> 
       <td colspan="4" class="tableTitle"><nobr><&|/l&>Existing Versions</&></nobr></td>
@@ -45,7 +49,13 @@
     > 
 %     my $status = $StatusMap{$item->Status};
       <td height="20" align="right"><a href="<% $url %>"><% $item->Subject %></a>&nbsp;</td>
-      <td height="20"><% eval { $item->StartsObj->AsDate } %></td>
+      <td height="20"><% 
+        eval {
+	    ($item->StartsObj->Unix > 1)
+		? join('/', split(/-/, $item->StartsObj->ISO))
+		: ''
+	}
+      %></td>
       <td height="20"><% loc($status) %></td>
     </tr>
 % }

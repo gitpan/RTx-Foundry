@@ -1,0 +1,20 @@
+%# Those who do not understand Unix are condemned to reinvent it, poorly.
+%#                 -- Henry Spencer
+<h3><&|/l&>Member-writable admin areas</&>:</h3>
+<ul>
+% while (my $Member = $Members->Next) {
+<li><em><% $Member->Name %></em><br>
+%   my %MemberACL = map { ($_ => 1) } $QueueObj->FunctionsACL('member' => $Member);
+%   foreach my $item ($QueueObj->FunctionsMap) {
+<label><nobr><input type="checkbox" name="SetACL-<% $Member->Id %>-<% $item->[0] %>" <% $MemberACL{$item->[0]} && 'checked' %>><% loc($item->[1]) %></nobr></label>
+%   }
+</li>
+% }
+</ul>
+<%INIT>
+my $Members = $QueueObj->Cc->UserMembersObj;
+$Members->Count or return;
+</%INIT>
+<%ARGS>
+$QueueObj
+</%ARGS>

@@ -45,7 +45,10 @@ foreach my $type (qw(defect patch task feature enhancement)) {
     my $MyTickets = RT::Tickets->new($session{'CurrentUser'});
     $MyTickets->LimitQueue(VALUE => $QueueObj->Id);
     $MyTickets->LimitStatus(VALUE => $_) for RT::Queue->ActiveStatusArray;
-    $MyTickets->LimitCustomField(CUSTOMFIELD => 'Type', VALUE => $type);
+    $MyTickets->LimitCustomField(
+	CUSTOMFIELD => RT::CustomField->NameToId('Type', 0),
+	VALUE => $type
+    );
     $RT::TypeCache{$QueueObj->Id}{$type} = $MyTickets->Count;
 }
 

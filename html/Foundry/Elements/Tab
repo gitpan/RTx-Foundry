@@ -13,11 +13,11 @@
 %#   $t = "~" . $session{CurrentUser}->Name if $k eq 'My Page';
 %   if ($k eq $Text) {
     <td background="/img/tabLeft.png" width=2></td>
-    <td align="center" background="/img/tabMiddle.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><label><a href="<% $v %>" style="color: white"><b><% $t %></b></a></label></div></td>
+    <td align="center" background="/img/tabMiddle.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:white"><label><a href="<% $v %>" style="color: white"><b><nobr><% $t %></nobr></b></a></label></div></td>
     <td background="/img/tabRight.png" width=2></td>
 %   } else {
     <td background="/img/tabLeftTop.png" width=2></td>
-    <td align="center" style="cursor: hand" onclick="javascript:location.href='<% $v %>'" background="/img/tabMiddleTop.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:black"><a accesskey="<% $c %>" style="color: black" href="<% $v %>"><% $t %></a></div>
+    <td align="center" style="cursor: hand" onclick="javascript:location.href='<% $v %>'" background="/img/tabMiddleTop.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:black"><a style="color: black" href="<% $v %>"><nobr><% $t %></nobr></a></div>
     </td>
     <td background="/img/tabRightTop.png" width=2></td>
 %   }

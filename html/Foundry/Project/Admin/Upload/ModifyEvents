@@ -6,11 +6,24 @@
 <input type="hidden" name="Release" value="<% $Parent->Id %>">
 <input type="hidden" name="View" value="<% $ARGS->{View} || 'Events' %>">
 <h3><&|/l&>Create a new event</&></h3>
+% if (my $error = $m->notes('error')) {
+<ul>
+<li style='color: red'><% $error %></li>
+</ul>
+% }
 % local $RT::ActiveQueueId = $QueueObj->Id;
 <& /Work/Tickets/Create.html,
+    %$ARGS,
     Queue => 'ProjectEvents',
     NoUI => 1,
-    NoCF => { Attachments => 1, Content => 1 } &>
+    Loc => 1,
+    NoCF => {
+        Attachments => 1,
+        Content => 1,
+        ($Parent->Id)
+            ? ('Version' => 1)
+            : ()
+    } &>
 </form>
 <hr>
 <%ARGS>

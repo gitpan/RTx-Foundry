@@ -3,7 +3,28 @@
 % if (!$ARGS{url}) {
 </form><form action="Update.html">
 % }
+
+% if ($SelectOwner and $role eq 'owner') {
+<%PERL>
+my $text = $m->scomp(
+    $url, %ARGS, NoUI => 1, Role => $role, Loc => 1, Queue => $Queue
+); 
+my $so = qq(
+    <tr valign="top"><td><p><img src="/img/3Dtoolbar.png" width="3" height="18" align="absmiddle"> 
+	@{[ loc("Owner") ]}
+    </p></td><td><img src="/img/arrow_DarkBlue.png" width="5" height="9" align="absmiddle"></td><td> 
+	@{[ $m->scomp("SelectOwner", Name => "Owner", QueueObj => $queue, Mandatory => 1) ]} 
+    </td></tr>
+);
+$text =~ /table/g; # maybe a little faster than the non-greedy version ?
+$text =~ /table/g;
+$text =~ />/g;
+$text =~ s/\G()/$so/; # insert here
+$m->print($text);
+</%PERL>
+% } else {
 <& $url, %ARGS, NoUI => 1, Role => $role, Loc => 1, Queue => $Queue &>
+% }
 
 <%INIT>
 my $role = ($RT::Guest ? 'guest' : '');
@@ -29,7 +50,10 @@ elsif ($id) {
 my $queue = RT::Queue->new($session{'CurrentUser'});
 $queue->Load($Queue);
 $m->notes(QueueObj => $queue);
-if ( $queue->HasWatcher($session{CurrentUser}->UserObj) ) {
+if (
+    $session{CurrentUser}->UserObj->Name eq 'root' or
+    $queue->HasWatcher($session{CurrentUser}->UserObj)
+) {
     $role = 'owner';
 }
 return $role if $NoUI == -1;
@@ -39,4 +63,5 @@ $Queue	    => 0
 $url	    => '/Work/Tickets/Display.html'
 $id	    => 0
 $NoUI	    => 0
+$SelectOwner=> 0
 </%ARGS>

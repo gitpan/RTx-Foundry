@@ -3,9 +3,7 @@
 <& /Work/Tickets/Elements/ShowCustomFields, Ticket => $Item, ReadOnly => 1, Loc => 1 &>
 % }
 <tr><td>
-% require HTML::FromText;
-% my $content = HTML::FromText::text2html( $Item->FirstContent, bullets => 1, metachars => 1, urls => 1, email => 1, bold => 0, underline => 0, paras => 1, blockcode => 1);
-<% $content |n %>
+<& /Foundry/Elements/Text2HTML, Text => $Item->FirstContent &>
 </td></tr>
 </table>
 <hr>

@@ -1,39 +1,56 @@
 </form>
 <form action="index.html" method="post">
 <input type='hidden' name='Queue' value='<% $QueueObj->Id %>'>
-<h3><&|/l&>Member-writable admin areas</&>:</h3>
-<ul>
-% my %MemberACL = map { ($_ => 1) } $QueueObj->FunctionsACL('member');
-% foreach my $item ($QueueObj->FunctionsMap) {
-<li><label>
-<input type="checkbox" name="SetACL-<% $item->[0] %>" <% $MemberACL{$item->[0]} && 'checked' %>><% loc($item->[1]) %>
-</label></li>
-% }
-</ul>
+
+<& MemberACL, %ARGS &>
 
 <h3><&|/l&>Who can see the download area</&>:</h3>
 
+<ul>
 % my $DownloadRole = $QueueObj->DownloadACL('role');
-% my $DownloadCollect = $QueueObj->DownloadACL('collect');
 % foreach my $role ('0-anybody', '1-registered', '2-member') {
-<label><input type="radio" name="SetDownload-role" <% ($DownloadRole eq $role) && 'checked' %> value="<% $role %>"><% loc(ucfirst(substr($role, 2))) %></label>
+<label><nobr><input type="radio" name="SetDownload-role" <% ($DownloadRole eq $role) && 'checked' %> value="<% $role %>"><% loc(ucfirst(substr($role, 2))) %></nobr></label>
 % }
-<br>
-<label>
-<input type="checkbox" name="SetDownload-collect" <% $DownloadCollect && 'checked' %> value='*'><&|/l&>Force user to fill in information before downloading</&>
-</label>
+</ul>
 
-<p>
+<h3><&|/l&>Force user to fill in information before downloading</&>:</h3>
+<ul>
+% my %DownloadInfo = map +($_ => 1), split(/ /, $QueueObj->DownloadACL('info'));
+% while (my $CF = $CFs->Next) {
+%    my $info = $QueueObj->DownloadACL('info-'.$CF->Id) || 'hidden';
+<li><em><% loc($CF->Description) %></em><br>
+%    foreach my $value (qw( hidden optional mandatory )) {
+<label><nobr><input type="radio" name="SetDownload-info-<% $CF->Id %>" <%
+    ($info eq $value) ? 'checked' : ''
+%> value="<% $value %>"><% loc(ucfirst($value)) %></nobr></label>
+%    }
+</li>
+% }
+</ul>
+
+<p align="center">
 <input type="submit" name="UpdateACL" value="<&|/l&>Submit</&>">
 <%INIT>
+my $InfoQueue = RT::Queue->new($QueueObj->CurrentUser);
+$InfoQueue->Load("ProjectDownloaders");
+my $CFs = $InfoQueue->CustomFields;
+
 if ($UpdateACL) {
-    my @ACL;
+    my (%ACL, @Info);
     foreach my $key (sort keys %ARGS) {
-        $key =~ /^SetACL-(.+)$/ or next;
-        push @ACL, $1;
+        if ($key =~ /^SetACL-(.+)-(.+)$/) {
+            push @{ $ACL{$1} }, $2;
+        }
+        elsif ($key =~ /^SetDownload-info-(.+)$/) {
+            $QueueObj->SetDownloadACL("info-$1" => $ARGS{$key});
+            push @Info, $1 unless $ARGS{$key} eq 'hidden';
+        }
     }
-    $QueueObj->SetAttribute("ACL-member" => join(' ', @ACL));
-    $QueueObj->SetDownloadACL($_ => $ARGS{"SetDownload-$_"}) for qw( role collect );
+    while (my ($user, $acl) = each %ACL) {
+        $QueueObj->SetAttribute("ACL-member-$user" => "@$acl");
+    }
+    $QueueObj->SetDownloadACL(role => $ARGS{"SetDownload-role"});
+    $QueueObj->SetDownloadACL(info => "@Info");
 }
 </%INIT>
 <%ARGS>

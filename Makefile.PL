@@ -75,6 +75,9 @@ features( 'SVK support' => [
     'VCP::Dest::svk'	    => 0,
     'VCP::Source::cvsbk'    => 0,
     'URI'		    => 0,
+    'SVN::Notify'           => 0,
+    'SVN::Notify::Config'   => 0,
+    'SVN::Notify::Snapshot' => 0,
 ] );
 
 features( 'Accountability graphs' => [

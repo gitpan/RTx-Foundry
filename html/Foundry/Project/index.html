@@ -8,6 +8,10 @@
 
 </table></td><td width="50">&nbsp;</td><td><table cellspacing=0 cellpadding=0 border=0>
 
+<&|/Work/Elements/Row, Title => loc('Registered on')&>
+<% $QueueObj->CreatedObj->AsDate %>
+</&>
+
 <&|/Work/Elements/Row, Title => loc('Latest Release')&>
 % my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
 % $Tickets->LimitQueue( VALUE => $QueueObj->Id );
@@ -35,7 +39,7 @@
 % }
 </&>
 
-% foreach my $function (qw( News Jobs Citations References )) {
+% foreach my $function (qw( News Jobs )) {
 %   my $Items = $QueueObj->FunctionItems($function);
 %   $Items->RowsPerPage(5);
 %   if ($Items->Count) {

@@ -1,0 +1,7 @@
+%# Vitamin C deficiency is apauling
+% $m->call_next;
+<%INIT>
+</%INIT>
+<%ATTR>
+Tab2	=> 'References'
+</%ATTR>

@@ -37,7 +37,7 @@
     Index   => 1,
     BG	=> sub {
 	return "#cccccc" if $_[0] and RT::Queue->IsInactiveStatus( $_[0]->Status );
-	my $severity = $_[0] && $_[0]->CustomFieldValue($cf_id) or return '#ffffff';;
+	my $severity = ($_[0] && $_[0]->CustomFieldValue( RT::CustomField->NameToId('Severity', 0) )) or return '#ffffff';
 	return '#ff' . (chr(97 + $severity) x 4);
     },
 &>

@@ -39,6 +39,7 @@ html/Foundry/Accountability/topprojects.html
 html/Foundry/autohandler
 html/Foundry/Edit/Elements/104Header
 html/Foundry/Edit/Elements/Tab
+html/Foundry/Edit/Feedbacks/index.html
 html/Foundry/Edit/index.html
 html/Foundry/Elements/CheckInvitations
 html/Foundry/Elements/CheckUser
@@ -54,6 +55,7 @@ html/Foundry/Elements/Redirect
 html/Foundry/Elements/Stats
 html/Foundry/Elements/Tab
 html/Foundry/Elements/Tabs
+html/Foundry/Elements/Text2HTML
 html/Foundry/Elements/Top
 html/Foundry/Elements/TopDownloads
 html/Foundry/Elements/TopSearch
@@ -110,6 +112,7 @@ html/Foundry/Policy/index.html
 html/Foundry/Policy/Privacy.html
 html/Foundry/Policy/TermOfUse.html
 html/Foundry/Project/Admin/ACL/index.html
+html/Foundry/Project/Admin/ACL/MemberACL
 html/Foundry/Project/Admin/autohandler
 html/Foundry/Project/Admin/Citations/index.html
 html/Foundry/Project/Admin/CustomField/index.html
@@ -125,6 +128,7 @@ html/Foundry/Project/Admin/Members/SelectWatcherType
 html/Foundry/Project/Admin/News/index.html
 html/Foundry/Project/Admin/References/index.html
 html/Foundry/Project/Admin/Stats/ByName
+html/Foundry/Project/Admin/Stats/DownloaderInfo
 html/Foundry/Project/Admin/Stats/index.html
 html/Foundry/Project/Admin/Upload/AllEvents
 html/Foundry/Project/Admin/Upload/Calendar
@@ -140,11 +144,14 @@ html/Foundry/Project/Admin/Upload/ProcessEvents
 html/Foundry/Project/Admin/Upload/Roadmap
 html/Foundry/Project/Admin/Upload/Upload
 html/Foundry/Project/autohandler
+html/Foundry/Project/Citations/autohandler
+html/Foundry/Project/Citations/index.html
 html/Foundry/Project/Doc/autohandler
 html/Foundry/Project/Doc/index.html
 html/Foundry/Project/Doc/List.html
 html/Foundry/Project/Download/Attachment
 html/Foundry/Project/Download/autohandler
+html/Foundry/Project/Download/FillInfo.html
 html/Foundry/Project/Download/index.html
 html/Foundry/Project/Download/List
 html/Foundry/Project/Feed.html
@@ -153,6 +160,8 @@ html/Foundry/Project/Forum/index.html
 html/Foundry/Project/Forum/List.html
 html/Foundry/Project/index.html
 html/Foundry/Project/Item.html
+html/Foundry/Project/References/autohandler
+html/Foundry/Project/References/index.html
 html/Foundry/Project/Source/autohandler
 html/Foundry/Project/Source/index.html
 html/Foundry/Project/Source/P4Web/autohandler
@@ -249,6 +258,7 @@ html/Foundry/Search/URI2Title
 html/Foundry/Search/User
 html/Foundry/Subversion/Auth.html
 html/Foundry/Subversion/index.html
+html/Foundry/Subversion/Notify.html
 html/Foundry/Trove/autohandler
 html/Foundry/Trove/index.html
 html/Foundry/Trove/List
@@ -271,12 +281,12 @@ inc/Module/Install/WriteAll.pm
 INSTALL
 INSTALL.FreeBSD
 lib/RT/Action/SendEmail_Local.pm
-lib/RT/CustomField_Local.pm
 lib/RT/CustomFields_Local.pm
+lib/RT/CustomField_Local.pm
 lib/RT/EmailParser_Local.pm
 lib/RT/Queue_Local.pm
-lib/RT/Ticket_Local.pm
 lib/RT/Tickets_Local.pm
+lib/RT/Ticket_Local.pm
 lib/RT/User_Local.pm
 lib/RTx/Foundry.pm
 Makefile.PL
@@ -288,6 +298,7 @@ README
 sbin/foundry-cvs-commitcheck
 sbin/foundry-cvs2svn
 sbin/foundry-setup
+sbin/foundry-svn-post-commit
 sbin/foundry-svn-pre-revprop-change
 sbin/foundry-svn-start-commit
 sbin/foundry-syncdata

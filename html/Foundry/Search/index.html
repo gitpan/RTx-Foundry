@@ -7,7 +7,26 @@
 <hr>
 </form><form action="/Foundry/Search" method="get">
 <b><&|/l&>Advanced Query</&> - <&|/l&>Tracker</&></b>
-<& /Work/Search/index.html, %ARGS, NoUI => 1, TicketRow => '/Foundry/Search/TicketRow' &>
+<%PERL>
+{
+local *RT::Tickets::_BuildJoins = sub {
+    my $self = shift;
+    my $joins = $self->DBIx::SearchBuilder::_BuildJoins(@_);
+    return " $joins , Queues ticketQueue ";
+};
+
+local *RT::Tickets::_WhereClause = sub {
+    my $self = shift;
+    my $clause = $self->DBIx::SearchBuilder::_WhereClause(@_);
+    $clause =~ s/\s*WHERE\s*//i;
+    return "WHERE ( $clause ) ".
+	   "AND main.Queue = ticketQueue.id ".
+	   "AND ticketQueue.Disabled = 0";
+};
+$session{'tickets_rows_per_page'} = 25;
+$m->comp('/Work/Search/index.html', %ARGS, NoUI => 1, TicketRow => '/Foundry/Search/TicketRow');
+}
+</%PERL>
 </form>
 <%INIT>
 $Query =~ s/^\s+|\s+$//g;

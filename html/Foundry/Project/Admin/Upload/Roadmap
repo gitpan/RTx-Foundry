@@ -11,9 +11,9 @@
 % while (my $item = $Tickets->Next) {
 <tr height="20">
 <td><% eval { $item->Subject } %></td>
-<td><% eval { $item->ToldObj->AsDate } %></td>
-<td><% eval { $item->DueObj->AsDate } %></td>
-<td><% eval { $item->StartsObj->AsDate } %></td>
+<td><% eval { $item->ToldObj->Unix > 0 ? $item->ToldObj->AsDate : '' } %></td>
+<td><% eval { $item->DueObj->Unix > 0 ? $item->DueObj->AsDate : '' } %></td>
+<td><% eval { $item->StartsObj->Unix > 0 ? join('/', split(/-/, $item->StartsObj->ISO)) : '' } %></td>
 </tr>
 % }
 </tbody>

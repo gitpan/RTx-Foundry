@@ -1,5 +1,5 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/RTx-Foundry/sbin/foundry-syncdata 4399 2004-11-15T17:03:40.078415Z autrijus  $
+# $Id: /bazaar/RTx-Foundry/sbin/foundry-syncdata 6011 2004-11-23T13:07:10.530188Z autrijus  $
 
 #
 # exec myself, take care the PID file
@@ -67,14 +67,16 @@ my $cvs_group = $ENV{CVSGROUP} || 'cvs';
 my $cvs_uid = (getpwnam($cvs_user))[2] or warn "Cannot find user $cvs_user";
 my $dbh = DBI->connect($rt_dsn, $ENV{DB_DBA_USER}, $ENV{DB_DBA_PASSWORD}) or exit;
 
-if (!-d $svn_base) {
-    mkpath([$svn_base], 0, 0755);
+if (!-d "$svn_base/.snapshot") {
+    mkpath(["$svn_base/.snapshot"], 0, 0755);
     system(qw( chown -R ), "$svn_user:$svn_group", $svn_base);
+    system(qw( chown -R ), "$svn_user:$svn_group", "$svn_base/.snapshot");
 }
 
 my $commitcheck = "$FindBin::Bin/foundry-cvs-commitcheck";
 my $start_commit = "$FindBin::Bin/foundry-svn-start-commit";
 my $pre_revprop_change = "$FindBin::Bin/foundry-svn-pre-revprop-change";
+my $post_commit = "$FindBin::Bin/foundry-svn-post-commit";
 
 #
 # this block build the CVS Repostiory, run only once 
@@ -184,6 +186,7 @@ my $svk = SVK->new(
     ),
 );
 {
+    no warnings 'redefine';
     local *SVK::Util::get_prompt = sub { 'y' };
     $svk->depotmap('--init');
 }
@@ -242,6 +245,19 @@ sub set_mirror {
     $old_remote = $1 if ($output =~ m!^/\Q$name\E/\s+(.*)!m);
     delete $svk->{output};
 
+    my $svn_name = "$svn_base/$name"; 
+
+    if (!-e "$svn_name/hooks/post-commit") {
+        # symbolic link post-commit to a common post-commit handler
+        symlink $post_commit => "$svn_name/hooks/post-commit";
+    }
+
+    if (!-e "$svn_name/hooks/pre-revprop-change") {
+        # symbolic link post-commit to a common post-commit handler
+        symlink $pre_revprop_change => "$svn_name/hooks/pre-revprop-change";
+    }
+
+
     if (my $n = $remote and my $o = $old_remote) {
         # URI-wise comparison
         $n =~ s{/+$}{}; $o =~ s{/+$}{};
@@ -258,8 +274,6 @@ sub set_mirror {
 	$svk->mirror('--delete' => "/$name/");
 	return;
     }
-
-    my $svn_name = "$svn_base/$name"; 
 
     if (-e "$svn_name/db/revs/0") {
 	print "==> Moving away old /$name/\n";

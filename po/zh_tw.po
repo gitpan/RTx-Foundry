@@ -390,6 +390,10 @@ msgstr "參與專案"
 msgid "Job"
 msgstr "徵人"
 
+#: html/Foundry/Project/Jobs.html:1
+msgid "Jobs"
+msgstr "徵才訊息"
+
 #: html/Foundry/Project/Tracker/List:8
 msgid "Last Updated"
 msgstr "前次更新"
@@ -1352,6 +1356,21 @@ msgstr "註冊新使用者"
 msgid "MemberChange"
 msgstr "變更專案成員"
 
+msgid "ProjectNews"
+msgstr "專案新聞"
+
+msgid "ProjectEvents"
+msgstr "專案事件"
+
+msgid "ProjectJobs"
+msgstr "專案徵人"
+
+msgid "ProjectCitations"
+msgstr "專案引用"
+
+msgid "ProjectDownload"
+msgstr "專案下載"
+
 msgid "News"
 msgstr "新聞"
 
@@ -2276,3 +2295,91 @@ msgstr "其他-未分類"
 
 msgid "Please select one of the category types first."
 msgstr "請先選擇一項分類。"
+
+msgid "References"
+msgstr "參考文獻"
+
+msgid "Citations"
+msgstr "引用"
+
+msgid "Source"
+msgstr "來源"
+
+msgid "Primary Authors"
+msgstr "主要作者"
+
+msgid "Project Title"
+msgstr "專案名稱"
+
+msgid "License"
+msgstr "授權"
+
+msgid "URL"
+msgstr "網址"
+
+msgid "Release Date"
+msgstr "釋出日期"
+
+msgid "News Title"
+msgstr "新聞標題"
+
+msgid "News Content"
+msgstr "新聞內容"
+
+msgid "Post a %1 item"
+msgstr "新增一則%1"
+
+msgid "Edit a %1 item"
+msgstr "編輯一則%1"
+
+msgid "Existing %1 items"
+msgstr "現有的%1"
+
+msgid "Release Version"
+msgstr "釋出版本"
+
+msgid "To add new releases, please use the 'Release Plans' tool."
+msgstr "如欲新增釋出版本，請到「規劃釋出」頁面"
+
+msgid "Project Topic"
+msgstr "主題分類"
+
+msgid "Topic Suggestion"
+msgstr "分類建議"
+
+msgid "Feedbacks"
+msgstr "使用者建議"
+
+msgid "Feedback"
+msgstr "使用者建議"
+
+msgid "Queue"
+msgstr "專案"
+
+msgid "Purpose of Download"
+msgstr "下載目的"
+
+msgid "Cited Project Name"
+msgstr "引用之計畫名稱"
+
+msgid "Occupation"
+msgstr "行業別"
+
+msgid "Interests"
+msgstr "個人興趣"
+
+msgid "IT Skills"
+msgstr "資訊專長"
+
+msgid "IT skills"
+msgstr "資訊專長"
+
+msgid "Registered on"
+msgstr "專案註冊日期"
+
+msgid "Optional"
+msgstr "選填"
+
+msgid "Invalid date format"
+msgstr "日期格式錯誤（yyyy/mm/dd）"
+

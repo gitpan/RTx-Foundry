@@ -1,0 +1,28 @@
+%# God is a comic playing to an audience that's afraid to laugh.
+<hr>
+<& /Edit/Elements/SortedList,
+    %ARGS,
+    Data  => [
+        map {
+            my $cf = $_;
+            [ '', loc($cf->Description),
+                sub { $_[0]->CustomFieldValue($cf->Id) } ],
+        } @CFs,
+    ],
+    Link    => sub {}, 
+    Size    => $size,
+    List    => $Items,
+&>
+<%INIT>
+my $Items = $QueueObj->FunctionItems('Downloaders');
+my $size = $Items->Count or return;
+my @CFs;
+foreach my $info ($QueueObj->DownloadACL('info') =~ /(\d+)/g) {
+    my $CF = RT::CustomField->new($QueueObj->CurrentUser);
+    $CF->Load($info);
+    push @CFs, $CF if $CF->Id;
+}
+</%INIT>
+<%ARGS>
+$QueueObj
+</%ARGS>

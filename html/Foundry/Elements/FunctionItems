@@ -3,13 +3,31 @@
 <form action="index.html" method="post">
 <input type="hidden" name="Queue" value="<% $QueueObj->Id %>">
 % if ($id) {
-<h3><&|/l, loc(lc($Function)) &>Edit a [_1] item</&></h3>
-%# .... XXX ....
+% local $RT::ActiveQueueId = $QueueObj->Id;
+%    my $Item = RT::Ticket->new($QueueObj->CurrentUser);
+%    $Item->Load($id);
+%    $Item->QueueObj->Name eq "Project$Function" or die;
+<h3><&|/l, loc($Function) &>Edit a [_1] item</&></h3>
+<input type="hidden" name="id" value="<% $id %>">
+<table><tr><td>
+<& /Work/Tickets/Elements/EditCustomFields,
+    Content => $Item->LastContent,
+    ($error ? %ARGS : ()),
+    Ticket => $Item,
+    Loc => 1 &>
+</td></tr></table>
+<input type="submit" value="<&|/l&>Submit</&>" name="Action-Submit">
+<hr>
+<a href="?Queue=<% $QueueObj->Id %>">&lt;&lt; <&|/l&>Back to Previous</&></a>
+%     return;
 % } else {
-<h3><&|/l, loc(lc($Function)) &>Post a [_1] item</&></h3>
+% local $RT::ActiveQueueId = $QueueObj->Id;
+<h3><&|/l, loc($Function) &>Post a [_1] item</&></h3>
 <& /Work/Tickets/Create.html,
+    ($error ? %ARGS : ()),
     Queue => "Project$Function",
     NoUI => 1,
+    Loc => 1,
     NoCF => { Attachments => 1 } &>
 % }
 </form>
@@ -19,13 +37,20 @@
 <form action="index.html" method="POST">
 <table>
 <tr><td colspan="2">
-<h3><&|/l, loc(lc($Function)) &>Existing [_1] items</&></h3>
+<h3><&|/l, loc($Function) &>Existing [_1] items</&></h3>
 </td></tr>
 %  while (my $Item = $Items->Next) {
 <tr>
-%# <td><a href="index.html?id=<% $Item->Id %>"><% $Item->Subject %></a> # -- XXX
-<td><% $Item->Subject %>
-(<% $Item->CreatedObj->AsString =~ /(^\S+)/g %>)
+<td><a href="index.html?Queue=<% $QueueObj->Id %>;id=<% $Item->Id %>"><%
+    ($Function eq 'References')
+	? ($Item->LastContent =~ /(.+)/) :
+    ($Function eq 'Citations')
+	? join(
+	    ' ',
+	    $Item->Subject,
+	    $Item->CustomFieldValue('CitationVersion'),
+	) : $Item->Subject
+%></a> (<% $Item->CreatedObj->AsString =~ /(^\S+)/g %>)
 </td>
 <td><& /Edit/Elements/Button, Name => "DeleteItem-".$Item->Id, Image => "funcDelete", Text => "Delete" &></td>
 </tr>
@@ -34,12 +59,37 @@
 </form>
 % }
 <%INIT>
+my $error;
 if ($id eq 'new') {
-    $QueueObj->CreateFunctionItem($Function => \%ARGS);
+    $QueueObj->CreateFunctionItem($Function => \%ARGS)
+        or $error = loc("Missing mandatory fields");
     undef $id;
 }
 elsif ($id) {
-    # UpdateFunctionItem
+    if (!$ARGS{'Action-Submit'}) {
+        # ...
+    }
+    elsif (1) { # XXX - validate CFs - XXX
+        my $Item = LoadTicket($id);
+        delete $ARGS{Queue};
+        ProcessTicketBasics(TicketObj => $Item, ARGSRef => \%ARGS);
+        ProcessTicketCustomFieldUpdates(TicketObj => $Item, ARGSRef => \%ARGS);
+
+        if ($ARGS{Content} ne $Item->LastContent) {
+            my $notes = MIME::Entity->build( Data => [ $ARGS{Content} ] );
+            RT::I18N::SetMIMEEntityToUTF8($notes); # convert text parts into utf-8
+
+            $Item->Comment(
+                MIMEObj => $notes,
+                _reopen => 0,
+                _open => 0,
+            );
+        }
+        undef $id;
+    }
+    else {
+        $error = loc("Missing mandatory fields");
+    }
 }
 else {
     foreach my $key (sort keys %ARGS) {

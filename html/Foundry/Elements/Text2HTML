@@ -1,0 +1,20 @@
+%# Show respect for age.  Drink good Scotch for a change.
+<%INIT>
+require HTML::FromText;
+$m->print(
+    HTML::FromText::text2html(
+	$Text,
+	bullets => 1,
+	metachars => 1,
+	urls => 1,
+	email => 1,
+	bold => 0,
+	underline => 0,
+	paras => 1,
+	blockcode => 1
+    )
+);
+</%INIT>
+<%ARGS>
+$Text => ''
+</%ARGS>

@@ -1,5 +1,5 @@
 %# This is your fortune.
-<& /Edit/Elements/List,
+<& /Edit/Elements/SortedList,
     %ARGS,
     Data  => [
 	[ '18%', loc('Project Name'),		sub { $_[0]->Name }, '', 30 ],
@@ -8,7 +8,7 @@
 	    my $field = $_;
 	    [ (($field =~ /Maturity|Platform/) ? '7%' : '10%'), loc($field), sub { join(',', map loc($_), sort map { $_->Content } @{$_[0]->OriginObj->CustomFieldValues(join('', split(/ /, $field)))->ItemsArrayRef}) }, '', (($field eq 'Intended Audience') ? 8 : 15) ]
 	} @fields),
-	[  '6%', loc('Download #'),		sub { $_[0]->Attribute('Download') || '' }, 'align=right' ],
+	[  '6%', loc('Download #'),		sub { $_[0]->Attribute('Download') || '' }, 'align=right', '', sub { $_[0] <=> $_[1] } ],
 	[ '10%', loc('Registration Date'),	sub { $_[0]->OriginObj->CreatedObj->AsDate } ],
 	[ '15%', loc('Admin'),			sub { join(',', map $_->Name, @{$_[0]->AdminCc->UserMembersObj->ItemsArrayRef} ) }, '', 25 ],
     ],

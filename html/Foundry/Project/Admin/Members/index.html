@@ -1,5 +1,6 @@
 %# A LISP programmer knows the value of everything, but the cost of nothing.
  
+</FORM>
 <FORM METHOD=POST ACTION="index.html" style="margin: 0">
 <INPUT TYPE=HIDDEN NAME=Queue VALUE="<%$QueueObj->Id%>">
 
@@ -38,7 +39,7 @@
 <& SelectWatcherType,
    Name => "Queue-AddWatcher-Principal-".$u->PrincipalId,
    Scope => 'queue',
-   Disabled => ($u->Id == $MyPrincipalId),
+   Disabled => (($u->Id == $MyPrincipalId) and $u->Name ne 'root'),
    Default => $RoleCache->{$u->Id},
    RoleMap => $RoleMap,
 &>
@@ -75,12 +76,6 @@
     </td></tr>
 <tr><td align="right" colspan="4"><input type="submit" name="Action-Invite" value="<&|/l&>Submit</&>"></td></tr>
 
-<tr><td colspan="4" class="tableTitle"><&|/l&>Past Invitees</&></td></tr>
-<tr><td class="tableTitle"><&|/l&>User Id</&></td>
-    <td class="tableTitle"><&|/l&>Email</&></td>
-    <td class="tableTitle"><&|/l&>Role</&></td>
-    <td class="tableTitle"><&|/l&>Status</&></td></tr>
-
 % my $Tickets = RT::Tickets->new($RT::SystemUser);
 % my $Date = RT::Date->new($RT::SystemUser);
 % $Date->Set(Format => 'unix', Value => time - (14 * 86400) );
@@ -88,6 +83,15 @@
 % $Tickets->LimitCreated( OPERATOR => '>', VALUE => $Date->ISO );
 % $Tickets->LimitSubject( OPERATOR => '=', VALUE => join(' ', "Invite", $_, $QueueObj->Id, $QueueObj->Name) ) for qw(AdminCc Cc);
 % $Tickets->OrderBy( FIELD => 'Id', ORDER => 'DESC' );
+
+% if ($Tickets->Count) {
+
+<tr><td colspan="4" class="tableTitle"><&|/l&>Past Invitees</&></td></tr>
+<tr><td class="tableTitle"><&|/l&>User Id</&></td>
+    <td class="tableTitle"><&|/l&>Email</&></td>
+    <td class="tableTitle"><&|/l&>Role</&></td>
+    <td class="tableTitle"><&|/l&>Status</&></td></tr>
+
 % my %seen;
 % while (my $Ticket = $Tickets->Next) {
 %     my $Email = $Ticket->OwnerObj->Name;
@@ -107,6 +111,8 @@
     %></td></tr>
 % }
 
+% }
+
 </table>
 </TD>
 % }
@@ -123,7 +129,7 @@ my $current_tab;
 my ($field, $User, $Users, $Groups, $watcher);
 
 my $IsAdmin = $QueueObj->HasAdminCc($session{CurrentUser}->UserObj)
-    || $session{CurrentUser}->HasRight( Right => 'SuperUser', Object => $QueueObj );
+    || $session{CurrentUser}->HasRight( Right => 'SuperUser', Object => $RT::System );
 
 $QueueObj->CurrentUser($RT::SystemUser); # instant priv escalation!
 
@@ -226,7 +232,7 @@ elsif ($IsAdmin) {
 	# They're in this order because otherwise $1 gets clobbered :/
 	next unless $ARGS{$key} =~ /^(AdminCc|Cc)$/
 		and $key =~ /^Queue-AddWatcher-Principal-(\d*)$/
-		and $1 != $MyPrincipalId; 
+		and ($1 != $MyPrincipalId or $session{CurrentUser}->UserObj->Name eq 'root');
 
 	$RT::Logger->debug("Adding a watcher $1 to ".$ARGS{$key}."\n");
 

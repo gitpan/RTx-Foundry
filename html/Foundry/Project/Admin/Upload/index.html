@@ -79,8 +79,9 @@ elsif ($ARGS{'Action-Upload'} and $Item and $ARGS{Attach}) {
 	$Item->SetStatus('open') if $Item->Status eq 'new';
     } }
 }
-elsif ($Subject and $Starts) {
+elsif ($Subject and $Told) {
     my $is_invalid = sub {
+        return 0 if $_[0] eq '';
         return 1 if $_[0] !~ m{^(\d\d\d\d+)\W(\d?\d)\W(\d?\d)}
             or $1 < 1 or $2 < 1 or $3 < 1 or $2 > 12 or $3 > 31;
 	$_[0] = sprintf("%04s-%02s-%02s 00:00:00", $1, $2, $3);
@@ -113,8 +114,8 @@ elsif ($Subject and $Starts) {
 	}
 
 	$Item->SetDue($Due);
-        $Item->_SetTold($Told);
-	$Item->SetStarts($Starts);
+        $Item->SetTold($Told);
+	# $Item->SetStarts($Starts);
 	$Item->SetSubject($Subject);
 
         if ($Status eq 'resolved' and $Item->Status eq 'open') {
@@ -128,6 +129,9 @@ elsif ($Subject and $Starts) {
                     push @files, $attachment->Filename;
                 }
             }
+
+            my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
+            $Item->SetStarts($Now->ISO);
 
             $QueueObj->CreateFunctionItem(
                 News => {
@@ -150,6 +154,8 @@ $Tickets->LimitQueue( VALUE => $QueueObj->Id );
 $Tickets->LimitType( VALUE => 'release' );
 $Tickets->OrderByCols(
     { FIELD => 'Starts', ORDER => 'DESC' },
+    { FIELD => 'Due', ORDER => 'DESC' },
+    { FIELD => 'Told', ORDER => 'DESC' },
     { FIELD => 'Id', ORDER => 'DESC' },
 );
 </%INIT>

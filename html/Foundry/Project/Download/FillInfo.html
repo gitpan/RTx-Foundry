@@ -1,0 +1,59 @@
+% if ($redirect) {
+%    my ($Item, @rv) = HTML::Mason::Commands::CreateTicket(
+%        %ARGS, Queue => "ProjectDownloaders",
+%    );
+%    $Item->Id or die @rv;
+%    $Item->__Set( Field => 'IssueStatement', Value => $QueueObj->Id );
+<&|/l&>Thank you. You may now proceed to download:</&>
+<ul>
+<li><a href="<% $url %>"><% ($url =~ m{([^/]+$)} ? $1 : '') %></a></li>
+</ul>
+<hr>
+<a href="./?Queue=<% $QueueObj->Id %>"><&|/l&>&lt;&lt; Back to the file list</&></a>
+%    return;
+% }
+<&|/l&>This project's administrator requires you to provide some information about yourself before downloading</&>:
+<p>
+<input type="hidden" name="url" value="<% $url %>">
+<input type="hidden" name="redirect" value="1">
+<%PERL>
+local *RT::CustomField::Attribute = sub {
+    package RT::CustomField;
+    my ($self, $key) = @_;
+    my $value = $self->SUPER::Attribute($key);
+    if ($key eq 'Pattern' and !length($value) and $Mandatory{$self->Id}) {
+        return '.';
+    }
+    return $value;
+};
+$m->comp(
+    '/Work/Tickets/Create.html', %ARGS,
+    Queue => "ProjectDownloaders",
+    NoUI => 1,
+    Loc => 1,
+    Subject => $url,
+    OnlyCF => \%Info,
+    NoCF => { Attachments => 1, Subject => 1, Content => 1 }
+);
+</%PERL>
+<%INIT>
+my $CF = RT::CustomField->new($QueueObj->CurrentUser);
+my %Info = map +($_ => 1), ($QueueObj->DownloadACL('info') =~ /(\d+)/g);
+my %Mandatory;
+
+# validate CFs
+foreach my $info (sort keys %Info) {
+    ($QueueObj->DownloadACL("info-$info") eq 'mandatory') or next;
+
+    $Mandatory{$info}++;
+
+    if ($redirect and !length($ARGS{"CustomField-$info-Values"})) {
+        $redirect = 0;
+    }
+}
+</%INIT>
+<%ARGS>
+$url
+$QueueObj
+$redirect => 0
+</%ARGS>

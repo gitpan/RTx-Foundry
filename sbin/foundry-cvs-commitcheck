@@ -1,13 +1,12 @@
 #!/usr/local/bin/perl
-# $File: //depot/RT/osf/sbin/foundry-cvs-commitcheck $ $Author: autrijus $
-# $Revision: #3 $ $Change: 10127 $ $DateTime: 2004/02/18 07:52:14 $
 
 use strict;
 use FindBin;
 use LWP::Simple;
 
-eval { require "$FindBin::Bin/../etc/foundry.conf" };
-eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" };
+eval { require "/usr/local/etc/foundry.conf" }                                  || eval { require "$FindBin::Bin/../etc/foundry.conf" }
+|| eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" }
+|| die $@;
 
 my ($cvs_base) = grep { defined and -d } (
     $ENV{CVSROOT},
@@ -25,7 +24,8 @@ if ($ENV{USER} eq $cvs_user) {
 }
 
 my $module = shift or exit 1;
-my $rt_url = $ENV{RT_URL} or die 'Must specify $ENV{RT_URL}'.$/;
+my $rt_url = $ENV{RT_URL} || $ENV{WEB_HOST} or die 'Must specify $ENV{RT_URL}'.$/;
+$rt_url = "http://$rt_url" unless $rt_url =~ m!^[a-z]+://!;
 
 $module =~ s|^\Q$cvs_base\E/(.*?)(/.*)?|$1|;
 $module =~ s|/$||;

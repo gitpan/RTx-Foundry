@@ -17,7 +17,7 @@
     <td background="/img/tabRight.png" width=2></td>
 %   } else {
     <td background="/img/tabLeftTop.png" width=2></td>
-    <td align="center" style="cursor: hand" onclick="javascript:location.href='<% $v %>'" background="/img/tabMiddleTop.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:black"><a accesskey="<% $c %>" style="color: black" href="<% $v %>"><% $t %></a></div>
+    <td align="center" style="cursor: hand" onclick="javascript:location.href='<% $v %>'" background="/img/tabMiddleTop.png"><div style="padding: 3px; padding-left: 10px; padding-right: 10px;position:relative;top:2px;color:black"><a style="color: black" href="<% $v %>"><% $t %></a></div>
     </td>
     <td background="/img/tabRightTop.png" width=2></td>
 %   }

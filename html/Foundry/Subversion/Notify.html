@@ -1,0 +1,34 @@
+<%INIT>
+my $QueueObj = RT::Queue->new($RT::SystemUser);
+$QueueObj->LoadByUnixName($Queue);
+$QueueObj->Id or $m->abort(404);
+
+$r->content_type('text/plain');
+
+require YAML;
+my %config = (
+    '/' => {
+	handler => 'HTML::ColorDiff',
+	with_diff => 1,
+	to => join(',',
+	    grep length, (
+		$QueueObj->AdminCcAddresses,
+		$QueueObj->CcAddresses,
+	    ),
+	),
+    },
+    '/trunk' => {
+	# XXX - use relative path to the repository?
+	handler => 'Snapshot',
+	to => "$RT::VarPath/Foundry/svn/.snapshot/$Queue.tar.gz",
+    },
+);
+$m->print( YAML::Dump(\%config) );
+</%INIT>
+<%ARGS>
+$Queue => ''
+$Revision => ''
+</%ARGS>
+<%FLAGS>
+inherit => undef
+</%FLAGS>

@@ -1,0 +1,24 @@
+% my $Items = $QueueObj->FunctionItems('Citations');
+% while (my $Item = $Items->Next) {
+% my $url = $Item->CustomFieldValue('CitationURL');
+<strong><% $Item->CustomFieldValue('CitationVersion') %></strong><br>
+<% $Item->CustomFieldValue('CitationAuthors') %><&|/l&>,</&>
+% if ($url) {
+<a href="<% $Item->CustomFieldValue('CitationURL') %>">
+<strong><% $Item->Subject %></strong></a><&|/l&>,</&>
+% } else {
+<a href="<% $Item->CustomFieldValue('CitationURL') %>">
+<strong><% $Item->Subject %></strong></a><&|/l&>,</&>
+% }
+% if (my $license = $Item->CustomFieldValue('CitationLicense')) {
+<% $license %><&|/l&>,</&>
+% }
+% if ($url) {
+<em><% $url %></em><&|/l&>,</&>
+% }
+<% $Item->CustomFieldValue('CitationDate') || $Item->CreatedObj->AsDate %>
+<hr>
+% }
+<%ARGS>
+$QueueObj
+</%ARGS>

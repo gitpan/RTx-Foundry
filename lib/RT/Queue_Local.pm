@@ -88,9 +88,9 @@ use constant FunctionsMap => (
 );
 
 sub FunctionsACL {
-    my ($self, $role) = @_;
+    my ($self, $role, $member) = @_;
     return (map $_->[0], +FunctionsMap) if $role eq 'admin';
-    return split(/\s+/, $self->Attribute("ACL-$role"));
+    return split(/\s+/, $self->Attribute("ACL-$role-".($member || $self->CurrentUser)->Id));
 }
 
 sub FunctionItems {
@@ -111,6 +111,25 @@ sub FunctionItems {
 sub CreateFunctionItem {
     my ($self, $function, $args) = @_;
 
+    # Validate CFs
+    my $FunctionQueue = RT::Queue->new($self->CurrentUser);
+    $FunctionQueue->Load("Project$function");
+    $FunctionQueue->Id or return 0;
+
+    my $CFs = $FunctionQueue->CustomFields;
+    while (my $CF = $CFs->Next) {
+        next if $CF->Attribute('OnCreate') eq 'hidden';
+        next if !length(my $pat = $CF->Attribute('Pattern'));
+
+        my $key = (
+            ( $CF->Type =~ /^Label(.+)/ )
+                ? $1
+                : "CustomField-".$CF->Id."-Values"
+        );
+        
+        $args->{$key} =~ /$pat/ or return 0;
+    }
+
     my ($Item, @rv) = HTML::Mason::Commands::CreateTicket(
         %$args, Queue => "Project$function",
     );
@@ -125,7 +144,7 @@ sub LoadFunctionItem {
 
     my $Item = RT::Ticket->new($self->CurrentUser);
     $Item->Load($id) or return;
-    $Item->QueueObj->Name == "Project$function" or return;
+    $Item->QueueObj->Name eq "Project$function" or return;
     $Item->__Value('IssueStatement') == $self->Id or return;
     return $Item;
 }

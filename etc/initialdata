@@ -359,7 +359,7 @@ __DATA__
     <Type>FreeformSingle</Type>
   </CustomFields>
   <CustomFields>
-    <Description>PersonalHomepage</Description>
+    <Description>Personal Homepage</Description>
     <Name>PersonalHomepage</Name>
     <Queue>NewUser</Queue>
     <SortOrder>6</SortOrder>
@@ -1092,19 +1092,33 @@ __DATA__
   </CustomFields>
   <CustomFields>
     <Attributes>
-      <HTMLAttr>href</HTMLAttr>
+      <OnUpdate>hidden</OnUpdate>
     </Attributes>
-    <Description>Homepage Redirection</Description>
-    <Name>RedirectURL</Name>
+    <Description>Topic Suggestion</Description>
+    <Name>TopicSuggestion</Name>
     <Queue>NewProject</Queue>
     <SortOrder>17</SortOrder>
     <Type>FreeformSingle</Type>
   </CustomFields>
   <CustomFields>
+    <Attributes>
+      <HTMLAttr>href</HTMLAttr>
+    </Attributes>
+    <Description>Homepage Redirection</Description>
+    <Name>RedirectURL</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>18</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
     <Description>Version Control System</Description>
     <Name>VCS</Name>
     <Queue>NewProject</Queue>
-    <SortOrder>18</SortOrder>
+    <SortOrder>19</SortOrder>
     <Type>SelectSingle</Type>
     <Values>
       <Description>Subversion(read/write)</Description>
@@ -1134,7 +1148,7 @@ __DATA__
     <Description>Remote Repository</Description>
     <Name>RemoteVCS</Name>
     <Queue>NewProject</Queue>
-    <SortOrder>19</SortOrder>
+    <SortOrder>20</SortOrder>
     <Type>FreeformSingle</Type>
   </CustomFields>
   <CustomFields>
@@ -1216,13 +1230,23 @@ __DATA__
   </CustomFields>
   <CustomFields>
     <Attributes>
+      <Hints>To add new releases, please use the 'Release Plans' tool. </Hints>
+    </Attributes>
+    <Description>Release Version</Description>
+    <Name>CitationVersion</Name>
+    <Queue>ProjectCitations</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>SelectVersion</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
       <OnCreate>hidden</OnCreate>
       <OnUpdate>hidden</OnUpdate>
     </Attributes>
     <Description>Content</Description>
     <Name>CitationContent</Name>
     <Queue>ProjectCitations</Queue>
-    <SortOrder>6</SortOrder>
+    <SortOrder>7</SortOrder>
     <Type>LabelContent</Type>
   </CustomFields>
   <CustomFields>
@@ -1235,6 +1259,191 @@ __DATA__
     <Queue>ProjectReferences</Queue>
     <SortOrder>1</SortOrder>
     <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Full Name</Description>
+    <Name>DownloaderName</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Email</Description>
+    <Name>DownloaderEmail</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Purpose of Download</Description>
+    <Name>DownloaderPurpose</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Personal Homepage</Description>
+    <Name>DownloaderHomepage</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Cited Project Name</Description>
+    <Name>DownloaderCitation</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Contact Info</Description>
+    <Name>DownloaderContact</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Occupation</Description>
+    <Name>DownloaderOccupation</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>7</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Computer</Description>
+      <Name>Computer</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Internet</Description>
+      <Name>Internet</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Travel</Description>
+      <Name>Travel</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Finance</Description>
+      <Name>Finance</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Telecommunication</Description>
+      <Name>Telecommunication</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Education</Description>
+      <Name>Education</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Architecture</Description>
+      <Name>Architecture</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+    <Values>
+      <Description>Government</Description>
+      <Name>Government</Name>
+      <SortOrder>8</SortOrder>
+    </Values>
+    <Values>
+      <Description>Design</Description>
+      <Name>Design</Name>
+      <SortOrder>9</SortOrder>
+    </Values>
+    <Values>
+      <Description>Health</Description>
+      <Name>Health</Name>
+      <SortOrder>10</SortOrder>
+    </Values>
+    <Values>
+      <Description>Insurance</Description>
+      <Name>Insurance</Name>
+      <SortOrder>11</SortOrder>
+    </Values>
+    <Values>
+      <Description>Law</Description>
+      <Name>Law</Name>
+      <SortOrder>12</SortOrder>
+    </Values>
+    <Values>
+      <Description>Media</Description>
+      <Name>Media</Name>
+      <SortOrder>13</SortOrder>
+    </Values>
+    <Values>
+      <Description>Research</Description>
+      <Name>Research</Name>
+      <SortOrder>14</SortOrder>
+    </Values>
+    <Values>
+      <Description>Retail</Description>
+      <Name>Retail</Name>
+      <SortOrder>15</SortOrder>
+    </Values>
+    <Values>
+      <Description>Transportation</Description>
+      <Name>Transportation</Name>
+      <SortOrder>16</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other</Description>
+      <Name>Other</Name>
+      <SortOrder>99</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Age</Description>
+    <Name>DownloaderAge</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>8</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>19 or below</Description>
+      <Name>0-19</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>20-29</Description>
+      <Name>20-29</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>30-39</Description>
+      <Name>30-39</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>40-49</Description>
+      <Name>40-49</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>50-59</Description>
+      <Name>50-59</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>60 or above</Description>
+      <Name>60-</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Interests</Description>
+    <Name>DownloaderInterests</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>9</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>IT Skills</Description>
+    <Name>DownloaderSkills</Name>
+    <Queue>ProjectDownloaders</Queue>
+    <SortOrder>10</SortOrder>
+    <Type>FreeformSingle</Type>
   </CustomFields>
   <CustomFields>
     <Attributes>
@@ -1286,6 +1495,13 @@ __DATA__
     <Queue>ProjectEvents</Queue>
     <SortOrder>4</SortOrder>
     <Type>FreeformDate</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Owner</Description>
+    <Name>EventOwner</Name>
+    <Queue>ProjectEvents</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>LabelOwner</Type>
   </CustomFields>
   <CustomFields>
     <Attributes>
@@ -1362,6 +1578,11 @@ __DATA__
     <Description>Open Foundry System</Description>
     <Disabled>1</Disabled>
     <Name>ProjectReferences</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectDownloaders</Name>
   </Queues>
   <ScripActions>
     <Argument>Owner,Cc,AdminCc</Argument>
