@@ -96,16 +96,16 @@ my %DualCFs = (
 );
 
 if ($ARGS{id} and $Step == 1) {
-    my ($ProjectName, $UnixName, $Rationale, $Description, $Platform, $Language, $Audience) = @ARGS{
+    my ($ProjectName, $UnixName, $Rationale, $Description, $Platform, $Language, $Audience, $Topic) = @ARGS{
         map "CustomField-".RT::CustomField->NameToId($_, 'NewProject')."-Values",
         qw( ProjectName UnixName Rationale PublicDescription Platform
-            ProgrammingLanguage IntendedAudience )
+            ProgrammingLanguage IntendedAudience Topic )
     };
 
     push @Error, loc('Missing mandatory fields')
 	unless $ProjectName and $UnixName and $Rationale and
 	       $Description and $Platform and
-	       $Language and $Audience;
+	       $Language and $Audience and $Topic;
 
     push @Error, loc('ID must be 3-15 characters of lower-case letters or digits, beginning with a letter')
 	unless !$UnixName or $UnixName =~ /^[a-z][0-9a-z]{2,14}$/;

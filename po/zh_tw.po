@@ -2229,3 +2229,47 @@ msgstr "事件一覽"
 msgid "Events"
 msgstr "事件"
 
+msgid "Foundry Statistics"
+msgstr "統計資訊"
+
+msgid "Site Statistics"
+msgstr "全站統計"
+
+msgid "Top Projects"
+msgstr "最佳專案"
+
+msgid "Ticket Status"
+msgstr "申請單狀態"
+
+msgid "Topic"
+msgstr "主題"
+
+msgid "Embedded-Platform"
+msgstr "嵌入式-平台"
+
+msgid "Embedded-Driver"
+msgstr "嵌入式-驅動程式"
+
+msgid "Embedded-Application"
+msgstr "嵌入式-應用程式"
+
+msgid "Embedded-OS"
+msgstr "嵌入式-作業系統"
+
+msgid "Embedded-Tools"
+msgstr "嵌入式-工具"
+
+msgid "Chinese-InputMethod"
+msgstr "中文-輸入法"
+
+msgid "Chinese-Localization"
+msgstr "中文-中文化"
+
+msgid "Chinese-Utilities"
+msgstr "中文-應用工具"
+
+msgid "Chinese-LanguageProcessing"
+msgstr "中文-語言處理"
+
+msgid "Other-Miscellaneous"
+msgstr "其他-未分類"

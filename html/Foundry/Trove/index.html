@@ -3,7 +3,7 @@
 	<tr>
 % my $Callback;
 % if (@$Map2) {
-%     $Callback = ($Type eq 'ACM Level 2') ? sub { $m->comp('ACMLevel2') } : sub { $m->comp('Tabs2', Name => 'Map2', Map => $Map2, URL => "?Type=$Type&Value=" . CGI::Util::escape($Value) ) };
+%     $Callback = sub { $m->comp('Tabs2', Name => 'Map2', Map => $Map2, URL => "?Type=$Type&Value=" . CGI::Util::escape($Value) ) };
 % } else {
 %     $Queues->LimitToEnabled
 % }
@@ -29,8 +29,6 @@ $QueueObj->Load('NewProject');
 my $CF = $QueueObj->CustomField($Type);
 my $CFValues = $CF->Values;
 my $Queues = RT::Queues->new($session{'CurrentUser'});
-
-$Map2 = [ 'foo' ] if $Type eq 'ACM Level 2';
 
 while (my $V = $CFValues->Next) {
     my $Values = RT::TicketCustomFieldValues->new($session{'CurrentUser'});

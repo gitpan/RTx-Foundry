@@ -1,8 +1,5 @@
-# $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #15 $ $Change: 10088 $ $DateTime: 2004/02/18 00:22:05 $
-
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_18';
+$RTx::Foundry::VERSION = '0.00_19';
 
 1;
 
@@ -12,8 +9,8 @@ RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.00_18 of RTx::Foundry, released
-November 15, 2004.
+This document describes version 0.00_19 of RTx::Foundry, released
+November 16, 2004.
 
 =head1 SYNOPSIS
 

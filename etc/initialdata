@@ -1,1423 +1,1865 @@
-# Purge all global scrips before importing ours.
-my $scrips = $RT::Scrips->new($RT::SystemUser);
+# --- Purge all global scrips before importing ours. --- # vim: filetype=xml
+my $scrips = RT::Scrips->new($RT::SystemUser);
 $scrips->LimitToGlobal; $_->Delete for @{ $scrips->ItemsArrayRef || [] };
-no strict;use YAML;*_=YAML::Load(do{local$/;<DATA>});@$_=@{$_{$_}}for keys%_;1
+my $queue = RT::Queue->new($RT::SystemUser); $queue->Load(1); $queue->SetDisabled(1);
+no strict; use XML::Simple; *_ = XMLin(do { local $/; readline(DATA) }, ForceArray => [qw(
+ Users Groups Queues ScripActions ScripConditions Templates Scrips ACL CustomFields Values
+)], NoAttr => 1, SuppressEmpty => ''); *$_ = ($_{$_} || []) for keys %_; 1; # vim: ft=xml
 __DATA__
---- #YAML:1.0
-ACL:
-  - GroupDomain: SystemInternal
-    GroupType: Everyone
-    Queue: NewUser
-    Right: CommentOnTicket
-  - GroupDomain: SystemInternal
-    GroupType: Everyone
-    Queue: NewUser
-    Right: ReplyToTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: AdminCustomFields
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: AdminQueue
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: CommentOnTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: CreateTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: DeleteTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: ModifySelf
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: ModifyTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: OwnTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: ReplyToTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: SeeQueue
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: ShowTicket
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: ShowTicketComments
-  - GroupDomain: SystemInternal
-    GroupType: Privileged
-    Right: Watch
-CustomFields:
-  - Attributes:
-      Hints: ! >-
-        Name must be 3-15 characters of digits, letters or underscore, beginning
-        with a letter
-      OnChange: readonly
-      Pattern: '^[A-Za-z]\w{2,14}$'
-    Description: Login Name
-    Name: Name
-    Queue: NewUser
-    SortOrder: 1
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Password must be at least 6 letters
-      Pattern: '^.{6}'
-    Description: Password
-    Name: Password
-    Queue: NewUser
-    SortOrder: 2
-    Type: FreeformPassword
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '^.{6}'
-    Description: Password (repeat)
-    Name: PasswordCheck
-    Queue: NewUser
-    SortOrder: 3
-    Type: FreeformPassword
-  - Description: Full Name
-    Name: RealName
-    Queue: NewUser
-    SortOrder: 4
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Email Address
-    Name: Email
-    Queue: NewUser
-    SortOrder: 5
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Project Name must be at most 40 charaters
-      Pattern: '^.{1,40}$'
-    Description: Project Name
-    Name: ProjectName
-    Queue: NewProject
-    SortOrder: 1
-    Type: FreeformSingle
-  - Attributes:
-      HTMLAttr: onchange="foundry_license_check(this)"
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Code License
-    Name: License
-    Queue: NewProject
-    SortOrder: 7
-    Type: SelectSingle
-    Values:
-      - Description: Apache v.1.1
-        Name: Apache1
-        SortOrder: 1
-      - Description: Apache v.2.0
-        Name: Apache2
-        SortOrder: 2
-      - Description: Artistic
-        Name: Artistic
-        SortOrder: 3
-      - Description: BSD
-        Name: BSD
-        SortOrder: 4
-      - Description: Common Public v.1
-        Name: CPL
-        SortOrder: 5
-      - Description: GNU Public v.2
-        Name: GPL
-        SortOrder: 6
-      - Description: Lesser GNU Public v.2.1
-        Name: LGPL
-        SortOrder: 7
-      - Description: MIT
-        Name: MIT
-        SortOrder: 8
-      - Description: Mozilla Public v.1.1
-        Name: MPL
-        SortOrder: 9
-      - Description: Qt Public v.1
-        Name: QPL
-        SortOrder: 10
-      - Description: Zlib/libpng
-        Name: Zlib
-        SortOrder: 11
-      - Description: Other OSI Approved...
-        Name: OSI...
-        SortOrder: 12
-      - Description: Public Domain
-        Name: '!PD'
-        SortOrder: 13
-      - Description: Project contains no code
-        Name: '!none'
-        SortOrder: 14
-  - Attributes:
-      Hints: Mandatory
-    Description: ' '
-    Name: LicenseOSI
-    Queue: NewProject
-    SortOrder: 8
-    Type: SelectSingle
-    Values:
-      - Description: Academic Free License
-        Name: Academic Free License
-        SortOrder: 1
-      - Description: Apple Public Source License
-        Name: Apple Public Source License
-        SortOrder: 2
-      - Description: Attribution Assurance Licenses
-        Name: Attribution Assurance Licenses
-        SortOrder: 3
-      - Description: CUA Office Public License Version 1.0
-        Name: CUA Office Public License Version 1.0
-        SortOrder: 4
-      - Description: EU DataGrid Software License
-        Name: EU DataGrid Software License
-        SortOrder: 5
-      - Description: Eiffel Forum License
-        Name: Eiffel Forum License
-        SortOrder: 6
-      - Description: Eiffel Forum License V2.0
-        Name: Eiffel Forum License V2.0
-        SortOrder: 7
-      - Description: Entessa Public License
-        Name: Entessa Public License
-        SortOrder: 8
-      - Description: Fair License
-        Name: Fair License
-        SortOrder: 9
-      - Description: Frameworx License
-        Name: Frameworx License
-        SortOrder: 10
-      - Description: Lucent Public License (Plan9)
-        Name: Lucent Public License (Plan9)
-        SortOrder: 11
-      - Description: Lucent Public License Version 1.02
-        Name: Lucent Public License Version 1.02
-        SortOrder: 12
-      - Description: IBM Public License
-        Name: IBM Public License
-        SortOrder: 13
-      - Description: Intel Open Source License
-        Name: Intel Open Source License
-        SortOrder: 14
-      - Description: Historical Permission Notice and Disclaimer
-        Name: Historical Permission Notice and Disclaimer
-        SortOrder: 15
-      - Description: Jabber Open Source License
-        Name: Jabber Open Source License
-        SortOrder: 16
-      - Description: |-
-          MITRE Collaborative Virtual Workspace License (CVW License)
-        Name: |-
-          MITRE Collaborative Virtual Workspace License (CVW License)
-        SortOrder: 17
-      - Description: Motosoto License
-        Name: Motosoto License
-        SortOrder: 18
-      - Description: Mozilla Public License 1.0 (MPL)
-        Name: Mozilla Public License 1.0 (MPL)
-        SortOrder: 19
-      - Description: Naumen Public License
-        Name: Naumen Public License
-        SortOrder: 20
-      - Description: Nethack General Public License
-        Name: Nethack General Public License
-        SortOrder: 21
-      - Description: Nokia Open Source License
-        Name: Nokia Open Source License
-        SortOrder: 22
-      - Description: OCLC Research Public License 2.0
-        Name: OCLC Research Public License 2.0
-        SortOrder: 23
-      - Description: Open Group Test Suite License
-        Name: Open Group Test Suite License
-        SortOrder: 24
-      - Description: Open Software License
-        Name: Open Software License
-        SortOrder: 25
-      - Description: PHP License
-        Name: PHP License
-        SortOrder: 26
-      - Description: Python license (CNRI Python License)
-        Name: Python license (CNRI Python License)
-        SortOrder: 27
-      - Description: Python Software Foundation License
-        Name: Python Software Foundation License
-        SortOrder: 28
-      - Description: RealNetworks Public Source License V1.0
-        Name: RealNetworks Public Source License V1.0
-        SortOrder: 29
-      - Description: Reciprocal Public License
-        Name: Reciprocal Public License
-        SortOrder: 30
-      - Description: Ricoh Source Code Public License
-        Name: Ricoh Source Code Public License
-        SortOrder: 31
-      - Description: Sleepycat License
-        Name: Sleepycat License
-        SortOrder: 32
-      - Description: Sun Industry Standards Source License (SISSL)
-        Name: Sun Industry Standards Source License (SISSL)
-        SortOrder: 33
-      - Description: Sun Public License
-        Name: Sun Public License
-        SortOrder: 34
-      - Description: Sybase Open Watcom Public License 1.0
-        Name: Sybase Open Watcom Public License 1.0
-        SortOrder: 35
-      - Description: University of Illinois/NCSA Open Source License
-        Name: University of Illinois/NCSA Open Source License
-        SortOrder: 36
-      - Description: Vovida Software License v. 1.0
-        Name: Vovida Software License v. 1.0
-        SortOrder: 37
-      - Description: W3C License
-        Name: W3C License
-        SortOrder: 38
-      - Description: wxWindows Library License
-        Name: wxWindows Library License
-        SortOrder: 39
-      - Description: X.Net License
-        Name: X.Net License
-        SortOrder: 40
-      - Description: Zope Public License
-        Name: Zope Public License
-        SortOrder: 41
-  - Attributes:
-      HTMLAttr: onchange="foundry_license_check(this)"
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Content License
-    Name: ContentLicense
-    Queue: NewProject
-    SortOrder: 10
-    Type: SelectSingle
-    Values:
-      - Description: Creative Commons Licenses...
-        Name: CC...
-        SortOrder: 1
-      - Description: GNU Free Documentation License
-        Name: GFDL
-        SortOrder: 2
-      - Description: Same license as code
-        Name: code
-        SortOrder: 3
-      - Description: Public Domain
-        Name: '!PD'
-        SortOrder: 4
-      - Description: Project contains only code
-        Name: '!none'
-        SortOrder: 5
-  - Attributes:
-      Hints: Mandatory
-    Description: ' '
-    Name: ContentLicenseCC
-    Queue: NewProject
-    SortOrder: 11
-    Type: SelectSingle
-    Values:
-      - Description: Attribution
-        Name: Attribution
-        SortOrder: 1
-      - Description: Attribution-ShareAlike
-        Name: Attribution-ShareAlike
-        SortOrder: 2
-      - Description: Attribution-NoDerivs
-        Name: Attribution-NoDerivs
-        SortOrder: 4
-      - Description: Attribution-NonCommercial
-        Name: Attribution-NonCommercial
-        SortOrder: 5
-      - Description: Attribution-NonCommercial-ShareAlike
-        Name: Attribution-NonCommercial-ShareAlike
-        SortOrder: 6
-      - Description: Attribution-NonCommercial-NoDerivs
-        Name: Attribution-NonCommercial-NoDerivs
-        SortOrder: 12
-  - Description: Other Code Licenses
-    Name: LicenseOther
-    Queue: NewProject
-    SortOrder: 9
-    Type: FreeformSingle
-  - Description: Other Content Licenses
-    Name: ContentLicenseOther
-    Queue: NewProject
-    SortOrder: 12
-    Type: FreeformSingle
-  - Attributes:
-      Hints: ! >-
-        ID must be 3-15 characters of lower-case letters or digits, beginning with a
-        letter
-      OnChange: readonly
-      Pattern: '^[a-z][0-9a-z]{2,14}$'
-    Description: Project ID
-    Name: UnixName
-    Queue: NewProject
-    SortOrder: 2
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Maturity
-    Name: Maturity
-    Queue: NewProject
-    SortOrder: 6
-    Type: SelectSingle
-    Values:
-      - Description: Idea
-        Name: Idea
-        SortOrder: 1
-      - Description: Pre-Alpha
-        Name: Pre-Alpha
-        SortOrder: 2
-      - Description: Alpha
-        Name: Alpha
-        SortOrder: 3
-      - Description: Beta
-        Name: Beta
-        SortOrder: 4
-      - Description: Released
-        Name: Released
-        SortOrder: 5
-      - Description: Mature
-        Name: Mature
-        SortOrder: 6
-      - Description: Standard
-        Name: Standard
-        SortOrder: 7
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Programming Language
-    Name: ProgrammingLanguage
-    Queue: NewProject
-    SortOrder: 14
-    Type: SelectMultiple
-    Values:
-      - Description: Assembly
-        Name: Assembly
-        SortOrder: 1
-      - Description: C
-        Name: C
-        SortOrder: 2
-      - Description: C++
-        Name: C++
-        SortOrder: 3
-      - Description: Java
-        Name: Java
-        SortOrder: 4
-      - Description: Perl
-        Name: Perl
-        SortOrder: 5
-      - Description: PHP
-        Name: PHP
-        SortOrder: 6
-      - Description: Python
-        Name: Python
-        SortOrder: 7
-      - Description: Ruby
-        Name: Ruby
-        SortOrder: 8
-  - Attributes:
-      Hints: Optional; fill in an email address or URL
-      HTMLAttr: href
-    Description: Contact Info
-    Name: ContactInfo
-    Queue: NewProject
-    SortOrder: 5
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Intended Audience
-    Name: IntendedAudience
-    Queue: NewProject
-    SortOrder: 15
-    Type: SelectMultiple
-    Values:
-      - Description: General Use
-        Name: General Use
-        SortOrder: 1
-      - Description: Programmer
-        Name: Programmer
-        SortOrder: 2
-      - Description: System Administrator
-        Name: System Administrator
-        SortOrder: 3
-      - Description: Education
-        Name: Education
-        SortOrder: 4
-      - Description: Researcher
-        Name: Researcher
-        SortOrder: 5
-      - Description: Other
-        Name: Other
-        SortOrder: 6
-  - Attributes:
-      Hints: Optional; fill in a URL
-      HTMLAttr: href
-    Description: Homepage Redirection
-    Name: RedirectURL
-    Queue: NewProject
-    SortOrder: 16
-    Type: FreeformSingle
-  - Description: Version Control System
-    Name: VCS
-    Queue: NewProject
-    SortOrder: 17
-    Type: SelectSingle
-    Values:
-      - Description: Subversion(read/write)
-        Name: svn
-        SortOrder: 1
-      - Description: CVS, Subversion(mirror)
-        Name: cvs
-        SortOrder: 2
-      - Description: Remote, Subversion(mirror)
-        Name: vcp
-        SortOrder: 3
-      - Description: Remote
-        Name: none
-        SortOrder: 4
-  - Description: Remote Repository
-    Name: RemoteVCS
-    Queue: NewProject
-    SortOrder: 18
-    Type: FreeformSingle
-    Attributes:
-      Pattern: '^(?:$|[A-Za-z][-+.A-Za-z0-9]*:)'
-  - Description: Resolution
-    Name: Resolution
-    Queue: 0
-    SortOrder: 17
-    Type: SelectResolution
-    Values:
-      - Description: FIXED
-        Name: FIXED
-        SortOrder: 1
-      - Description: LATER
-        Name: LATER
-        SortOrder: 2
-      - Description: INVALID
-        Name: INVALID
-        SortOrder: 3
-      - Description: WONTFIX
-        Name: WONTFIX
-        SortOrder: 4
-      - Description: WORKSFORME
-        Name: WORKSFORME
-        SortOrder: 5
-  - Attributes:
-      OnCreate: readonly
-    Description: Type
-    Name: Type
-    Queue: 0
-    SortOrder: 18
-    Type: SelectSingle
-    Values:
-      - Description: defect
-        Name: defect
-        SortOrder: 1
-      - Description: patch
-        Name: patch
-        SortOrder: 2
-      - Description: task
-        Name: task
-        SortOrder: 3
-      - Description: feature
-        Name: feature
-        SortOrder: 4
-      - Description: enhancement
-        Name: enhancement
-        SortOrder: 5
-  - Description: Subcomponent
-    Name: Subcomponent
-    Queue: 0
-    SortOrder: 19
-    Type: SelectSingle
-    Values:
-      - Description: Backend
-        Name: Backend
-        SortOrder: 1
-      - Description: Interface
-        Name: Interface
-        SortOrder: 2
-      - Description: Other
-        Name: Other
-        SortOrder: 3
-  - Description: Architecture
-    Name: Architecture
-    Queue: 0
-    SortOrder: 20
-    Type: SelectSingle
-    Values:
-      - Description: All Architectures
-        Name: All
-        SortOrder: 1
-      - Description: i386 PC
-        Name: PC
-        SortOrder: 2
-      - Description: Mac
-        Name: Mac
-        SortOrder: 3
-      - Description: Other
-        Name: Other
-        SortOrder: 4
-  - Description: Platform
-    Name: Platform
-    Queue: 0
-    SortOrder: 21
-    Type: SelectSingle
-    Values:
-      - Description: All Platforms
-        Name: All
-        SortOrder: 1
-      - Description: Linux
-        Name: Linux
-        SortOrder: 3
-      - Description: MS Windows
-        Name: Win32
-        SortOrder: 4
-      - Description: FreeBSD
-        Name: FreeBSD
-        SortOrder: 5
-      - Description: Other
-        Name: Other
-        SortOrder: 5
-  - Attributes:
-      OnCreate: hidden
-    Description: Severity
-    Name: Severity
-    Queue: 0
-    SortOrder: 22
-    Type: SelectSingle
-    Values:
-      - Description: Most Important
-        Name: P1
-        SortOrder: 1
-      - Description: Important
-        Name: P2
-        SortOrder: 2
-      - Description: Normal
-        Name: P3
-        SortOrder: 3
-      - Description: Less Important
-        Name: P4
-        SortOrder: 4
-      - Description: Least Important
-        Name: P5
-        SortOrder: 5
-  - Description: PersonalHomepage
-    Name: PersonalHomepage
-    Queue: NewUser
-    SortOrder: 23
-    Type: FreeformSingle
-  - Description: Name
-    Name: Name
-    Queue: LostPassword
-    SortOrder: 24
-    Type: FreeformSingle
-  - Description: Email
-    Name: Email
-    Queue: LostPassword
-    SortOrder: 25
-    Type: FreeformSingle
-  - Description: Version
-    Name: Version
-    Queue: 0
-    SortOrder: 26
-    Type: SelectVersion
-  - Description: TargetVersion
-    Name: TargetVersion
-    Queue: 0
-    SortOrder: 27
-    Type: SelectVersion
-  - Description: Public Info
-    Name: Public Info
-    Queue: NewUser
-    SortOrder: 28
-    Type: SelectMultiple
-    Values:
-      - Description: Email Address
-        Name: Email
-        SortOrder: 1
-      - Description: Real Name
-        Name: RealName
-        SortOrder: 2
-      - Description: Personal Homepage
-        Name: PersonalHomepage
-        SortOrder: 3
-      - Description: Self Introduction
-        Name: Intro
-        SortOrder: 4
-  - Attributes:
-      Hints: Mandatory
-      OnChange: hidden
-      OnUpdate: hidden
-      Pattern: '.'
-    Description: Rationale
-    Name: Rationale
-    Queue: NewProject
-    SortOrder: 3
-    Type: FreeformMultiple
-  - Attributes:
-      Hints: Public Description must be at most 255 charaters
-      Pattern: '^[\d\D]{1,255}$'
-    Description: Public Description
-    Name: PublicDescription
-    Queue: NewProject
-    SortOrder: 4
-    Type: FreeformSingle
-  - Attributes:
-      Hints: Mandatory
-      Pattern: '.'
-    Description: Platform
-    Name: Platform
-    Queue: NewProject
-    SortOrder: 13
-    Type: SelectMultiple
-    Values:
-      - Description: Windows
-        Name: Windows
-        SortOrder: 1
-      - Description: FreeBSD
-        Name: FreeBSD
-        SortOrder: 2
-      - Description: Linux
-        Name: Linux
-        SortOrder: 3
-      - Description: Java Environment
-        Name: Java Environment
-        SortOrder: 4
-      - Description: '.NET Environment'
-        Name: '.NET Environment'
-        SortOrder: 5
-      - Description: 'MacOSX'
-        Name: 'MacOSX'
-        SortOrder: 6
-      - Description: 'MacOS Classic'
-        Name: 'MacOS Classic'
-        SortOrder: 6
-  - Description: About Me
-    Name: Intro
-    Queue: NewUser
-    SortOrder: 32
-    Type: LabelContent
-  - Attributes:
-      Hints: Mandatory
-      OnUpdate: hidden
-      Pattern: '.'
-    Description: Subject
-    Name: Subject
-    Queue: 0
-    SortOrder: 36
-    Type: LabelSubject
-  - Description: Attachments
-    Name: Attachments
-    Queue: 0
-    SortOrder: 35
-    Type: LabelAttachments
-  - Description: "Release Version"
-    Name: Version
-    Queue: ProjectEvents
-    SortOrder: 1
-    Type: SelectVersion
-  - Description: "Starts"
-    Name: EventStarts
-    Queue: ProjectEvents
-    SortOrder: 2
-    Type: FreeformDate
-  - Description: "Due"
-    Name: EventDue
-    Queue: ProjectEvents
-    SortOrder: 3
-    Type: FreeformDate
-  - Description: 'Job Title'
-    Name: JobTitle
-    Queue: ProjectJobs
-    SortOrder: 1
-    Type: LabelSubject
-  - Description: 'Job Description'
-    Name: JobDescription
-    Queue: ProjectJobs
-    SortOrder: 2
-    Type: LabelContent
-  - Description: 'Required Skills'
-    Name: JobRequirement
-    Queue: ProjectJobs
-    SortOrder: 3
-    Type: FreeformMultiple
-  - Description: 'Available Until'
-    Name: JobDue
-    Queue: ProjectJobs
-    SortOrder: 4
-    Type: FreeformDate
-Queues:
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: NewUser
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: NewProject
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: LostPassword
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: MemberChange
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: ProjectNews
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: ProjectEvents
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: ProjectJobs
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: ProjectCitations
-  - Description: Open Foundry System
-    Disabled: 1
-    Name: ProjectReferences
-ScripActions:
-  - Argument: Owner,Cc,AdminCc
-    Description: |-
-      Send mail to Owner, Ccs and AdminCcs as a "comment"
-    ExecModule: NotifyAsComment
-    Name: Notify Owner, Ccs and AdminCcs as Comment
-  - Argument: Owner,Cc,AdminCc
-    Description: Send mail to Owner, Ccs and AdminCcs
-    ExecModule: Notify
-    Name: Notify Owner, Ccs and AdminCcs
-Templates:
-  - Content: >
-      Subject: Confirm Registration
-      
-      
-      {loc('Thank you for registering on the [_1] web site.', $RT::Organization)}
-      
-      {loc("You have an account with username '[_1]' created for you.",
-          $Ticket->CustomFieldValues('Name')->First->Content)}
-      {loc('In order to complete your registration, visit the following URL:')}
-      
-          {$RT::WebBaseURL}/Foundry/Home/Guest/Verify.html?id={$Ticket->Id}
-      
-      {loc('Or just reply to this mail, keeping this string in the subject
-      line:')}
-      
-          [{$rtname} #{$Ticket->id}]
-      
-                              {loc('Thank you.')}
-                              {$RT::Organization}
-    Description: Confirm the registration
-    Name: Registration
-    Queue: NewUser
-  - Content: >
-      Subject: Registration complete
-      
-      
-      {loc('You are now a registered user on [_1].', $RT::Organization)}
-      
-      {loc('As a registered user, you can participate fully in the activities on
-      the site:')}
-        - {loc('Post messages to the project message forums')}
-        - {loc('Post bugs and patches for projects')}
-        - {loc('Sign on as a project developer')}
-        - {loc('Start your own project!')}
-      
-      {loc('You should take some time to read through the Site Documentation,')}
-      
-      {loc('so you may take full advantage of [_1].', $RT::Organization)}
-      
-      {loc('Please provide us with feedback on ways that we can improve [_1].',
-      $RT::Organization)}
-      
-                              {loc('Thank you.')}
-                              {$RT::Organization}
-    Description: Registration Complete
-    Name: Complete
-    Queue: NewUser
-  - Content: >
-      Subject: Project Submitted
-      
-      
-      {loc('Your project has been submitted to the [_1] administrators.',
-      $RT::Organization)}
-      
-      {loc('Within 72 hours, you will receive notification of further
-      instructions.')}
-      
-      {loc('There is no need to reply to this message right now.')}
-      
-                              {loc('Thank you.')}
-                              {$RT::Organization}
-    Description: Notify the user of the new project
-    Name: Notification
-    Queue: NewProject
-  - Content: >+
-      ===Create-Ticket: BEGIN
-      
-      ### BEGIN ### { require RT::Workflow; %X = () }
-      ###############################
-      
-      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
-      "=$@"} #
-      
-      ###############################################################################
-      
-      Subject: BEGIN #{$Tickets\{TOP\}->Id}
-      
-      Queue: ___Approvals
-      
-      Type: code
-      
-      Status: resolved
-      
-      Content:
-      
-      "BEGIN #{$Tickets\{TOP\}->Id}"
-      
-      ENDOFCONTENT
-      
-      ===Create-Ticket: T1
-      
-      ### CONDITION ### { require RT::Workflow }
-      ####################################
-      
-      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
-      
-      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
-      ###############################
-      
-      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
-      ).$/}do{0,
-      
-      ### NEXT STATE
-      ################################################################
-      
-      ###############################################################################
-      
-      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-      
-      ###############################################################################
-      
-      Subject: autoresolve
-      
-      Type: code
-      
-      IsEntryPoint: 1
-      
-      Queue: ___Approvals
-      
-      ConditionSatisfy: any
-      
-      ActionProcedure: AutoResolve
-      
-      OwnerClass: owner
-      
-      Content-Type: text/plain
-      
-      Content:
-      
-      require RT::Workflow;
-      
-      RT::Workflow::action($TOP, 'AutoResolve', '');
-      
-      ENDOFCONTENT
+<?xml version="1.0" encoding="UTF-8"?>
+<InitialData>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Everyone</GroupType>
+    <Queue>NewUser</Queue>
+    <Right>CommentOnTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Everyone</GroupType>
+    <Queue>NewUser</Queue>
+    <Right>ReplyToTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>AdminCustomFields</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>AdminQueue</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>CommentOnTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>CreateTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>DeleteTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>ModifySelf</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>ModifyTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>OwnTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>ReplyToTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>SeeQueue</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>ShowTicket</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>ShowTicketComments</Right>
+  </ACL>
+  <ACL>
+    <GroupDomain>SystemInternal</GroupDomain>
+    <GroupType>Privileged</GroupType>
+    <Right>Watch</Right>
+  </ACL>
+  <CustomFields>
+    <Description>Resolution</Description>
+    <Name>Resolution</Name>
+    <Queue>0</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>SelectResolution</Type>
+    <Values>
+      <Description>FIXED</Description>
+      <Name>FIXED</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>LATER</Description>
+      <Name>LATER</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>INVALID</Description>
+      <Name>INVALID</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>WONTFIX</Description>
+      <Name>WONTFIX</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>WORKSFORME</Description>
+      <Name>WORKSFORME</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <OnCreate>readonly</OnCreate>
+    </Attributes>
+    <Description>Type</Description>
+    <Name>Type</Name>
+    <Queue>0</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>defect</Description>
+      <Name>defect</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>patch</Description>
+      <Name>patch</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>task</Description>
+      <Name>task</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>feature</Description>
+      <Name>feature</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>enhancement</Description>
+      <Name>enhancement</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Subcomponent</Description>
+    <Name>Subcomponent</Name>
+    <Queue>0</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Backend</Description>
+      <Name>Backend</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Interface</Description>
+      <Name>Interface</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other</Description>
+      <Name>Other</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Architecture</Description>
+    <Name>Architecture</Name>
+    <Queue>0</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>All Architectures</Description>
+      <Name>All</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>i386 PC</Description>
+      <Name>PC</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Mac</Description>
+      <Name>Mac</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other</Description>
+      <Name>Other</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Platform</Description>
+    <Name>Platform</Name>
+    <Queue>0</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>All Platforms</Description>
+      <Name>All</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Linux</Description>
+      <Name>Linux</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>MS Windows</Description>
+      <Name>Win32</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>FreeBSD</Description>
+      <Name>FreeBSD</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Macintosh</Description>
+      <Name>Mac</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other</Description>
+      <Name>Other</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <OnCreate>hidden</OnCreate>
+    </Attributes>
+    <Description>Severity</Description>
+    <Name>Severity</Name>
+    <Queue>0</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Most Important</Description>
+      <Name>P1</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Important</Description>
+      <Name>P2</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Normal</Description>
+      <Name>P3</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Less Important</Description>
+      <Name>P4</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Least Important</Description>
+      <Name>P5</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Version</Description>
+    <Name>Version</Name>
+    <Queue>0</Queue>
+    <SortOrder>7</SortOrder>
+    <Type>SelectVersion</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>TargetVersion</Description>
+    <Name>TargetVersion</Name>
+    <Queue>0</Queue>
+    <SortOrder>8</SortOrder>
+    <Type>SelectVersion</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Attachments</Description>
+    <Name>Attachments</Name>
+    <Queue>0</Queue>
+    <SortOrder>9</SortOrder>
+    <Type>LabelAttachments</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <OnUpdate>hidden</OnUpdate>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Subject</Description>
+    <Name>Subject</Name>
+    <Queue>0</Queue>
+    <SortOrder>10</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Name must be 3-15 characters of digits, letters or underscore, beginning with a letter</Hints>
+      <OnChange>readonly</OnChange>
+      <Pattern>^[A-Za-z]\w{2,14}$</Pattern>
+    </Attributes>
+    <Description>Login Name</Description>
+    <Name>Name</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Password must be at least 6 letters</Hints>
+      <Pattern>^.{6}</Pattern>
+    </Attributes>
+    <Description>Password</Description>
+    <Name>Password</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>FreeformPassword</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>^.{6}</Pattern>
+    </Attributes>
+    <Description>Password (repeat)</Description>
+    <Name>PasswordCheck</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformPassword</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Full Name</Description>
+    <Name>RealName</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Email Address</Description>
+    <Name>Email</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>PersonalHomepage</Description>
+    <Name>PersonalHomepage</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Public Info</Description>
+    <Name>Public Info</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>7</SortOrder>
+    <Type>SelectMultiple</Type>
+    <Values>
+      <Description>Email Address</Description>
+      <Name>Email</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Real Name</Description>
+      <Name>RealName</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Personal Homepage</Description>
+      <Name>PersonalHomepage</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Self Introduction</Description>
+      <Name>Intro</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>About Me</Description>
+    <Name>Intro</Name>
+    <Queue>NewUser</Queue>
+    <SortOrder>8</SortOrder>
+    <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Project Name must be at most 40 charaters</Hints>
+      <Pattern>^.{1,40}$</Pattern>
+    </Attributes>
+    <Description>Project Name</Description>
+    <Name>ProjectName</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>ID must be 3-15 characters of lower-case letters or digits, beginning with a letter</Hints>
+      <OnChange>readonly</OnChange>
+      <Pattern>^[a-z][0-9a-z]{2,14}$</Pattern>
+    </Attributes>
+    <Description>Project ID</Description>
+    <Name>UnixName</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <OnChange>hidden</OnChange>
+      <OnUpdate>hidden</OnUpdate>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Rationale</Description>
+    <Name>Rationale</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformMultiple</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Public Description must be at most 255 charaters</Hints>
+      <Pattern>^[\d\D]{1,255}$</Pattern>
+    </Attributes>
+    <Description>Public Description</Description>
+    <Name>PublicDescription</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>href</HTMLAttr>
+      <Hints>Optional; fill in an email address or URL</Hints>
+    </Attributes>
+    <Description>Contact Info</Description>
+    <Name>ContactInfo</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>5</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Maturity</Description>
+    <Name>Maturity</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>6</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Idea</Description>
+      <Name>Idea</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Pre-Alpha</Description>
+      <Name>Pre-Alpha</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Alpha</Description>
+      <Name>Alpha</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Beta</Description>
+      <Name>Beta</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Released</Description>
+      <Name>Released</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Mature</Description>
+      <Name>Mature</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Standard</Description>
+      <Name>Standard</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>onchange=&quot;foundry_license_check(this)&quot;</HTMLAttr>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Code License</Description>
+    <Name>License</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>7</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Apache v.1.1</Description>
+      <Name>Apache1</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Apache v.2.0</Description>
+      <Name>Apache2</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Artistic</Description>
+      <Name>Artistic</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>BSD</Description>
+      <Name>BSD</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Common Public v.1</Description>
+      <Name>CPL</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>GNU Public v.2</Description>
+      <Name>GPL</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Lesser GNU Public v.2.1</Description>
+      <Name>LGPL</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+    <Values>
+      <Description>MIT</Description>
+      <Name>MIT</Name>
+      <SortOrder>8</SortOrder>
+    </Values>
+    <Values>
+      <Description>Mozilla Public v.1.1</Description>
+      <Name>MPL</Name>
+      <SortOrder>9</SortOrder>
+    </Values>
+    <Values>
+      <Description>Qt Public v.1</Description>
+      <Name>QPL</Name>
+      <SortOrder>10</SortOrder>
+    </Values>
+    <Values>
+      <Description>Zlib/libpng</Description>
+      <Name>Zlib</Name>
+      <SortOrder>11</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other OSI Approved...</Description>
+      <Name>OSI...</Name>
+      <SortOrder>12</SortOrder>
+    </Values>
+    <Values>
+      <Description>Public Domain</Description>
+      <Name>!PD</Name>
+      <SortOrder>13</SortOrder>
+    </Values>
+    <Values>
+      <Description>Project contains no code</Description>
+      <Name>!none</Name>
+      <SortOrder>14</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+    </Attributes>
+    <Description> </Description>
+    <Name>LicenseOSI</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>8</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Academic Free License</Description>
+      <Name>Academic Free License</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Apple Public Source License</Description>
+      <Name>Apple Public Source License</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution Assurance Licenses</Description>
+      <Name>Attribution Assurance Licenses</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>CUA Office Public License Version 1.0</Description>
+      <Name>CUA Office Public License Version 1.0</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>EU DataGrid Software License</Description>
+      <Name>EU DataGrid Software License</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Eiffel Forum License</Description>
+      <Name>Eiffel Forum License</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Eiffel Forum License V2.0</Description>
+      <Name>Eiffel Forum License V2.0</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+    <Values>
+      <Description>Entessa Public License</Description>
+      <Name>Entessa Public License</Name>
+      <SortOrder>8</SortOrder>
+    </Values>
+    <Values>
+      <Description>Fair License</Description>
+      <Name>Fair License</Name>
+      <SortOrder>9</SortOrder>
+    </Values>
+    <Values>
+      <Description>Frameworx License</Description>
+      <Name>Frameworx License</Name>
+      <SortOrder>10</SortOrder>
+    </Values>
+    <Values>
+      <Description>Lucent Public License (Plan9)</Description>
+      <Name>Lucent Public License (Plan9)</Name>
+      <SortOrder>11</SortOrder>
+    </Values>
+    <Values>
+      <Description>Lucent Public License Version 1.02</Description>
+      <Name>Lucent Public License Version 1.02</Name>
+      <SortOrder>12</SortOrder>
+    </Values>
+    <Values>
+      <Description>IBM Public License</Description>
+      <Name>IBM Public License</Name>
+      <SortOrder>13</SortOrder>
+    </Values>
+    <Values>
+      <Description>Intel Open Source License</Description>
+      <Name>Intel Open Source License</Name>
+      <SortOrder>14</SortOrder>
+    </Values>
+    <Values>
+      <Description>Historical Permission Notice and Disclaimer</Description>
+      <Name>Historical Permission Notice and Disclaimer</Name>
+      <SortOrder>15</SortOrder>
+    </Values>
+    <Values>
+      <Description>Jabber Open Source License</Description>
+      <Name>Jabber Open Source License</Name>
+      <SortOrder>16</SortOrder>
+    </Values>
+    <Values>
+      <Description>MITRE Collaborative Virtual Workspace License (CVW License)</Description>
+      <Name>MITRE Collaborative Virtual Workspace License (CVW License)</Name>
+      <SortOrder>17</SortOrder>
+    </Values>
+    <Values>
+      <Description>Motosoto License</Description>
+      <Name>Motosoto License</Name>
+      <SortOrder>18</SortOrder>
+    </Values>
+    <Values>
+      <Description>Mozilla Public License 1.0 (MPL)</Description>
+      <Name>Mozilla Public License 1.0 (MPL)</Name>
+      <SortOrder>19</SortOrder>
+    </Values>
+    <Values>
+      <Description>Naumen Public License</Description>
+      <Name>Naumen Public License</Name>
+      <SortOrder>20</SortOrder>
+    </Values>
+    <Values>
+      <Description>Nethack General Public License</Description>
+      <Name>Nethack General Public License</Name>
+      <SortOrder>21</SortOrder>
+    </Values>
+    <Values>
+      <Description>Nokia Open Source License</Description>
+      <Name>Nokia Open Source License</Name>
+      <SortOrder>22</SortOrder>
+    </Values>
+    <Values>
+      <Description>OCLC Research Public License 2.0</Description>
+      <Name>OCLC Research Public License 2.0</Name>
+      <SortOrder>23</SortOrder>
+    </Values>
+    <Values>
+      <Description>Open Group Test Suite License</Description>
+      <Name>Open Group Test Suite License</Name>
+      <SortOrder>24</SortOrder>
+    </Values>
+    <Values>
+      <Description>Open Software License</Description>
+      <Name>Open Software License</Name>
+      <SortOrder>25</SortOrder>
+    </Values>
+    <Values>
+      <Description>PHP License</Description>
+      <Name>PHP License</Name>
+      <SortOrder>26</SortOrder>
+    </Values>
+    <Values>
+      <Description>Python license (CNRI Python License)</Description>
+      <Name>Python license (CNRI Python License)</Name>
+      <SortOrder>27</SortOrder>
+    </Values>
+    <Values>
+      <Description>Python Software Foundation License</Description>
+      <Name>Python Software Foundation License</Name>
+      <SortOrder>28</SortOrder>
+    </Values>
+    <Values>
+      <Description>RealNetworks Public Source License V1.0</Description>
+      <Name>RealNetworks Public Source License V1.0</Name>
+      <SortOrder>29</SortOrder>
+    </Values>
+    <Values>
+      <Description>Reciprocal Public License</Description>
+      <Name>Reciprocal Public License</Name>
+      <SortOrder>30</SortOrder>
+    </Values>
+    <Values>
+      <Description>Ricoh Source Code Public License</Description>
+      <Name>Ricoh Source Code Public License</Name>
+      <SortOrder>31</SortOrder>
+    </Values>
+    <Values>
+      <Description>Sleepycat License</Description>
+      <Name>Sleepycat License</Name>
+      <SortOrder>32</SortOrder>
+    </Values>
+    <Values>
+      <Description>Sun Industry Standards Source License (SISSL)</Description>
+      <Name>Sun Industry Standards Source License (SISSL)</Name>
+      <SortOrder>33</SortOrder>
+    </Values>
+    <Values>
+      <Description>Sun Public License</Description>
+      <Name>Sun Public License</Name>
+      <SortOrder>34</SortOrder>
+    </Values>
+    <Values>
+      <Description>Sybase Open Watcom Public License 1.0</Description>
+      <Name>Sybase Open Watcom Public License 1.0</Name>
+      <SortOrder>35</SortOrder>
+    </Values>
+    <Values>
+      <Description>University of Illinois/NCSA Open Source License</Description>
+      <Name>University of Illinois/NCSA Open Source License</Name>
+      <SortOrder>36</SortOrder>
+    </Values>
+    <Values>
+      <Description>Vovida Software License v. 1.0</Description>
+      <Name>Vovida Software License v. 1.0</Name>
+      <SortOrder>37</SortOrder>
+    </Values>
+    <Values>
+      <Description>W3C License</Description>
+      <Name>W3C License</Name>
+      <SortOrder>38</SortOrder>
+    </Values>
+    <Values>
+      <Description>wxWindows Library License</Description>
+      <Name>wxWindows Library License</Name>
+      <SortOrder>39</SortOrder>
+    </Values>
+    <Values>
+      <Description>X.Net License</Description>
+      <Name>X.Net License</Name>
+      <SortOrder>40</SortOrder>
+    </Values>
+    <Values>
+      <Description>Zope Public License</Description>
+      <Name>Zope Public License</Name>
+      <SortOrder>41</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Other Code Licenses</Description>
+    <Name>LicenseOther</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>9</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>onchange=&quot;foundry_license_check(this)&quot;</HTMLAttr>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Content License</Description>
+    <Name>ContentLicense</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>10</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Creative Commons Licenses...</Description>
+      <Name>CC...</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>GNU Free Documentation License</Description>
+      <Name>GFDL</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Same license as code</Description>
+      <Name>code</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Public Domain</Description>
+      <Name>!PD</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Project contains only code</Description>
+      <Name>!none</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+    </Attributes>
+    <Description> </Description>
+    <Name>ContentLicenseCC</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>11</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Attribution</Description>
+      <Name>Attribution</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution-ShareAlike</Description>
+      <Name>Attribution-ShareAlike</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution-NoDerivs</Description>
+      <Name>Attribution-NoDerivs</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution-NonCommercial</Description>
+      <Name>Attribution-NonCommercial</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution-NonCommercial-ShareAlike</Description>
+      <Name>Attribution-NonCommercial-ShareAlike</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Attribution-NonCommercial-NoDerivs</Description>
+      <Name>Attribution-NonCommercial-NoDerivs</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Description>Other Content Licenses</Description>
+    <Name>ContentLicenseOther</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>12</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Platform</Description>
+    <Name>Platform</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>13</SortOrder>
+    <Type>SelectMultiple</Type>
+    <Values>
+      <Description>Windows</Description>
+      <Name>Windows</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>FreeBSD</Description>
+      <Name>FreeBSD</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Linux</Description>
+      <Name>Linux</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Java Environment</Description>
+      <Name>Java Environment</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>.NET Environment</Description>
+      <Name>.NET Environment</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>MacOS Classic</Description>
+      <Name>MacOS Classic</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>MacOSX</Description>
+      <Name>MacOSX</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Programming Language</Description>
+    <Name>ProgrammingLanguage</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>14</SortOrder>
+    <Type>SelectMultiple</Type>
+    <Values>
+      <Description>Assembly</Description>
+      <Name>Assembly</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>C</Description>
+      <Name>C</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>C++</Description>
+      <Name>C++</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Java</Description>
+      <Name>Java</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Perl</Description>
+      <Name>Perl</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>PHP</Description>
+      <Name>PHP</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Python</Description>
+      <Name>Python</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+    <Values>
+      <Description>Ruby</Description>
+      <Name>Ruby</Name>
+      <SortOrder>8</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Intended Audience</Description>
+    <Name>IntendedAudience</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>15</SortOrder>
+    <Type>SelectMultiple</Type>
+    <Values>
+      <Description>General Use</Description>
+      <Name>General Use</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Programmer</Description>
+      <Name>Programmer</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>System Administrator</Description>
+      <Name>System Administrator</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Education</Description>
+      <Name>Education</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Researcher</Description>
+      <Name>Researcher</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other</Description>
+      <Name>Other</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>Mandatory</Hints>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Project Topic</Description>
+    <Name>Topic</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>16</SortOrder>
+    <Type>SelectMultiple</Type>
+    <Values>
+      <Description>Embedded-Platform</Description>
+      <Name>Embedded-Platform</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>Embedded-Driver</Description>
+      <Name>Embedded-Driver</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Embedded-Application</Description>
+      <Name>Embedded-Application</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Embedded-OS</Description>
+      <Name>Embedded-OS</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+    <Values>
+      <Description>Embedded-Tools</Description>
+      <Name>Embedded-Tools</Name>
+      <SortOrder>5</SortOrder>
+    </Values>
+    <Values>
+      <Description>Chinese-InputMethod</Description>
+      <Name>Chinese-InputMethod</Name>
+      <SortOrder>6</SortOrder>
+    </Values>
+    <Values>
+      <Description>Chinese-Localization</Description>
+      <Name>Chinese-Localization</Name>
+      <SortOrder>7</SortOrder>
+    </Values>
+    <Values>
+      <Description>Chinese-Utilities</Description>
+      <Name>Chinese-Utilities</Name>
+      <SortOrder>8</SortOrder>
+    </Values>
+    <Values>
+      <Description>Chinese-LanguageProcessing</Description>
+      <Name>Chinese-LanguageProcessing</Name>
+      <SortOrder>9</SortOrder>
+    </Values>
+    <Values>
+      <Description>Other-Miscellaneous</Description>
+      <Name>Other-Miscellaneous</Name>
+      <SortOrder>10</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>href</HTMLAttr>
+    </Attributes>
+    <Description>Homepage Redirection</Description>
+    <Name>RedirectURL</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>17</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Version Control System</Description>
+    <Name>VCS</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>18</SortOrder>
+    <Type>SelectSingle</Type>
+    <Values>
+      <Description>Subversion(read/write)</Description>
+      <Name>svn</Name>
+      <SortOrder>1</SortOrder>
+    </Values>
+    <Values>
+      <Description>CVS, Subversion(mirror)</Description>
+      <Name>cvs</Name>
+      <SortOrder>2</SortOrder>
+    </Values>
+    <Values>
+      <Description>Remote, Subversion(mirror)</Description>
+      <Name>vcp</Name>
+      <SortOrder>3</SortOrder>
+    </Values>
+    <Values>
+      <Description>Remote</Description>
+      <Name>none</Name>
+      <SortOrder>4</SortOrder>
+    </Values>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Pattern>^(?:$|[A-Za-z][-+.A-Za-z0-9]*:)</Pattern>
+    </Attributes>
+    <Description>Remote Repository</Description>
+    <Name>RemoteVCS</Name>
+    <Queue>NewProject</Queue>
+    <SortOrder>19</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Name</Description>
+    <Name>Name</Name>
+    <Queue>LostPassword</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Email</Description>
+    <Name>Email</Name>
+    <Queue>LostPassword</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>FreeformSingle</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>News Title</Description>
+    <Name>NewsTitle</Name>
+    <Queue>ProjectNews</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>News Content</Description>
+    <Name>NewsContent</Name>
+    <Queue>ProjectNews</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Release Version</Description>
+    <Name>Version</Name>
+    <Queue>ProjectEvents</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>SelectVersion</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <HTMLAttr>style=&quot;width: 100%&quot; size=20</HTMLAttr>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Subject</Description>
+    <Name>Subject</Name>
+    <Queue>ProjectEvents</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>(eg. 2004/01/01)</Hints>
+      <Pattern>^(?:\d{4}\D?\d{2}\D?\d{2})?$</Pattern>
+    </Attributes>
+    <Description>Starts</Description>
+    <Name>EventStarts</Name>
+    <Queue>ProjectEvents</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformDate</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Hints>(eg. 2004/01/31)</Hints>
+      <Pattern>^(?:\d{4}\D?\d{2}\D?\d{2})?$</Pattern>
+    </Attributes>
+    <Description>Due</Description>
+    <Name>EventDue</Name>
+    <Queue>ProjectEvents</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformDate</Type>
+  </CustomFields>
+  <CustomFields>
+    <Attributes>
+      <Pattern>.</Pattern>
+    </Attributes>
+    <Description>Job Title</Description>
+    <Name>JobTitle</Name>
+    <Queue>ProjectJobs</Queue>
+    <SortOrder>1</SortOrder>
+    <Type>LabelSubject</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Job Description</Description>
+    <Name>JobDescription</Name>
+    <Queue>ProjectJobs</Queue>
+    <SortOrder>2</SortOrder>
+    <Type>LabelContent</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Required Skills</Description>
+    <Name>JobRequirement</Name>
+    <Queue>ProjectJobs</Queue>
+    <SortOrder>3</SortOrder>
+    <Type>FreeformMultiple</Type>
+  </CustomFields>
+  <CustomFields>
+    <Description>Available Until</Description>
+    <Name>JobDue</Name>
+    <Queue>ProjectJobs</Queue>
+    <SortOrder>4</SortOrder>
+    <Type>FreeformDate</Type>
+  </CustomFields>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>NewUser</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>NewProject</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>LostPassword</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>MemberChange</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectNews</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectEvents</Name>
+  </Queues>
+  <Queues>
+    <Description>Open Foundry System</Description>
+    <Disabled>1</Disabled>
+    <Name>ProjectJobs</Name>
+  </Queues>
+  <ScripActions>
+    <Argument>Owner,Cc,AdminCc</Argument>
+    <Description>Send mail to Owner, Ccs and AdminCcs as a &quot;comment&quot;</Description>
+    <ExecModule>NotifyAsComment</ExecModule>
+    <Name>Notify Owner, Ccs and AdminCcs as Comment</Name>
+  </ScripActions>
+  <ScripActions>
+    <Argument>Owner,Cc,AdminCc</Argument>
+    <Description>Send mail to Owner, Ccs and AdminCcs</Description>
+    <ExecModule>Notify</ExecModule>
+    <Name>Notify Owner, Ccs and AdminCcs</Name>
+  </ScripActions>
+  <Scrips>
+    <Description>Registration</Description>
+    <Queue>NewUser</Queue>
+    <ScripAction>Autoreply To Requestors</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>Registration</Template>
+  </Scrips>
+  <Scrips>
+    <CustomCommitCode>$self-&gt;TicketObj-&gt;SetStatus('resolved');</CustomCommitCode>
+    <CustomPrepareCode>1;</CustomPrepareCode>
+    <Description>Resolve on correspond</Description>
+    <Queue>NewUser</Queue>
+    <ScripAction>User Defined</ScripAction>
+    <ScripCondition>On Correspond</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>DefaultApproval</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Process registration</Description>
+    <Queue>NewUser</Queue>
+    <ScripAction>Autoreply To Requestors</ScripAction>
+    <ScripCondition>On Resolve</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>Complete</Template>
+  </Scrips>
+  <Scrips>
+    <CustomCommitCode>my $Ticket = $self-&gt;TicketObj;
+my ($Name, $Password, $RealName, $Email)
+    = map { eval{$Ticket-&gt;CustomFieldValue($_)} }
+        qw(Name Password RealName Email);
 
-    Description: DefaultApproval
-    Name: DefaultApproval
-    Queue: NewProject
-  - Content: |+
-      OpenFoundry.org Terms and Conditions of Use
-      
-      Before using this website, please read this agreement relating to your use
-      of this site carefully.
-      
-      1. ACCEPTANCE OF TERMS
-      
-          By using this website, you agree to be bound by these terms and conditions.
-          If you do not agree to these terms and conditions, please do not use the
-          site.
-      
-      2. NO UNLAWFUL OR PROHIBITED USE
-      
-          By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-          you will not use this website, or any of the content obtained from this
-          website, for any purpose that is unlawful or prohibited by these Terms. If
-          you violate any of these Terms, your permission to use the OpenFoundry.org
-          website automatically terminates.
-      
-      3. VIOLATIONS OF TERMS
-      
-          Please report any violations of the Terms to the OpenFoundry.org Support
-          Manager at contact@openfoundry.org.
+my $OrigObj = RT::User-&gt;new($RT::SystemUser);
+$OrigObj-&gt;Load($Email);
+$OrigObj-&gt;SetEmailAddress('');
+my $UserObj = RT::User-&gt;new($RT::SystemUser);
+my ($val, $msg) = $UserObj-&gt;Create( Name =&gt; $Name );
 
-    Description: Term Of Use
-    Name: TermOfUse
-    Queue: NewUser
-  - Content: >+
-      ===Create-Ticket: BEGIN
-      
-      ### BEGIN ### { require RT::Workflow; %X = () }
-      ###############################
-      
-      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
-      "=$@"} #
-      
-      ###############################################################################
-      
-      Subject: BEGIN #{$Tickets\{TOP\}->Id}
-      
-      Queue: ___Approvals
-      
-      Type: code
-      
-      Status: resolved
-      
-      Content:
-      
-      "BEGIN #{$Tickets\{TOP\}->Id}"
-      
-      ENDOFCONTENT
-      
-      ===Create-Ticket: T1
-      
-      ### CONDITION ### { require RT::Workflow }
-      ####################################
-      
-      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
-      
-      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
-      ###############################
-      
-      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
-      ).$/}do{0,
-      
-      ### NEXT STATE
-      ################################################################
-      
-      ###############################################################################
-      
-      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-      
-      ###############################################################################
-      
-      Subject: autoresolve
-      
-      Type: code
-      
-      IsEntryPoint: 1
-      
-      Queue: ___Approvals
-      
-      ConditionSatisfy: any
-      
-      ActionProcedure: AutoResolve
-      
-      OwnerClass: owner
-      
-      Content-Type: text/plain
-      
-      Content:
-      
-      require RT::Workflow;
-      
-      RT::Workflow::action($TOP, 'AutoResolve', '');
-      
-      ENDOFCONTENT
+if (!$val) {
+    # die $msg;
+    $UserObj-&gt;Load($Name);
+    die $msg unless $UserObj-&gt;Id;
+}
 
-    Description: DefaultApproval
-    Name: DefaultApproval
-    Queue: LostPassword
-  - Content: >+
-      Subject: Reset Password
-      
-      
-      {loc('Please visit this URL to reset your password on [_1]:',
-      $RT::Organization)}
-          { $RT::WebBaseURL }/Foundry/Home/Guest/Recover.html?token={
-      $Ticket->Requestors->UserMembersObj->First->RecoverPasswordHash }
-      
-      {loc('Thank you.')}
+$UserObj-&gt;SetPassword($Password);
+$UserObj-&gt;SetRealName($RealName || $Name);
+$UserObj-&gt;SetEmailAddress($Email);
+$UserObj-&gt;SetPrivileged(1);
+</CustomCommitCode>
+    <CustomPrepareCode>1;</CustomPrepareCode>
+    <Description>CreateUser</Description>
+    <Queue>NewUser</Queue>
+    <ScripAction>User Defined</ScripAction>
+    <ScripCondition>On Resolve</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>Blank</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Notification</Description>
+    <Queue>NewProject</Queue>
+    <ScripAction>Autoreply To Requestors</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>Notification</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Default Approval</Description>
+    <Queue>NewProject</Queue>
+    <ScripAction>Create Tickets</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>DefaultApproval</Template>
+  </Scrips>
+  <Scrips>
+    <CustomCommitCode>my $Ticket = $self-&gt;TicketObj;
+my $Requestor = $Ticket-&gt;FirstRequestor or die;
 
-    Description: Recover Password
-    Name: RecoverPassword
-    Queue: LostPassword
-  - Content: |+
-      OpenFoundry.org Terms and Conditions of Use
-      
-      Before using this website, please read this agreement relating to your use
-      of this site carefully.
-      
-      1. ACCEPTANCE OF TERMS
-      
-          By using this website, you agree to be bound by these terms and conditions.
-          If you do not agree to these terms and conditions, please do not use the
-          site.
-      
-      2. NO UNLAWFUL OR PROHIBITED USE
-      
-          By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-          you will not use this website, or any of the content obtained from this
-          website, for any purpose that is unlawful or prohibited by these Terms. If
-          you violate any of these Terms, your permission to use the OpenFoundry.org
-          website automatically terminates.
-      
-      3. VIOLATIONS OF TERMS
-      
-          Please report any violations of the Terms to the OpenFoundry.org Support
-          Manager at contact@openfoundry.org.
+my ($Name, $Description)
+    = map $Ticket-&gt;CustomFieldValues($_)-&gt;First-&gt;Content,
+        ('ProjectName', 'PublicDescription');
 
-    Description: Term of new project
-    Name: TermOfProject
-    Queue: NewProject
-  - Content: >
-      Subject: Project Created
-      
-      
-      {loc('Thank you for choosing [_1].', $RT::Organization)}
-      
-      {loc('You have now successfully registered a project on [_1].',
-      $RT::Organization)}
-      
-                              {loc('Thank you.')}
-                              {$RT::Organization}
-    Description: Notify user the completion of project
-    Name: CreateProject
-    Queue: NewProject
-  - Content: >+
-      RT-Attach-Message: yes
-      
-      
-      {
-          my $date = $Transaction->CreatedObj;
-          $date->OriginalUser( $Transaction->OriginalUser );
-          $date->AsString;
-      }: {loc('Request [_1] was acted upon.', $Ticket->id)}
-      
-      {join("\n",
-      
-      loc('       Queue: [_1]', $Ticket->QueueObj->Name),
-      
-      loc('     Subject: [_1]', $Ticket->Subject || loc("(No subject given)")),
-      
-      loc('       Owner: [_1]', $Ticket->OwnerObj->Name),
-      
-      loc('  Requestors: [_1]', $Ticket->RequestorNames),
-      
-      loc('      Status: [_1]', loc($Ticket->Status)),
-      
-      loc(' Ticket <URL: [_1] >',
-      $RT::WebURL.'Foundry/Project/Tracker/Display.html?id='.$Ticket->id.'&Queue='.$Ticket->QueueObj->Id),
-      
-      loc("(Contact project admins if you don't want to receive mails in this
-      project.)"),
-      
-      )
-      
-      }
-      
-      {
-          my @Batch = grep $_->BriefDescription, @{$Ticket->TransactionBatch} or
-      die;
-          foreach my $Transaction (grep {!$_->ContentObj} @Batch) {
-              $OUT .= "* " . $Transaction->Description . "\n";
-          }
-          foreach my $Transaction (grep {$_->ContentObj} @Batch) {
-              $OUT .= "* " . $Transaction->Description . "\n\n";
-              $OUT .= $Transaction->ContentObj->Content . "\n\n";
-          }
-      }
+my $QueueObj = RT::Queue-&gt;new($RT::SystemUser);
 
-    Description: Batch Reply
-    Name: BatchReply
-    Queue: 0
-  - Content: |
-      {
-          my ($Type, $Role, $QueueId, $Queue) = split(/\s+/, $Ticket->Subject, 4);
-      
-          (($Type eq 'Invite') ? (
-      	"Subject: Invitation to $RT::Organization\n\n" . loc(
-      	    "An administrator of '[_1]' has invited you to its staff list.",
-      	    $Queue
-      	) . "\n" . loc(
-      	    "Your role in the project will be '[_1]'.", loc(
-      		($Role =~ /^Admin/) ? 'Admin' : 'Member'
-      	    )
-      	) . "\n" . loc(
-      	    "This invitation will expire in 14 days."
-      	) . "\n\n" . loc(
-      	    "Please visit the following URL to register your account on [_1]:",
-      	    $RT::Organization
-      	) . "\n" . "    $RT::WebBaseURL/Foundry/Home/Guest/Register.html?Email=" . 
-      	$Ticket->OwnerObj->EmailAddress
-          ) : (
-      	"Subject: Project Role Changed\n\n" . loc((
-      	    ($Type eq 'Add')
-      		? "An administrator of '[_1]' has added you to its staff list." :
-      	    ($Type eq 'Edit')
-      		? "An administrator of '[_1]' has changed your role in the staff list." :
-      	    ($Type eq 'Delete')
-      		? "An administrator of '[_1]' has removed you from its staff list." :
-      	    die "!"
-      	), $Queue) . "\n" . (
-      	    $Role ? loc("Your role in the project is now '[_1]'.", loc(
-      			($Role =~ /^Admin/) ? 'Admin' : 'Member'
-      		    ))
-      		: loc("You no longer have staff privileges in the project.")
-      	)
-          )) . "\n\n" . loc(
-      	"If you have any questions, please contact '[_1]'.",
-      	($Type eq 'Invite') ? $Ticket->RequestorAddresses : $Ticket->RequestorNames
-          )
-      }
-      
-      			{loc("Thank you.")}
-      			{$RT::Organization}
-    Description: MemberChange
-    Name: MemberChange
-    Queue: MemberChange
-  - Content: >+
-      ===Create-Ticket: BEGIN
-      
-      ### BEGIN ### { require RT::Workflow; %X = () }
-      ###############################
-      
-      # {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die
-      "=$@"} #
-      
-      ###############################################################################
-      
-      Subject: BEGIN #{$Tickets\{TOP\}->Id}
-      
-      Queue: ___Approvals
-      
-      Type: code
-      
-      Status: resolved
-      
-      Content:
-      
-      "BEGIN #{$Tickets\{TOP\}->Id}"
-      
-      ENDOFCONTENT
-      
-      ===Create-Ticket: T1
-      
-      ### CONDITION ### { require RT::Workflow }
-      ####################################
-      
-      ## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die "=$@" } #
-      
-      ### ENTRY POINT ### { "\nDepends-On: BEGIN\n" }
-      ###############################
-      
-      {join('',map{"Depended-On-By: ".( $_ ? ( $X{"T$_"}{$ID}++, "T$_" ) : "TOP"
-      ).$/}do{0,
-      
-      ### NEXT STATE
-      ################################################################
-      
-      ###############################################################################
-      
-      }).join($/,map"Requestor: $_",$TOP->Requestors->MemberEmailAddresses)}
-      
-      ###############################################################################
-      
-      Subject: AutoResolve
-      
-      Type: code
-      
-      IsEntryPoint: 1
-      
-      Queue: ___Approvals
-      
-      ConditionSatisfy: any
-      
-      ActionProcedure: AutoResolve
-      
-      OwnerClass: owner
-      
-      Content-Type: text/plain
-      
-      Content:
-      
-      require RT::Workflow;
-      
-      RT::Workflow::action($TOP, 'AutoResolve', '');
-      
-      ENDOFCONTENT
+my ($val, $msg) = $QueueObj-&gt;Create(
+    Name =&gt; $Name,
+    Description =&gt; $Description,
+);
+$RT::Logger-&gt;info($msg);
 
-    Description: DefaultApproval
-    Name: DefaultApproval
-    Queue: MemberChange
-Users:
-  - Name: guest
-    Privileged: 1
-Scrips:
-  - Description: Registration
-    Queue: NewUser
-    ScripAction: Autoreply To Requestors
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: Registration
-  - CustomCommitCode: "$self->TicketObj->SetStatus('resolved');"
-    CustomPrepareCode: 1;
-    Description: Resolve on correspond
-    Queue: NewUser
-    ScripAction: User Defined
-    ScripCondition: On Correspond
-    Stage: TransactionCreate
-    Template: DefaultApproval
-  - Description: Process registration
-    Queue: NewUser
-    ScripAction: Autoreply To Requestors
-    ScripCondition: On Resolve
-    Stage: TransactionCreate
-    Template: Complete
-  - CustomCommitCode: |
-      my $Ticket = $self->TicketObj;
-      my ($Name, $Password, $RealName, $Email)
-          = map { eval{$Ticket->CustomFieldValue($_)} }
-      	qw(Name Password RealName Email);
-      
-      my $OrigObj = RT::User->new($RT::SystemUser);
-      $OrigObj->Load($Email);
-      $OrigObj->SetEmailAddress('');
-      my $UserObj = RT::User->new($RT::SystemUser);
-      my ($val, $msg) = $UserObj->Create( Name => $Name );
-      
-      if (!$val) {
-          # die $msg;
-          $UserObj->Load($Name);
-          die $msg unless $UserObj->Id;
-      }
-      
-      $UserObj->SetPassword($Password);
-      $UserObj->SetRealName($RealName || $Name);
-      $UserObj->SetEmailAddress($Email);
-      $UserObj->SetPrivileged(1);
-    CustomPrepareCode: 1;
-    Description: CreateUser
-    Queue: NewUser
-    ScripAction: User Defined
-    ScripCondition: On Resolve
-    Stage: TransactionCreate
-    Template: Blank
-  - Description: Notification
-    Queue: NewProject
-    ScripAction: Autoreply To Requestors
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: Notification
-  - Description: Default Approval
-    Queue: NewProject
-    ScripAction: Create Tickets
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: DefaultApproval
-  - CustomCommitCode: |
-      my $Ticket = $self->TicketObj;
-      my $Requestor = $Ticket->FirstRequestor or die;
-      
-      my ($Name, $Description)
-          = map $Ticket->CustomFieldValues($_)->First->Content,
-      	('ProjectName', 'PublicDescription');
-      
-      my $QueueObj = RT::Queue->new($RT::SystemUser);
-      
-      my ($val, $msg) = $QueueObj->Create(
-          Name => $Name,
-          Description => $Description,
-      );
-      $RT::Logger->info($msg);
-      
-      if (!$val) {
-          # die $msg;
-          $QueueObj->Load($Name);
-          die $msg unless $QueueObj->Id;
-      }
-      
-      $QueueObj->SetOrigin($Ticket->Id);
-      
-      my $AdminCc = $QueueObj->AdminCc;
-      $RT::Logger->debug($AdminCc->AddMember($Requestor->PrincipalId));
-      
-      my @Rights = qw(
-          AdminCustomFields AdminQueue
-          CommentOnTicket CreateTicket
-          OwnTicket ReplyToTicket SeeQueue ShowTicket
-          ShowTicketComments Watch WatchAsAdminCc
-      );
-      
-      foreach my $right (@Rights) {
-          my $ace = RT::ACE->new( $RT::SystemUser );
-          $RT::Logger->debug($ace->Create(
-              RightName       => $right,
-              Object          => $QueueObj,
-              PrincipalType   => 'Group',
-              PrincipalId     => $AdminCc->Id,
-          ));
-      }
-      
-      1;
-    CustomPrepareCode: 1;
-    Description: CreateProject
-    Queue: NewProject
-    ScripAction: User Defined
-    ScripCondition: On Resolve
-    Stage: TransactionCreate
-    Template: Blank
-  - Description: Default Approval
-    Queue: LostPassword
-    ScripAction: Create Tickets
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: DefaultApproval
-  - Description: SendNotification
-    Queue: LostPassword
-    ScripAction: Autoreply To Requestors
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: RecoverPassword
-  - Description: Complete
-    Queue: NewProject
-    ScripAction: Autoreply To Requestors
-    ScripCondition: On Resolve
-    Stage: TransactionCreate
-    Template: CreateProject
-  - CustomIsApplicableCode: |
-      $self->TicketObj->Type eq 'ticket'
-          and not grep { $_->Type eq 'Comment' } @{$self->TicketObj->TransactionBatch};
-    Description: BatchNotify
-    Queue: 0
-    ScripAction: Notify Requestors, Ccs and AdminCcs
-    ScripCondition: User Defined
-    Stage: TransactionBatch
-    Template: BatchReply
-  - CustomIsApplicableCode: |
-      $self->TicketObj->Type eq 'ticket'
-          and grep { $_->Type eq 'Comment' } @{$self->TicketObj->TransactionBatch};
-    Description: CommentNotify
-    Queue: 0
-    ScripAction: Notify Owner, Ccs and AdminCcs as Comment
-    ScripCondition: User Defined
-    Stage: TransactionBatch
-    Template: BatchReply
-  - Description: MemberChange
-    Queue: MemberChange
-    ScripAction: Notify Owner
-    ScripCondition: On Resolve
-    Stage: TransactionCreate
-    Template: MemberChange
-  - Description: Default Approval
-    Queue: MemberChange
-    ScripAction: Create Tickets
-    ScripCondition: On Create
-    Stage: TransactionCreate
-    Template: DefaultApproval
+if (!$val) {
+    # die $msg;
+    $QueueObj-&gt;Load($Name);
+    die $msg unless $QueueObj-&gt;Id;
+}
+
+$QueueObj-&gt;SetOrigin($Ticket-&gt;Id);
+
+my $AdminCc = $QueueObj-&gt;AdminCc;
+$RT::Logger-&gt;debug($AdminCc-&gt;AddMember($Requestor-&gt;PrincipalId));
+
+my @Rights = qw(
+    AdminCustomFields AdminQueue
+    CommentOnTicket CreateTicket
+    OwnTicket ReplyToTicket SeeQueue ShowTicket
+    ShowTicketComments Watch WatchAsAdminCc
+);
+
+foreach my $right (@Rights) {
+    my $ace = RT::ACE-&gt;new( $RT::SystemUser );
+    $RT::Logger-&gt;debug($ace-&gt;Create(
+        RightName       =&gt; $right,
+        Object          =&gt; $QueueObj,
+        PrincipalType   =&gt; 'Group',
+        PrincipalId     =&gt; $AdminCc-&gt;Id,
+    ));
+}
+
+1;
+</CustomCommitCode>
+    <CustomPrepareCode>1;</CustomPrepareCode>
+    <Description>CreateProject</Description>
+    <Queue>NewProject</Queue>
+    <ScripAction>User Defined</ScripAction>
+    <ScripCondition>On Resolve</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>Blank</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Default Approval</Description>
+    <Queue>LostPassword</Queue>
+    <ScripAction>Create Tickets</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>DefaultApproval</Template>
+  </Scrips>
+  <Scrips>
+    <Description>SendNotification</Description>
+    <Queue>LostPassword</Queue>
+    <ScripAction>Autoreply To Requestors</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>RecoverPassword</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Complete</Description>
+    <Queue>NewProject</Queue>
+    <ScripAction>Autoreply To Requestors</ScripAction>
+    <ScripCondition>On Resolve</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>CreateProject</Template>
+  </Scrips>
+  <Scrips>
+    <CustomIsApplicableCode>$self-&gt;TicketObj-&gt;Type eq 'ticket'     and not grep { $_-&gt;Type eq 'Comment' } @{$self-&gt;TicketObj-&gt;TransactionBatch}; </CustomIsApplicableCode>
+    <Description>BatchNotify</Description>
+    <Queue>0</Queue>
+    <ScripAction>Notify Requestors, Ccs and AdminCcs</ScripAction>
+    <ScripCondition>User Defined</ScripCondition>
+    <Stage>TransactionBatch</Stage>
+    <Template>BatchReply</Template>
+  </Scrips>
+  <Scrips>
+    <CustomIsApplicableCode>$self-&gt;TicketObj-&gt;Type eq 'ticket'
+    and grep { $_-&gt;Type eq 'Comment' } @{$self-&gt;TicketObj-&gt;TransactionBatch};
+</CustomIsApplicableCode>
+    <Description>CommentNotify</Description>
+    <Queue>0</Queue>
+    <ScripAction>Notify Owner, Ccs and AdminCcs as Comment</ScripAction>
+    <ScripCondition>User Defined</ScripCondition>
+    <Stage>TransactionBatch</Stage>
+    <Template>BatchReply</Template>
+  </Scrips>
+  <Scrips>
+    <Description>MemberChange</Description>
+    <Queue>MemberChange</Queue>
+    <ScripAction>Notify Owner</ScripAction>
+    <ScripCondition>On Resolve</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>MemberChange</Template>
+  </Scrips>
+  <Scrips>
+    <Description>Default Approval</Description>
+    <Queue>MemberChange</Queue>
+    <ScripAction>Create Tickets</ScripAction>
+    <ScripCondition>On Create</ScripCondition>
+    <Stage>TransactionCreate</Stage>
+    <Template>DefaultApproval</Template>
+  </Scrips>
+  <Templates>
+    <Content>Subject: Confirm Registration
+
+{loc('Thank you for registering on the [_1] web site.', $RT::Organization)}
+
+{loc(&quot;You have an account with username '[_1]' created for you.&quot;,
+    $Ticket-&gt;CustomFieldValues('Name')-&gt;First-&gt;Content)}
+{loc('In order to complete your registration, visit the following URL:')}
+
+    {$RT::WebBaseURL}/Foundry/Home/Guest/Verify.html?id={$Ticket-&gt;Id}
+
+{loc('Or just reply to this mail, keeping this string in the subject line:')}
+
+    [{$rtname} #{$Ticket-&gt;id}]
+
+                        {loc('Thank you.')}
+                        {$RT::Organization}
+</Content>
+    <Description>Confirm the registration</Description>
+    <Name>Registration</Name>
+    <Queue>NewUser</Queue>
+  </Templates>
+  <Templates>
+    <Content>Subject: Registration complete
+
+{loc('You are now a registered user on [_1].', $RT::Organization)}
+
+{loc('As a registered user, you can participate fully in the activities on the site:')}
+  - {loc('Post messages to the project message forums')}
+  - {loc('Post bugs and patches for projects')}
+  - {loc('Sign on as a project developer')}
+  - {loc('Start your own project!')}
+
+{loc('You should take some time to read through the Site Documentation,')}
+{loc('so you may take full advantage of [_1].', $RT::Organization)}
+
+{loc('Please provide us with feedback on ways that we can improve [_1].', $RT::Organization)}
+
+                        {loc('Thank you.')}
+                        {$RT::Organization}
+</Content>
+    <Description>Registration Complete</Description>
+    <Name>Complete</Name>
+    <Queue>NewUser</Queue>
+  </Templates>
+  <Templates>
+    <Content>Subject: Project Submitted
+
+{loc('Your project has been submitted to the [_1] administrators.', $RT::Organization)}
+
+{loc('Within 72 hours, you will receive notification of further instructions.')}
+{loc('There is no need to reply to this message right now.')}
+
+                        {loc('Thank you.')}
+                        {$RT::Organization}
+</Content>
+    <Description>Notify the user of the new project</Description>
+    <Name>Notification</Name>
+    <Queue>NewProject</Queue>
+  </Templates>
+  <Templates>
+    <Content>===Create-Ticket: BEGIN
+### BEGIN ### { require RT::Workflow; %X = () } ###############################
+# {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die &quot;=$@&quot;} #
+###############################################################################
+Subject: BEGIN #{$Tickets\{TOP\}-&gt;Id}
+Queue: ___Approvals
+Type: code
+Status: resolved
+Content:
+&quot;BEGIN #{$Tickets\{TOP\}-&gt;Id}&quot;
+ENDOFCONTENT
+
+===Create-Ticket: T1
+### CONDITION ### { require RT::Workflow } ####################################
+## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die &quot;=$@&quot; } #
+### ENTRY POINT ### { &quot;\nDepends-On: BEGIN\n&quot; } ###############################
+{join('',map{&quot;Depended-On-By: &quot;.( $_ ? ( $X{&quot;T$_&quot;}{$ID}++, &quot;T$_&quot; ) : &quot;TOP&quot; ).$/}do{0,
+### NEXT STATE ################################################################
+
+###############################################################################
+}).join($/,map&quot;Requestor: $_&quot;,$TOP-&gt;Requestors-&gt;MemberEmailAddresses)}
+###############################################################################
+Subject: autoresolve
+Type: code
+IsEntryPoint: 1
+Queue: ___Approvals
+ConditionSatisfy: any
+ActionProcedure: AutoResolve
+OwnerClass: owner
+Content-Type: text/plain
+Content:
+require RT::Workflow;
+RT::Workflow::action($TOP, 'AutoResolve', '', 0, $obj);
+
+ENDOFCONTENT
+
+</Content>
+    <Description>DefaultApproval</Description>
+    <Name>DefaultApproval</Name>
+    <Queue>NewProject</Queue>
+  </Templates>
+  <Templates>
+    <Content>OpenFoundry.org Terms and Conditions of Use
+
+Before using this website, please read this agreement relating to your use
+of this site carefully.
+
+1. ACCEPTANCE OF TERMS
+
+    By using this website, you agree to be bound by these terms and conditions.
+    If you do not agree to these terms and conditions, please do not use the
+    site.
+
+2. NO UNLAWFUL OR PROHIBITED USE
+
+    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
+    you will not use this website, or any of the content obtained from this
+    website, for any purpose that is unlawful or prohibited by these Terms. If
+    you violate any of these Terms, your permission to use the OpenFoundry.org
+    website automatically terminates.
+
+3. VIOLATIONS OF TERMS
+
+    Please report any violations of the Terms to the OpenFoundry.org Support
+    Manager at contact@openfoundry.org.
+
+</Content>
+    <Description>Term Of Use</Description>
+    <Name>TermOfUse</Name>
+    <Queue>NewUser</Queue>
+  </Templates>
+  <Templates>
+    <Content>===Create-Ticket: BEGIN
+### BEGIN ### { require RT::Workflow; %X = () } ###############################
+
+# {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die &quot;=$@&quot;} #
+###############################################################################
+
+Subject: BEGIN #{$Tickets\{TOP\}-&gt;Id}
+Queue: ___Approvals
+
+Type: code
+Status: resolved
+
+Content:
+&quot;BEGIN #{$Tickets\{TOP\}-&gt;Id}&quot;
+
+ENDOFCONTENT
+===Create-Ticket: T1
+
+### CONDITION ### { require RT::Workflow } ####################################
+## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die &quot;=$@&quot; } #
+
+### ENTRY POINT ### { &quot;\nDepends-On: BEGIN\n&quot; } ###############################
+{join('',map{&quot;Depended-On-By: &quot;.( $_ ? ( $X{&quot;T$_&quot;}{$ID}++, &quot;T$_&quot; ) : &quot;TOP&quot; ).$/}do{0,
+
+### NEXT STATE ################################################################
+###############################################################################
+
+}).join($/,map&quot;Requestor: $_&quot;,$TOP-&gt;Requestors-&gt;MemberEmailAddresses)}
+###############################################################################
+
+Subject: autoresolve
+Type: code
+
+IsEntryPoint: 1
+Queue: ___Approvals
+
+ConditionSatisfy: any
+ActionProcedure: AutoResolve
+
+OwnerClass: owner
+Content-Type: text/plain
+
+Content:
+require RT::Workflow;
+
+RT::Workflow::action($TOP, 'AutoResolve', '');
+ENDOFCONTENT
+
+</Content>
+    <Description>DefaultApproval</Description>
+    <Name>DefaultApproval</Name>
+    <Queue>LostPassword</Queue>
+  </Templates>
+  <Templates>
+    <Content>Subject: Reset Password
+
+{loc('Please visit this URL to reset your password on [_1]:', $RT::Organization)}
+    { $RT::WebBaseURL }/Foundry/Home/Guest/Recover.html?token={
+$Ticket-&gt;Requestors-&gt;UserMembersObj-&gt;First-&gt;RecoverPasswordHash }
+{loc('Thank you.')}
+
+</Content>
+    <Description>Recover Password</Description>
+    <Name>RecoverPassword</Name>
+    <Queue>LostPassword</Queue>
+  </Templates>
+  <Templates>
+    <Content>OpenFoundry.org Terms and Conditions of Use
+
+Before using this website, please read this agreement relating to your use
+of this site carefully.
+
+1. ACCEPTANCE OF TERMS
+
+    By using this website, you agree to be bound by these terms and conditions.
+    If you do not agree to these terms and conditions, please do not use the
+    site.
+
+2. NO UNLAWFUL OR PROHIBITED USE
+
+    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
+    you will not use this website, or any of the content obtained from this
+    website, for any purpose that is unlawful or prohibited by these Terms. If
+    you violate any of these Terms, your permission to use the OpenFoundry.org
+    website automatically terminates.
+
+3. VIOLATIONS OF TERMS
+
+    Please report any violations of the Terms to the OpenFoundry.org Support
+    Manager at contact@openfoundry.org.
+
+</Content>
+    <Description>Term of new project</Description>
+    <Name>TermOfProject</Name>
+    <Queue>NewProject</Queue>
+  </Templates>
+  <Templates>
+    <Content>Subject: Project Created
+
+{loc('Thank you for choosing [_1].', $RT::Organization)}
+
+{loc('You have now successfully registered a project on [_1].', $RT::Organization)}
+
+                        {loc('Thank you.')}
+                        {$RT::Organization}
+</Content>
+    <Description>Notify user the completion of project</Description>
+    <Name>CreateProject</Name>
+    <Queue>NewProject</Queue>
+  </Templates>
+  <Templates>
+    <Content>RT-Attach-Message: yes
+
+{
+    my $date = $Transaction-&gt;CreatedObj;
+    $date-&gt;OriginalUser( $Transaction-&gt;OriginalUser );
+    $date-&gt;AsString;
+}: {loc('Request [_1] was acted upon.', $Ticket-&gt;id)}
+{join(&quot;\n&quot;,
+
+loc('       Queue: [_1]', $Ticket-&gt;QueueObj-&gt;Name),
+loc('     Subject: [_1]', $Ticket-&gt;Subject || loc(&quot;(No subject given)&quot;)),
+
+loc('       Owner: [_1]', $Ticket-&gt;OwnerObj-&gt;Name),
+loc('  Requestors: [_1]', $Ticket-&gt;RequestorNames),
+
+loc('      Status: [_1]', loc($Ticket-&gt;Status)),
+loc(' Ticket &lt;URL: [_1] &gt;', $RT::WebURL.'Foundry/Project/Tracker/Display.html?id='.$Ticket-&gt;id.'&amp;Queue='.$Ticket-&gt;QueueObj-&gt;Id),
+
+loc(&quot;(Contact project admins if you don't want to receive mails in this project.)&quot;),
+)
+
+}
+{
+    my @Batch = grep $_-&gt;BriefDescription, @{$Ticket-&gt;TransactionBatch} or
+die;
+    foreach my $Transaction (grep {!$_-&gt;ContentObj} @Batch) {
+        $OUT .= &quot;* &quot; . $Transaction-&gt;Description . &quot;\n&quot;;
+    }
+    foreach my $Transaction (grep {$_-&gt;ContentObj} @Batch) {
+        $OUT .= &quot;* &quot; . $Transaction-&gt;Description . &quot;\n\n&quot;;
+        $OUT .= $Transaction-&gt;ContentObj-&gt;Content . &quot;\n\n&quot;;
+    }
+}
+
+</Content>
+    <Description>Batch Reply</Description>
+    <Name>BatchReply</Name>
+    <Queue>0</Queue>
+  </Templates>
+  <Templates>
+    <Content>{
+    my ($Type, $Role, $QueueId, $Queue) = split(/\s+/, $Ticket-&gt;Subject, 4);
+
+    (($Type eq 'Invite') ? (
+	&quot;Subject: Invitation to $RT::Organization\n\n&quot; . loc(
+	    &quot;An administrator of '[_1]' has invited you to its staff list.&quot;,
+	    $Queue
+	) . &quot;\n&quot; . loc(
+	    &quot;Your role in the project will be '[_1]'.&quot;, loc(
+		($Role =~ /^Admin/) ? 'Admin' : 'Member'
+	    )
+	) . &quot;\n&quot; . loc(
+	    &quot;This invitation will expire in 14 days.&quot;
+	) . &quot;\n\n&quot; . loc(
+	    &quot;Please visit the following URL to register your account on [_1]:&quot;,
+	    $RT::Organization
+	) . &quot;\n&quot; . &quot;    $RT::WebBaseURL/Foundry/Home/Guest/Register.html?Email=&quot; . 
+	$Ticket-&gt;OwnerObj-&gt;EmailAddress
+    ) : (
+	&quot;Subject: Project Role Changed\n\n&quot; . loc((
+	    ($Type eq 'Add')
+		? &quot;An administrator of '[_1]' has added you to its staff list.&quot; :
+	    ($Type eq 'Edit')
+		? &quot;An administrator of '[_1]' has changed your role in the staff list.&quot; :
+	    ($Type eq 'Delete')
+		? &quot;An administrator of '[_1]' has removed you from its staff list.&quot; :
+	    die &quot;!&quot;
+	), $Queue) . &quot;\n&quot; . (
+	    $Role ? loc(&quot;Your role in the project is now '[_1]'.&quot;, loc(
+			($Role =~ /^Admin/) ? 'Admin' : 'Member'
+		    ))
+		: loc(&quot;You no longer have staff privileges in the project.&quot;)
+	)
+    )) . &quot;\n\n&quot; . loc(
+	&quot;If you have any questions, please contact '[_1]'.&quot;,
+	($Type eq 'Invite') ? $Ticket-&gt;RequestorAddresses : $Ticket-&gt;RequestorNames
+    )
+}
+
+			{loc(&quot;Thank you.&quot;)}
+			{$RT::Organization}
+</Content>
+    <Description>MemberChange</Description>
+    <Name>MemberChange</Name>
+    <Queue>MemberChange</Queue>
+  </Templates>
+  <Templates>
+    <Content>===Create-Ticket: BEGIN
+### BEGIN ### { require RT::Workflow; %X = () } ###############################
+
+# {eval \{ RT::Workflow::condition($Tickets\{TOP\}, 'BEGIN') \} or die &quot;=$@&quot;} #
+###############################################################################
+
+Subject: BEGIN #{$Tickets\{TOP\}-&gt;Id}
+Queue: ___Approvals
+
+Type: code
+Status: resolved
+
+Content:
+&quot;BEGIN #{$Tickets\{TOP\}-&gt;Id}&quot;
+
+ENDOFCONTENT
+===Create-Ticket: T1
+
+### CONDITION ### { require RT::Workflow } ####################################
+## { eval \{ RT::Workflow::condition($TOP, 'any', '') \} or die &quot;=$@&quot; } #
+
+### ENTRY POINT ### { &quot;\nDepends-On: BEGIN\n&quot; } ###############################
+{join('',map{&quot;Depended-On-By: &quot;.( $_ ? ( $X{&quot;T$_&quot;}{$ID}++, &quot;T$_&quot; ) : &quot;TOP&quot; ).$/}do{0,
+
+### NEXT STATE ################################################################
+###############################################################################
+
+}).join($/,map&quot;Requestor: $_&quot;,$TOP-&gt;Requestors-&gt;MemberEmailAddresses)}
+###############################################################################
+
+Subject: AutoResolve
+Type: code
+
+IsEntryPoint: 1
+Queue: ___Approvals
+
+ConditionSatisfy: any
+ActionProcedure: AutoResolve
+
+OwnerClass: owner
+Content-Type: text/plain
+
+Content:
+require RT::Workflow;
+
+RT::Workflow::action($TOP, 'AutoResolve', '');
+ENDOFCONTENT
+
+</Content>
+    <Description>DefaultApproval</Description>
+    <Name>DefaultApproval</Name>
+    <Queue>MemberChange</Queue>
+  </Templates>
+  <Users>
+    <EmailAddress>guest@example.org</EmailAddress>
+    <Name>guest</Name>
+    <Privileged>1</Privileged>
+  </Users>
+</InitialData>

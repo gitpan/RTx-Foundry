@@ -1,5 +1,5 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 10068 2004-11-04T15:06:47.552987Z autrijus  $
+# $Id: /bazaar/RTx-Foundry/sbin/foundry-syncdata 4399 2004-11-15T17:03:40.078415Z autrijus  $
 
 #
 # exec myself, take care the PID file
@@ -58,7 +58,7 @@ $svn_base .= "/foundry-repos";
 $cvs_base .= "/foundry-repos";
 
 my $rt_dsn = $ENV{RT_DSN} || join(';',
-    "dbi:$ENV{DB_TYPE}:dbname=rt3",
+    "dbi:$ENV{DB_TYPE}:dbname=".($ENV{DB_NAME}||='rt3'),
     map { $ENV{"DB_$_"} ? qq(\L$_\E=$ENV{"DB_$_"}) : () }
 	qw(SID HOST PORT REQUIRESSL),
 );

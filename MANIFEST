@@ -13,11 +13,7 @@ html/Callbacks/Foundry/autohandler/Auth
 html/Callbacks/Foundry/autohandler/Default
 html/Callbacks/Foundry/Elements/Footer/Default
 html/Callbacks/Foundry/Elements/Login/Header
-html/Edit/Elements/104Header
-html/Edit/Elements/Tab
-html/Edit/index.html
-html/Edit/Queues/Functions/index.html
-html/Foundry/autohandler
+html/Foundry/Accountability/.htpasswd
 html/Foundry/Accountability/autohandler
 html/Foundry/Accountability/Footer
 html/Foundry/Accountability/Graph/autohandler
@@ -39,6 +35,7 @@ html/Foundry/Accountability/Tab
 html/Foundry/Accountability/TicketAcc
 html/Foundry/Accountability/tickets.html
 html/Foundry/Accountability/topprojects.html
+html/Foundry/autohandler
 html/Foundry/Edit/Elements/104Header
 html/Foundry/Edit/Elements/Tab
 html/Foundry/Edit/index.html
@@ -89,6 +86,7 @@ html/Foundry/Icons/begin.png
 html/Foundry/Icons/binary.png
 html/Foundry/Icons/down.png
 html/Foundry/Icons/end.png
+html/Foundry/Icons/external-classic.png
 html/Foundry/Icons/folder.open.png
 html/Foundry/Icons/folder.png
 html/Foundry/Icons/image2.png
@@ -250,7 +248,6 @@ html/Foundry/Search/URI2Title
 html/Foundry/Search/User
 html/Foundry/Subversion/Auth.html
 html/Foundry/Subversion/index.html
-html/Foundry/Trove/ACMLevel2
 html/Foundry/Trove/autohandler
 html/Foundry/Trove/index.html
 html/Foundry/Trove/List
@@ -259,7 +256,6 @@ html/Foundry/Trove/Tabs2
 html/Foundry/User/autohandler
 html/Foundry/User/index.html
 html/Foundry/User/List
-html/img/external-classic.png
 html/REST/0.0/NoAuth/has_member
 inc/ExtUtils/AutoInstall.pm
 inc/Module/Install.pm

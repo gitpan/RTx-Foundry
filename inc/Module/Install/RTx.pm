@@ -2,7 +2,7 @@
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.11';
+$Module::Install::RTx::VERSION = '0.10';
 
 use strict;
 use FindBin;
@@ -27,7 +27,7 @@ sub RTx {
     my $prefix = $ENV{PREFIX};
     @ARGV = grep { /PREFIX=(.*)/ ? (($prefix = $1), 0) : 1 } @ARGV;
 
-    if ($prefix and -e "$prefix/lib/RT.pm") {
+    if ($prefix) {
         $RT::LocalPath = $prefix;
         $INC{'RT.pm'} = "$RT::LocalPath/lib/RT.pm";
     }

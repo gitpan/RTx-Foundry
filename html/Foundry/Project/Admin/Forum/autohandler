@@ -48,6 +48,16 @@ $jar->set_cookie(
     0, 0, 1, 0
 ) unless $u->Name eq 'guest';
 
+my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
+$tag =~ s/.*-//;
+$tag = 'us' unless $tag =~ /^(?:cn|tw)$/;
+
+$jar->set_cookie(
+    0, 'sympalang', $tag, '/',
+    URI->new($wws)->host, URI->new($wws)->port,
+    0, 0, 1, 0
+);
+
 our ($Get, $Post) = map {
     my $method = $_;
     sub {
@@ -96,10 +106,6 @@ our ($Get, $Post) = map {
     };
 } qw(get post);
 
-my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
-$tag =~ s/.*-//;
-$tag = 'us' unless $tag =~ /^(?:cn|tw)$/;
-$Post->( "/", { action => 'set_lang', lang => $tag } );
 </%SHARED>
 <%ATTR>
 AutoFlush => 0

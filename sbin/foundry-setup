@@ -24,6 +24,10 @@ DB_TYPE
 
 Database driver being used.  Case matters.  Valid types are "mysql" and "Pg".
 
+DB_NAME
+
+Database name being used.  'rt3' by default.
+
 DB_HOST
 
 The domain name of your database server.
@@ -80,7 +84,7 @@ BEGIN {
 
     my %Vars = (
 	VCS => [qw(
-	    DB_TYPE DB_HOST DB_PORT
+	    DB_TYPE DB_NAME DB_HOST DB_PORT
 	    DB_DBA_USER DB_DBA_PASSWORD
 	    RT_URL
 	    SVNROOT
@@ -88,7 +92,7 @@ BEGIN {
 	)],
 	WWW => [qw(
 	    RT_NAME TZ
-	    DB_TYPE DB_HOST DB_PORT
+	    DB_TYPE DB_NAME DB_HOST DB_PORT
 	    DB_DBA_USER DB_DBA_PASSWORD
 	    HOST WEB_HOST EMAIL_HOST 
 	)],
@@ -118,6 +122,8 @@ use vars map "\$\L$_", +VARS, 'DB_PAM_MODULE', 'DB_MODULE';
 
 eval { require "/usr/local/etc/foundry.conf.sample" };
 eval { require "/usr/local/etc/foundry.conf" };
+
+$db_name ||= 'rt3';
 
 foreach my $var (+VARS) {
     no strict 'refs';
@@ -170,7 +176,7 @@ alias_maps = ${db_module}:/usr/local/etc/postfix/aliases.cf, hash:/etc/mail/symp
     print $ALIASES qq(
 user=${db_dba_user}
 password=${db_dba_password}
-dbname=rt3
+dbname=${db_name}
 table=users
 select_field=emailaddress
 where_field=name
@@ -231,7 +237,7 @@ sub pam_conf {
 	host		=> $db_host,
 	user		=> $db_dba_user,
 	passwd		=> $db_dba_password,
-	db		=> 'rt3',
+	db		=> $db_name,
 	table		=> 'Users',
 	usercolumn	=> 'Name',
 	passwdcolumn	=> 'Password',

@@ -1,5 +1,5 @@
 name: RTx-Foundry
-version: 0.00_17
+version: 0.00_19
 abstract: Base classes for the OpenFoundry system
 author: Autrijus Tang <autrijus@autrijus.org>
 license: gpl
@@ -10,7 +10,9 @@ requires:
   Email::Valid: 0
   MIME::Base64: 0
   HTML::Mason: 0
+  HTML::FromText: 0
   XML::RSS: 0
+  XML::Simple: 0
   Project::Gantt: 0
   HTML::CalendarMonthSimple: 0
   DBIx::SearchBuilder: 0
@@ -24,4 +26,4 @@ no_index:
     - sbin
     - var
     - inc
-generated_by: Module::Install version 0.35
+generated_by: Module::Install version 0.36

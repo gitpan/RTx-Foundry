@@ -2,6 +2,9 @@
 [% IF isdir %]
 <a href="[% script %]/[% repos %]/browse[% path %]">[%|l%](browse)[%END%]</a>
 [% END %]
+<form>
+<p>Show last <input name="limit" size=4 value="[% limit %]">changes <input type="submit" name="submit" value="Show!"></p>
+</form>
 [% FOREACH revs %]
 <hr />
 <a name="rev[% rev %]"/>

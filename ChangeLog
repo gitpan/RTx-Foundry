@@ -1,3 +1,11 @@
+[Changes for 0.00_19 - November 16, 2004]
+
+Switched to the much more robust XML::Simple format for initialdata.
+
+RT_NAME is now a config parameter.
+
+More l10n, UI and accountability fixes.
+
 [Changes for 0.00_18 - November 15, 2004]
 
 Added "Accountability" statistic charts from Gugod, as well

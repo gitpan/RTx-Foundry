@@ -55,6 +55,7 @@ requires(
     'HTML::Mason'               => 0,
     'HTML::FromText'            => 0,
     'XML::RSS'                  => 0,
+    'XML::Simple'               => 0,
     'Project::Gantt'            => 0,
     'HTML::CalendarMonthSimple' => 0,
     'DBIx::SearchBuilder'       => 0,

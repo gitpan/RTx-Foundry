@@ -12,19 +12,22 @@
 }
 </style>
 
-Total Projects: <% $TotalProjects %><br/>
-Total Members:  <% $TotalMembers  %><br/>
-Total Tickets:  <% $TotalTickets %><br/>
-<hr>
+<&|/l&>Total Projects</&>: <% $TotalProjects || 0 %><br/>
+<&|/l&>Total Members</&>:  <% $TotalMembers  || 0 %><br/>
+<&|/l&>Total Tickets</&>:  <% $TotalTickets  || 0 %><br/>
 
+% if ($QueueTickets) {
+<hr>
 <h3><% loc('Top Projects') %></h3>
+% }
+
 % for (sort {$QueueTickets->{$b} <=> $QueueTickets->{$a}} keys %$QueueTickets) {
 %   $QueueObj->Load($_);
 
 <div class="TopProject" onClick="MM_goToURL('self','project.html?QueueId=<% $_ %>');return document.MM_returnValue">
 <h4><% $QueueObj->Name %></h4>
-<span>Tickets: <% $QueueTickets->{$_} %></span><br />
-<span>Members: <% $ProjectMembers->{$_} %></span><br />
+<span><&|/l&>Tickets</&>: <% $QueueTickets->{$_} || 0 %></span><br />
+<span><&|/l&>Members</&>: <% $ProjectMembers->{$_} || 0 %></span><br />
 </div>
 
 % }
@@ -38,7 +41,7 @@ my $ProjectMembers = $ProjectAcc->result('queue');
 
 my $TicketAcc      = $m->comp('TicketAcc');
 my $QueueTickets   = $TicketAcc->result('Queue');
-my $TotalTickets   = $TicketAcc->result('tickets')->{'tickets'};
+my $TotalTickets   = eval { $TicketAcc->result('tickets')->{'tickets'} };
 
 my $QueueObj       = RT::Queue->new($session{'CurrentUser'});
 

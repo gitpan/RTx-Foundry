@@ -1,7 +1,7 @@
 <& Header, TabText => 'Site Statistics' &>
 
-Total Projects: <% $TotalProjects %><br/>
-Total Members:  <% $TotalMembers  %><br/>
+<&|/l&>Total Projects</&>: <% $TotalProjects || 0 %><br/>
+<&|/l&>Total Members</&>:  <% $TotalMembers  || 0 %><br/>
 
 % for(@CFFields) {
 %   my $field = $_;
@@ -9,16 +9,16 @@ Total Members:  <% $TotalMembers  %><br/>
 %   $Label  = freeze(keys %$Result);
 %   $Data   = freeze(values %$Result);
 <h3><% loc($_) %></h3>
-<img src="Graph/Pie?Label=<% $Label |u %>&Data=<% $Data | u %>" />
+<img src="Graph/Pie?Label=<% $Label |u %>;Data=<% $Data | u %>" />
 % }
 
 <h3><% loc('Ticket Status') %></h3>
-<span>Total Tickets:  <% $TotalTickets %></span><br/>
+<span><&|/l&>Total Tickets</&>:  <% $TotalTickets || 0 %></span><br/>
 
 % $Result  = $TicketAcc->result('status');
 % $Label   = freeze(keys %$Result);
 % $Data    = freeze(values %$Result);
-<img src="Graph/Pie?Label=<% $Label |u %>&Data=<% $Data | u %>" />
+<img src="Graph/Pie?Label=<% $Label |u %>;Data=<% $Data | u %>" />
 
 <& Footer &>
 
@@ -29,7 +29,7 @@ use List::Util qw(sum);
 use FreezeThaw qw(freeze thaw);
 use YAML;
 
-my @CFFields = ('Maturity', 'Platform', 'License', 'Programming Language', 'Intended Audience');
+my @CFFields = ('Topic', 'Maturity', 'Platform', 'License', 'Programming Language', 'Intended Audience');
 my $GetCFValue = sub {
     my $Q = shift;
     my @Values = map {
