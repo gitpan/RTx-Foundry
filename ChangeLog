@@ -1,5 +1,9 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #1 $ $Change: 8878 $ $DateTime: 2003/11/14 21:58:17 $
+# $Revision: #2 $ $Change: 8884 $ $DateTime: 2003/11/15 05:11:58 $
+
+[Changes for 0.00_02 - November 15, 2003]
+
+Tell search.cpan.org to not index html/*.
 
 [Changes for 0.00_01 - November 15, 2003]
 

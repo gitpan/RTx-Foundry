@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # $File: //depot/RT/osf/Makefile.PL $ $Author: autrijus $
-# $Revision: #1 $ $Change: 8874 $ $DateTime: 2003/11/14 21:28:08 $
+# $Revision: #2 $ $Change: 8883 $ $DateTime: 2003/11/15 05:11:21 $
 
 use 5.008;
 use inc::Module::Install;
@@ -43,6 +43,7 @@ recommends	(
 
 sign		(1);
 license		('gpl');
+no_index	( directory => 'html' );
 
 &Meta->write;
 &Makefile->write;

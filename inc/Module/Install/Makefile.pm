@@ -1,4 +1,4 @@
-#line 1 "inc/Module/Install/Makefile.pm - /usr/local/lib/perl5/site_perl/5.8.0/Module/Install/Makefile.pm"
+#line 1 "inc/Module/Install/Makefile.pm - /usr/local/lib/perl5/site_perl/5.8.1/Module/Install/Makefile.pm"
 # $File: //depot/cpan/Module-Install/lib/Module/Install/Makefile.pm $ $Author: autrijus $
 # $Revision: #49 $ $Change: 1782 $ $DateTime: 2003/10/27 19:48:59 $ vim: expandtab shiftwidth=4
 
@@ -102,7 +102,8 @@ sub fix_up_makefile {
     close MAKEFILE;
 
     $makefile =~ s/\b(test_harness\(\$\(TEST_VERBOSE\), )/$1'inc', /;
-    $makefile =~ s/(\$\(TESTDB_SW\) "-I)/$1inc" "-I/;
+    $makefile =~ s/( -I\$\(INST_ARCHLIB\))/ -Iinc$1/g;
+    $makefile =~ s/( "-I\$\(INST_LIB\)")/ "-Iinc"$1/g;
 
     $makefile =~ s/^(FULLPERL = .*)/$1 -Iinc/m;
     $makefile =~ s/^(PERL = .*)/$1 -Iinc/m;
@@ -130,4 +131,4 @@ sub postamble {
 
 __END__
 
-#line 262
+#line 263

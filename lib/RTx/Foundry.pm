@@ -1,7 +1,10 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #2 $ $Change: 8876 $ $DateTime: 2003/11/14 21:39:14 $
+# $Revision: #4 $ $Change: 8885 $ $DateTime: 2003/11/15 05:13:20 $
 
-$RTx::Foundry::VERSION = '0.00_01';
+package RTx::Foundry;
+$RTx::Foundry::VERSION = '0.00_02';
+
+1;
 
 =head1 NAME
 

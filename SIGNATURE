@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.35.
+signed via the Module::Signature module, version 0.37.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,11 +14,12 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 7c67e343c872ef5a24cb54a72a9a5c2f8851ae40 ChangeLog
-SHA1 42bd74bbde32b1f1bb22c57dacb7d6cd899ccc34 MANIFEST
-SHA1 9e2aa37df7d87a513f2a419135c7d4e0b7a9f16f META.yml
-SHA1 37c342069a00df75f0b7cfbde831d2895dc2dbe1 Makefile.PL
-SHA1 d227e96d080acdfde6aba37f490211f71fd000a6 README
+SHA1 17e3b0eea99abffe6ac71e65627413236e0b117a COPYING
+SHA1 5b420c8d3a107a88cc16eee8dbee7f31111323e8 ChangeLog
+SHA1 0e477190567fa76a7927f04f8751672a925b8fb9 MANIFEST
+SHA1 095742998808dd895e7de3da42dd4e52e2f348a1 META.yml
+SHA1 57b903701c1db78ad69a929278be218b91feeea4 Makefile.PL
+SHA1 a4e0d2ffb7c274d427d7a978d7b6e8cb7b032c92 README
 SHA1 308705df3fb972cdb671a373b08a6bf55bdc4d4c etc/RT_SiteConfig.pm
 SHA1 22fae782cc48469e6a5298a7d2d9c17eea895d19 html/Callbacks/Foundry/Elements/Footer/Default
 SHA1 91c574cd63bfcff1188ddbe647192a0c4eb8319c html/Callbacks/Foundry/Elements/Login/Header
@@ -47,7 +48,6 @@ SHA1 4e20bd9dd3c64a77a35ff458bab21e8e543cb09a html/Foundry/Home/Guest/Reminder.h
 SHA1 f38aaf28260c1a20c834f150b6fdc97ae10810ef html/Foundry/Home/Guest/Verify.html
 SHA1 c6350b72df03b717359575907dcf3524be00fe7b html/Foundry/Home/Guest/autohandler
 SHA1 e87cdc6e52455b4a4bf1664eb79db4133e150924 html/Foundry/Home/Guest/index.html
-SHA1 366b539ce0cee775d065f126f80861ac28464b1f html/Foundry/Home/Guest/x
 SHA1 01eff4d264e07ea7f44196777f3558c9b937a782 html/Foundry/Home/MyHints
 SHA1 6ec539bdb674a759438b85acf733de86647b9722 html/Foundry/Home/MyRequests.html
 SHA1 a1b0c5fa1da34eb4c1b23c40ab7839c2a2b066d5 html/Foundry/Home/MyTickets.html
@@ -86,7 +86,6 @@ SHA1 26ad301efa38c7dceccf810c7aec6f407bca6b02 html/Foundry/Project/News/index.ht
 SHA1 e6e734ed9fa758ffc54649c3838f067e1eae0e94 html/Foundry/Project/Source/P4Web/Changes/index.html
 SHA1 0b348371490fae615886f13f4bb789fdcdbe54cb html/Foundry/Project/Source/P4Web/autohandler
 SHA1 751ba607c0a62668672c3681fbd5e6243594330d html/Foundry/Project/Source/P4Web/index.html
-SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/Revisions/index.html
 SHA1 5140a29c1daacaad36f3f396489bfcc4a347b896 html/Foundry/Project/Source/ViewCVS/List.html
 SHA1 55a4e16b8cb83a9941d418821869420073586971 html/Foundry/Project/Source/ViewCVS/Revisions/index.html
 SHA1 ad7a86e72dbc39b369075edbfebb25f5c2dc8068 html/Foundry/Project/Source/ViewCVS/autohandler
@@ -196,12 +195,13 @@ SHA1 d92b5f02c287b561527e2f747228dfc844dc26c7 html/Foundry/autohandler
 SHA1 f64539c41ad2aacc5fac8f4ccc0713deaaaada4f html/Foundry/index.html
 SHA1 f855cb5eba769be4944cfdddb5aacb60f71455bc html/Foundry/layout.txt
 SHA1 512489fd5ccedf39e89c9f2758d67deca358ef54 html/Foundry/rss.html
+SHA1 5aa71740ba8501ce412f2255c773d2b962b1f951 html/bleh
 SHA1 87ad24ced659497c50d93fd962f6440d090852a3 html/q
 SHA1 0c21630de150661ace3e830cde92cb0ba92578e1 html/sitemap.txt
-SHA1 abbf3d76898901a5bd5127c71f662d44e48977ef inc/Module/Install.pm
-SHA1 0e59a6491b7275cacf070218c862a42e8135f6d8 inc/Module/Install/Base.pm
-SHA1 61eeaa5854c1304f38a78ebfbff972f6cf5e091e inc/Module/Install/Makefile.pm
-SHA1 11072dcb1b0e41323ab8a236b63bd4e1e2003b26 inc/Module/Install/Metadata.pm
+SHA1 8b4877cb0aae407fcb37a4ac31f2f943bfbe2fe4 inc/Module/Install.pm
+SHA1 019bccc5b2e364447c6e6e150d049ca2a216598e inc/Module/Install/Base.pm
+SHA1 8508e76cf6417588c0118ec85f7d56be15383c00 inc/Module/Install/Makefile.pm
+SHA1 ef550fd641db011c741402b799ace0a446f8d8ec inc/Module/Install/Metadata.pm
 SHA1 a988867615c1c87d319df36d7ce4560aac13b108 lib/RT/CustomField_Local.pm
 SHA1 adf45d95abfeb033cbd128b54916083143b0ee79 lib/RT/CustomFields_Local.pm
 SHA1 ec1391a5f353fa2d764365e2d78bb2413a0afdfd lib/RT/Date_Local.pm
@@ -209,7 +209,7 @@ SHA1 5d83a32f48d755149ace4052db2cba5db057ac66 lib/RT/Queue_Local.pm
 SHA1 e5fa44f2b31c1fb553b6021e7360d07d5d91ff5e lib/RT/Queue_Vendor.pm
 SHA1 d7fb90253b3b62305398381f0c03c7aabafd6538 lib/RT/Ticket_Local.pm
 SHA1 67e9af95389a76cac74fd45b04a19beeec59ba16 lib/RT/User_Local.pm
-SHA1 313d78a8679bd2b81bf9a8aa25638cab65630df9 lib/RTx/Foundry.pm
+SHA1 4245a5a11a0a5aa9f7b59744089a13bcd84bb540 lib/RTx/Foundry.pm
 SHA1 d1b5bae9b3580cbce6ae2c36e1653d6fcfa8219c po/zh_cn.po
 SHA1 1024b93eb04086989252f135b79b436b13a3609c po/zh_tw.po
 SHA1 b6fe682622d23489dc59a4ab986ecad834c75004 script/adduser.pl
@@ -219,9 +219,9 @@ SHA1 504519c842b7202250315ef562069e4ce10da99c script/pre-revprop-change
 SHA1 ce4abc0b515533a6bd7aba377e64d3e0885e4c84 script/start-commit
 SHA1 4eda8f1c8d7a47b8e091a0f36c8b20ea9ba54efb t/0-signature.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.2.1 (FreeBSD)
+Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQE/tVDftLPdNzw1AaARAsssAKCUHnUaEyckHg/2vyUjiw6hvciJ0wCgpvEl
-013XB6GsN6LHXNxzKFcVbI4=
-=+7HC
+iD8DBQE/tbavtLPdNzw1AaARAiQzAKC0Mzri++BkraWH6yuoom5LGBvRIgCgmkLf
+w+EmlyFQ2zo6zbGUpgTkJ6I=
+=XuyR
 -----END PGP SIGNATURE-----
