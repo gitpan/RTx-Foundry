@@ -28,7 +28,7 @@ sub CustomFields {
 
     my $cfs = RT::CustomFields->new( $self->CurrentUser );
     if ( $self->CurrentUserHasRight('SeeQueue') ) {
-	if ($self->Disabled and $self->Description eq 'Open Foundry System') {
+	if ($self->Disabled and $self->Description eq 'RT Foundry System') {
 	    $cfs->LimitToQueue( $self->Id );
 	}
 	else {

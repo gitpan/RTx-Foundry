@@ -1,4 +1,4 @@
-# Initial data for a fresh OpenFoundry Installation.
+# Initial data for a fresh Foundry Installation.
 @Users = (
            {
              'Privileged' => '1',
@@ -9,22 +9,22 @@
             {
               'Disabled' => '1',
               'Name' => 'NewUser',
-              'Description' => 'Open Foundry System',
+              'Description' => 'RT Foundry System',
             },
             {
               'Disabled' => '1',
               'Name' => 'NewProject',
-              'Description' => 'Open Foundry System',
+              'Description' => 'RT Foundry System',
             },
             {
               'Disabled' => '1',
               'Name' => 'LostPassword',
-              'Description' => 'Open Foundry System',
+              'Description' => 'RT Foundry System',
             },
             {
               'Disabled' => '1',
               'Name' => 'MemberChange',
-              'Description' => 'Open Foundry System',
+              'Description' => 'RT Foundry System',
             }
           );
 @ScripActions = (
@@ -146,7 +146,7 @@ ENDOFCONTENT
                },
                {
                  'Queue' => 'NewUser',
-                 'Content' => 'OpenFoundry.org Terms and Conditions of Use
+                 'Content' => 'Foundry Terms and Conditions of Use
 
 Before using this website, please read this agreement relating to your use
 of this site carefully.
@@ -159,16 +159,15 @@ of this site carefully.
 
 2. NO UNLAWFUL OR PROHIBITED USE
 
-    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-    you will not use this website, or any of the content obtained from this
-    website, for any purpose that is unlawful or prohibited by these Terms. If
-    you violate any of these Terms, your permission to use the OpenFoundry.org
-    website automatically terminates.
+    By using the Foundry website, you warrant to Foundry that you will not use
+    this website, or any of the content obtained from this website, for any
+    purpose that is unlawful or prohibited by these Terms. If you violate any
+    of these Terms, your permission to use the Foundry website
+    automatically terminates.
 
 3. VIOLATIONS OF TERMS
 
-    Please report any violations of the Terms to the OpenFoundry.org Support
-    Manager at contact@openfoundry.org.
+    Please report any violations of the Terms to the Foundry Support Manager.
 
 ',
                  'Name' => 'TermOfUse',
@@ -231,7 +230,7 @@ ENDOFCONTENT
                },
                {
                  'Queue' => 'NewProject',
-                 'Content' => 'OpenFoundry.org Terms and Conditions of Use
+                 'Content' => 'Foundry Terms and Conditions of Use
 
 Before using this website, please read this agreement relating to your use
 of this site carefully.
@@ -244,16 +243,15 @@ of this site carefully.
 
 2. NO UNLAWFUL OR PROHIBITED USE
 
-    By using the OpenFoundry.org website, you warrant to OpenFoundry.org that
-    you will not use this website, or any of the content obtained from this
-    website, for any purpose that is unlawful or prohibited by these Terms. If
-    you violate any of these Terms, your permission to use the OpenFoundry.org
-    website automatically terminates.
+    By using the Foundry website, you warrant to Foundry that you will not use
+    this website, or any of the content obtained from this website, for any
+    purpose that is unlawful or prohibited by these Terms. If you violate any
+    of these Terms, your permission to use the Foundry website
+    automatically terminates.
 
 3. VIOLATIONS OF TERMS
 
-    Please report any violations of the Terms to the OpenFoundry.org Support
-    Manager at contact@openfoundry.org.
+    Please report any violations of the Terms to the Foundry Support Manager.
 
 ',
                  'Name' => 'TermOfProject',
@@ -591,6 +589,18 @@ foreach my $right (@Rights) {
             }
           );
 @ACL = (
+         {
+           'Queue' => 'NewUser',
+           'Right' => 'CommentOnTicket',
+           'GroupDomain' => 'SystemInternal',
+           'GroupType' => 'Everyone'
+         },
+         {
+           'Queue' => 'NewUser',
+           'Right' => 'ReplyToTicket',
+           'GroupDomain' => 'SystemInternal',
+           'GroupType' => 'Everyone'
+         },
          {
            'Right' => 'AdminCustomFields',
            'GroupDomain' => 'SystemInternal',

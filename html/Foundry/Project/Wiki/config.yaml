@@ -34,7 +34,7 @@ import_class:      CGI::Kwiki::Import
 ###############################################################################
 # Any of these values can be used in the Kwiki templates. You can make up your
 # own template variables too.
-top_page:      OpenFoundry
+top_page:      HomePage
 changes_page:  RecentChanges
 preferences_page:  Preferences
 blog_page:     Blog
@@ -44,8 +44,8 @@ encoding:      UTF-8
 # this only has effect on Perl 5.8+ with encoding set to auto or UTF-8
 page_language: auto
 
-slogan:        開放源碼鑄造場
-title_prefix:  Open Foundry
+slogan:        RT 鑄造場
+title_prefix:  RT Foundry
 stylesheet:    Hlb.css
 
 kwiki_image:   logo.png

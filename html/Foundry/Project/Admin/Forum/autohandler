@@ -9,9 +9,9 @@ use HTTP::Cookies;
 
 if (!$RT::SympaSecret) {
     foreach my $dir (qw(
+        /home/sympa/etc/sympa.conf
         /etc/sympa.conf
         /usr/local/etc/sympa.conf
-        /home/sympa/etc/sympa.conf
     )) {
         $RT::SympaConfig = $dir if -e $dir and !-e $RT::SympaConfig;
     }

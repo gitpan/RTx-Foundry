@@ -60,9 +60,7 @@ my $u = $session{'CurrentUser'}->UserObj;
 $RT::BaseURL = "/Foundry/Project/Source/List.html/";
 
 our $ua = WWW::Mechanize->new;
-our $wws = "http://svn.openfoundry.org/viewcvs";
-#http://svn.openfoundry.org/viewcvs/trunk/?root=sympa&sortby=author#dirlist
-#http://svn.openfoundry.org/viewcvs/?sortby=author&root=sympa
+our $wws = "$ENV{SVN_URL}/viewcvs";
 
 our ($Get, $Post) = map {
     my $method = $_;

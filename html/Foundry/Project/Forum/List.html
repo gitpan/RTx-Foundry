@@ -40,7 +40,6 @@ if ($r->path_info =~ m{^/wws(.*)}) {
     }
 }
 else {
-    print join(',', $m->request_args );
     $out = $Post->( "", scalar $m->request_args );
 }
 

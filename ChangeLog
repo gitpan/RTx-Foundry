@@ -1,42 +1,6 @@
 # $File: //depot/RT/osf/ChangeLog $
 # $Revision: #7 $ $Change: 9975 $ $DateTime: 2004/02/09 20:00:26 $
 
-[Changes for 0.00_08 - Feburary 10, 2004]
+[Changes for 0.01 - March 28, 2004]
 
-Fix Attribute initialization problems; first draft of
-openfoundry-setup; synchronized with RT 3.0.9pre4.
-
-[Changes for 0.00_07 - Feburary 5, 2004]
-
-Fix setup problems; added the INSTALL document.
-
-[Changes for 0.00_06 - Feburary 2, 2004]
-
-Maintainence release.  First attempt at making the VCS system
-generally configurable.
-
-[Changes for 0.00_05 - January 10, 2003]
-
-Fix initial permissions for Kwiki data.
-
-Fix initialization problems with SetAttribute calls.
-
-[Changes for 0.00_04 - December 25, 2003]
-
-Proper initialdata setup; this is now part of a fully
-functional install of the www/openfoundry/ FreeBSD port.
-
-It needs rt-elixus build 9441 or above to install.
-
-[Changes for 0.00_03 - December 15, 2003]
-
-Now installs itself with help from Module::Install::RTx.
-
-[Changes for 0.00_02 - November 15, 2003]
-
-Tell search.cpan.org to not index html/*.
-
-[Changes for 0.00_01 - November 15, 2003]
-
-Initial CPAN preview release.
-
+Initial release on CPAN.

@@ -1,33 +1,37 @@
 #!/usr/local/bin/perl
-# $File: //depot/RT/osf/sbin/openfoundry-syncdata $ $Author: autrijus $
-# $Revision: #8 $ $Change: 9864 $ $DateTime: 2004/02/02 23:13:12 $
+# $File: //depot/RT/osf/sbin/foundry-syncdata $ $Author: autrijus $
+# $Revision: #11 $ $Change: 10131 $ $DateTime: 2004/02/18 08:48:36 $
 
 use strict;
 use FindBin;
 use DBI;
 use File::Copy;
+use File::Path;
 use Proc::PID_File;
 
 eval {
 
-my $tmp = File::Spec->tmpdir.'/openfoundry';
+my $tmp = File::Spec->tmpdir.'/foundry';
 mkpath([$tmp], 0, 0755) unless -d $tmp;
 my $lock_file = "$tmp/syncdata.lock";
 exit if hold_pid_file($lock_file);
 
-eval { require "$FindBin::Bin/../etc/openfoundry.conf" };
-eval { require "$FindBin::Bin/../etc/Foundry/openfoundry.conf" };
+eval { require "$FindBin::Bin/../etc/foundry.conf" };
+eval { require "$FindBin::Bin/../etc/Foundry/foundry.conf" };
 
 my ($svn_base) = grep { defined and -d } (
-    $ENV{SVNREPOS}, 
+    $ENV{SVNROOT}, 
     '/home/svn',
     '/home/svn-repositories',
-) or die "Cannot find SVNREPOS";
+) or die "Cannot find SVNROOT";
 my ($cvs_base) = grep { defined and -d } (
     $ENV{CVSROOT},
     '/home/cvs',
     '/usr/depot/cvsrepo'
 ) or die "Cannot find CVSROOT";
+
+$svn_base .= "/foundry-repos";
+$cvs_base .= "/foundry-repos";
 
 my $rt_dsn = $ENV{RT_DSN} || join(';',
     "dbi:$ENV{DB_TYPE}:dbname=rt3",
@@ -41,16 +45,20 @@ my $dbh = DBI->connect($rt_dsn, $ENV{DB_DBA_USER}, $ENV{DB_DBA_PASSWORD}) or exi
 
 mkpath([$svn_base], 0, 0755) unless -d $svn_base;
 
-my $commitcheck = "$FindBin::Bin/openfoundry-cvs-commitcheck";
-my $start_commit = "$FindBin::Bin/openfoundry-svn-start-commit";
-my $pre_revprop_change = "$FindBin::Bin/openfoundry-svn-pre-revprop-change";
+my $commitcheck = "$FindBin::Bin/foundry-cvs-commitcheck";
+my $start_commit = "$FindBin::Bin/foundry-svn-start-commit";
+my $pre_revprop_change = "$FindBin::Bin/foundry-svn-pre-revprop-change";
 
+#
+# this block build the CVS Repostiory, run only once 
+#  XXX should it be set in the setup procedure
+#
 unless (-d $cvs_base) {
     mkpath([$cvs_base], 0, 0755);
     system(qw( cvs -d ), $cvs_base, 'init');
 
     my $_commitcheck = "$cvs_base/CVSROOT/commitcheck";
-    my $_commitinfo = "$cvs_base/CVSROOT/commitcheck";
+    my $_commitinfo = "$cvs_base/CVSROOT/commitinfo";
     open my $fh, ">", $_commitcheck or die $!;
     print $fh "#!/bin/sh\n";
     print $fh "exec $commitcheck \$\@\n";
@@ -62,6 +70,9 @@ unless (-d $cvs_base) {
     system(qw( chown -R ), "$cvs_user:$cvs_group", $cvs_base);
 }
 
+#
+# The following block get user id from database
+#
 my $users = $dbh->selectcol_arrayref(q{
     SELECT Users.Name
       FROM Users, GroupMembers
@@ -84,16 +95,22 @@ foreach my $name (@{$users||[]}) {
     );
 }
 
+#
+# The following block get project id from database
+#
 my $projects = $dbh->selectcol_arrayref(q{
     SELECT TicketCustomFieldValues.Content
       FROM TicketCustomFieldValues, Queues, CustomFields
      WHERE TicketCustomFieldValues.Ticket = Queues.DefaultDueIn
        AND Queues.Disabled = 0
        AND TicketCustomFieldValues.CustomField = CustomFields.Id
-       AND CustomFields.Description = 'UnixName'
+       AND CustomFields.Name = 'UnixName'
   GROUP BY TicketCustomFieldValues.Content
 });
 
+#
+# The following block setup svn repository hooks
+#
 foreach my $name (@{$projects||[]}) {
     $name = lc($name);
     $name =~ /^[a-z][0-9a-z]{2,14}$/ or exit;
@@ -121,8 +138,13 @@ foreach my $name (@{$projects||[]}) {
 
 $dbh->disconnect;
 
+# END of EVAL{} block
+
 };
 
+#
+# exec myself, take care the PID file
+#
 if (my $interval = shift) {
     warn $@ if $@;
     $interval = 1 if $interval < 1;

@@ -4,7 +4,7 @@
 <form style="margin: 0" action="http://ossf.iis.sinica.edu.tw/mailman/subscribe/openfoundry" method="post" target="_blank">
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle">
-<&|/l&>Subscribe to OpenFoundry Newsletter</&>
+<&|/l&>Subscribe to RT Foundry Newsletter</&>
 </td></tr>
 <tr><td bgcolor="white" align="center">
     <&|/l&>Email</&>:
@@ -18,7 +18,7 @@
 <br>
 <table border="0" cellspacing="1" cellpadding="2" width=100%>
 <tr><td class="tableTitle">
-<&|/l&>OpenFoundry Newsletter</&>
+<&|/l&>RT Foundry Newsletter</&>
 </td>
 % my $count = 0;
 % foreach my $item (@{ $rss->items }) {

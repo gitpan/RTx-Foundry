@@ -30,7 +30,7 @@
             </table>
 <%INIT>
 my (undef, $repos, $action, $path) = split ('/', ($r->path_info), 4);
-$repos  ||= $QueueObj->OriginObj->CustomFieldValue('UnixName');
+$repos  ||= eval { $QueueObj->OriginObj->CustomFieldValue('UnixName') } || 'local';
 $action ||= 'browse';
 
 my $prefix = '/Foundry/Project/Source/index.html';

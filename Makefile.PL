@@ -8,31 +8,28 @@ use inc::Module::Install;
 warn << '.';
 ### PLEASE NOTE ##############################################
 
-This is *PRE-ALPHA* code.  Using this module for anything
-(except for learning purporses) is strongly discouraged.
+Greetings from the YAPC::Taipei::2004 party!
 
-Note that this package is designed to be overlaid on top
-of a rt3-elixus (http://www.freshports.org/www/rt3-elixus/)
-installation; all other environments are unsupported.
+This package is designed to be overlaid on top of a rt3-elixus
+(http://www.freshports.org/www/rt3-elixus/) installation; all
+other environments are currently unsupported.
 
-More detailed installation guides will be available in
-English soon, including how to set up your RT_SiteConfig.pm
-based on the sample etc/RT_SiteConfig.pm shipped here.
+We will be porting the API to RT 3.3.x; Foundry will be easier
+to install on top of it once RT 3.3.x is released.  Meanwhile,
+please read the "INSTALL" file for platform-specific tips on
+how to quickly set up RT Foundry.
 
-Meanwhile, read the "INSTALL" file for how to quickly set
-up OpenFoundry on a FreeBSD system.
+Don't forget to run "foundry-setup" after the installation!
 
 ##############################################################
 .
 
 RTx('Foundry');
 author('Autrijus Tang <autrijus@autrijus.org>');
-abstract('Base classes for the OpenFoundry system');
+abstract('Base classes for the RT Foundry system');
 license	('gpl');
 
 requires(
-#   'RTx::Attribute'	=> 0,
-#   'RTx::TabbedUI'	=> 0,
     'WWW::Mechanize'	    => 0,
     'Email::Valid'	    => 0,
     'MIME::Base64'	    => 0,

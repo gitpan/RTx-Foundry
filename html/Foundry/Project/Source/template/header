@@ -1,3 +1,4 @@
+<html><!-- css, etc here -->
 <div id="navpath">
 [% url = [script,repos,''] %]
 [% url = url.join('/') %]

@@ -62,6 +62,12 @@ if ($ARGS{id}) {
     push @Error, loc('Invalid email address')
 	unless !$Email or $Email = Email::Valid->address( -address => $Email );
 
+    if ($Name) {
+        my $user = RT::User->new($session{CurrentUser});
+        $user->LoadByCol( "Name", $Name );
+        push @Error, loc('This account already exists') if $user->Id;
+    }
+
     if ($Email) {
 	my $user = RT::User->new($session{CurrentUser});
 	my $address = $user->CanonicalizeEmailAddress($Email);

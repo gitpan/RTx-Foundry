@@ -1,10 +1,10 @@
 package RT;
 
-eval { require "/usr/local/etc/openfoundry.conf" };
+eval { require "/usr/local/etc/foundry.conf" };
 
 Set($rtname, $ENV{RT_NAME} || 'OSSF');
 Set($Timezone, $ENV{TZ} || 'Asia/Taipei');
-Set($Host, $ENV{HOST} || 'openfoundry.org');
+Set($Host, $ENV{HOST} || 'foundry.org');
 
 Set($WebHost, $ENV{WEB_HOST} || "rt.$Host");
 Set($EmailHost, $ENV{EMAIL_HOST} || "users.$Host");

@@ -25,15 +25,15 @@
 my $topic = $QueueObj->OriginObj->CustomFieldValue('UnixName');
 
 our ($Get, $Post);
-my $current = $Get->("/lists/$topic");
+my $current = $Get->("/lists");
 my @lists;
 my %is_admin;
 my $admin = "/Foundry/Project/Admin/Forum/List.html/wws/admin/";
-while ($current =~ m{<A HREF="$admin([^"]+)}g) {
+while ($current =~ m{<A HREF="$admin(?=\Q$topic\E-)([^"]+)}g) {
     $is_admin{$1}++;
 }
 my $info = "/Foundry/Project/Admin/Forum/List.html/wws/info/";
-while ($current =~ m{<A HREF="$info([^"]+)}g) {
+while ($current =~ m{<A HREF="$info(?=\Q$topic\E-)([^"]+)}g) {
     push @lists, $1;
 }
 

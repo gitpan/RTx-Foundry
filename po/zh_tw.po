@@ -409,8 +409,8 @@ msgstr "作業系統"
 msgid "Open"
 msgstr "開啟"
 
-msgid "OpenFoundry Newsletter"
-msgstr "OpenFoundry 電子報"
+msgid "RT Foundry Newsletter"
+msgstr "RT Foundry 電子報"
 
 msgid "Optional; fill in an email address or URL"
 msgstr "非必填; 可為 email 信箱或網址"
@@ -706,8 +706,8 @@ msgstr "子元件"
 msgid "Subscribe"
 msgstr "訂閱"
 
-msgid "Subscribe to OpenFoundry Newsletter"
-msgstr "訂閱 OpenFoundry 電子報"
+msgid "Subscribe to RT Foundry Newsletter"
+msgstr "訂閱 RT Foundry 電子報"
 
 msgid "Summary"
 msgstr "摘要"
@@ -912,8 +912,8 @@ msgstr "以便充份利用 %1 提供的服務。"
 msgid "task"
 msgstr "工作事項"
 
-msgid "OpenFoundry System"
-msgstr "OpenFoundry 系統"
+msgid "RT Foundry System"
+msgstr "RT Foundry 系統"
 
 msgid "This project does not have any mailing lists yet."
 msgstr "本專案目前沒有通信論壇。"
@@ -1019,4 +1019,7 @@ msgstr "後端"
 
 msgid "All Architectures"
 msgstr "所有硬體"
+
+msgid "This account already exists"
+msgstr "此帳號已經存在"
 

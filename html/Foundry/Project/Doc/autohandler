@@ -31,9 +31,7 @@ my $u = $session{'CurrentUser'}->UserObj;
 $RT::BaseURL = "/Foundry/Project/Doc/List.html/";
 
 our $ua = WWW::Mechanize->new;
-our $wws = "http://wiki.openfoundry.org/";
-#http://svn.openfoundry.org/viewcvs/trunk/?root=sympa&sortby=author#dirlist
-#http://svn.openfoundry.org/viewcvs/?sortby=author&root=sympa
+our $wws = "$ENV{WIKI_URL}/";
 
 our ($Get, $Post) = map {
     my $method = $_;
@@ -56,7 +54,7 @@ our ($Get, $Post) = map {
 		{'>' . loc($1) . '<'}eg;
 	$rv =~ s{(Search)(\Q: <input type="text" name="find" size="20"\E)}
 		{loc($1) . $2}eg;
-	$rv =~ s{"http://wiki.openfoundry.org/}
+	$rv =~ s{\Q$ENV{WIKI_URL}/\E}
 		{"$RT::BaseURL}g;
 	$rv;
     };

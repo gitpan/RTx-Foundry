@@ -19,7 +19,7 @@ while (my $Item = $Tickets->Next) {
 	my $subject;
 	while (my $attach = $attachments->Next) {
 	    $subject ||= $attach->Subject;
-	    next unless ($attach->Filename);
+	    length($attach->Filename) or next;
 
 	    $documents{$attach->Filename} = $attach;
 	    $description{$attach->Id} = $subject;

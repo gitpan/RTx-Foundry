@@ -1,44 +1,33 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #14 $ $Change: 9975 $ $DateTime: 2004/02/09 20:00:26 $
+# $Revision: #15 $ $Change: 10088 $ $DateTime: 2004/02/18 00:22:05 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_08';
+$RTx::Foundry::VERSION = '0.01';
 
 1;
 
 =head1 NAME
 
-RTx::Foundry - Base classes for the OpenFoundry system
+RTx::Foundry - Base classes for the RT Foundry system
 
 =head1 VERSION
 
-This document describes version 0.08 of RTx::Foundry, released
-February 10, 2004.
+This document describes version 0.01 of RTx::Foundry, released
+March 28, 2004.
 
 =head1 SYNOPSIS
 
 Not at the moment.  See L<http://rt.openfoundry.org/> for a demo.
 
-Currently, the only way to install OpenFoundry is from the ports files in
+Currently, the only way to install RT Foundry is from the ports files in
 L<http://rt.openfoundry.org/Foundry/Project/Download/?Queue=OpenFoundry>,
 which requires a FreeBSD system to run on.
 
 =head1 DESCRIPTION
 
-The OpenFoundry project is the code behind Taiwan's B<OSSF> initiative,
-as part of the Free Software Promotion Project initiated by the Industrial
-Development Bureau, Ministry of Economic Affairs (IDB) and executed by the
-Institute of Information Science, Academia Sinica (IIS).
-
-The initial goal of OpenFoundry is to become the leading project in
-Taiwan to accumulate experience and knowledge of free software and open
-source code, and to establish a software program development website that
-can become a foundation platform for promoting free software. 
-
-The project will also organize local workshops and forums, and publish
-documents such as website manuals, translated terms and vocabulary,
-information on local free software talents and community events,
-comparison of common free software licenses, and Free Software FAQ. 
+The B<RT Foundry> project is the code behind Taiwan's B<OSSF> initiative,
+as part of the Free Software Promotion Project, executed by the Institute of
+Information Science, Academia Sinica (IIS).
 
 =head1 DESIGN
 
@@ -47,7 +36,7 @@ Chinese in due time.
 
 =head2 Overview
 
-What is OpenFoundry?
+What is "RT Foundry"?
 
  - Decentralized development environment
  - Modular services
@@ -66,7 +55,7 @@ Monolithic design - Why not?
  - Single point of failure
  - Difficult to integrate with existing process
 
-Neat things about OpenFoundry
+Neat things about RT Foundry
 
  - Free software under GPL / Artistic license
  - Based on mature projects
@@ -237,7 +226,7 @@ Current status
   - RTx::Foundry
   - RTx::TabbedUI
   - RTx::Report
- - FreeBSD port (www/openfoundry/) imminent
+ - FreeBSD port (www/rtfoundry/) imminent
 
 Future Plans
 
@@ -250,7 +239,7 @@ Future Plans
 
 =head1 SEE ALSO
 
-OpenFoundry Demo: L<http://rt.openfoundry.org/>
+RTx::Foundry Demo: L<http://rt.openfoundry.org/>
 
 OSSF Website: L<http://www.openfoundry.org/en/>
 
@@ -273,16 +262,15 @@ This project is sponsored by:
 Implemented by:
     OurInternet, Inc.
 
-Based on works contributed from:
+Based on works contributed by:
     104 Technology, Inc.
 
-With collaborations from:
-    Best Practical, LLC.
+In collaboration with:
+    Best Practical Solutions, LLC.
 
 =head1 COPYRIGHT
 
-Copyright 2003, 2004 by Industrial Development Bureau,
-Taiwan Ministry of Economic Affairs
+Copyright 2004 by Academia Sinica, Taiwan.
 
 (Except where explicitly superseded by other copyright notices)
 

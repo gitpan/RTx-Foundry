@@ -1,24 +1,24 @@
-browsing [% path %] (of revision [% revision %])
-<a href="[% script %]/[% repos %]/log[% path %]">(history of this directory)</a>
+[%|l(path, revision)%]browsing %1 (of revision %2)[%END%]
+<a href="[% script %]/[% repos %]/log[% path %]">[%|l%](history of this directory)[%END%]</a>
 [% IF branchto %]
 <hr>
-Branch to:
+[%|l%]Branch to:[%END%]
 [% FOR branchto %]
 <a href="[% script %]/[% repos %]/browse[% dst %]">[% dst %]</a>:
-<a href="[% script %]/[% repos %]/revision/?rev=[% dstrev %]">[% dstrev %]</a> (from revision [% srcrev %])
+<a href="[% script %]/[% repos %]/revision/?rev=[% dstrev %]">[% dstrev %]</a> [%|l(srcrev)%](from revision %1)[%END%]
 [% END %]
 [% END %]
 [% IF branchfrom %]
 <hr>
-Branch from:
+[%|l%]Branch from:[%END%]
 [% FOR branchfrom %]
-<a href="[% script %]/[% repos %]/browse[% src %]">[% src %]</a>:[% srcrev %] (to <a href="[% script %]/[% repos %]/revision/?rev=[% dstrev %]">revision [% dstrev %]</a>)
+<a href="[% script %]/[% repos %]/browse[% src %]">[% src %]</a>:[% srcrev %] <a href="[% script %]/[% repos %]/revision/?rev=[% dstrev %]">[%|l(dstrev)%](to revision %1)[%END%]</a>
 [% END %]
 [% END %]
-<table border=0 width="90%" class="popTable" cellpadding="2" cellspacing="1">
-<tr class="tableTitle"><td>name</td><td>revision</td><td>age</td><td>size</td></tr>
+<table border=0 width="90%" class="entries">
+<tr><td>[%|l%]name[%END%]</td><td>[%|l%]revision[%END%]</td><td>[%|l%]age[%END%]</td><td>[%|l%]size[%END%]</td></tr>
 [% FOREACH entries %]
-<tr bgcolor="white">
+<tr>
 <td class="name">
 [% IF isdir %]
 <img border="0" src="/icons/dir.gif" />

@@ -3,24 +3,22 @@
 <%PERL>
 my $basepath = $m->fetch_comp("/Foundry/Project/Source/index.html")->source_dir;
 
-require lib;
-lib->import("$basepath/lib");
 require SVN::Web;
 require File::Spec;
 
 my $tmpdir = File::Spec->tmpdir . '/svn';
 mkdir $tmpdir unless -d $tmpdir;
 
-my $config = {
+SVN::Web::set_config({
     reposparent	    => "$RT::VarPath/Foundry/svn",
     tmpdir	    => $tmpdir,
     templatedir	    => "$basepath/template",
     map ( "\L$_\E_class" => "SVN::Web::$_" ),
 	qw(Branch Branch Checkout Diff Log Revision RSS Template)
-};
+});
 
 my (undef, $repos, $action, $path) = split ('/', ($r->path_info), 4);
-$repos  ||= $QueueObj->OriginObj->CustomFieldValue('UnixName');
+$repos  ||= eval { $QueueObj->OriginObj->CustomFieldValue('UnixName') } || 'local';
 $action ||= 'browse';
 $path   ||= '';
 
@@ -30,27 +28,21 @@ for (1 .. 3) {
 	    repos => $repos,
 	    action => $action,
 	    path => '/'.$path,
-	    cgi => $r,
+	    lang => $session{CurrentUser}->LanguageHandle->language_tag,
+	    cgi => CGI->new(\%ARGS),
+	    request => $r,
 ($action eq 'checkout') ? ( 
-	    out	=> sub {
-		$r->print(@_);
-		$m->flush_buffer;
-	    },
-	    header_out => sub {
-		my %args = @_;
+	    output_sub	=> sub {
 		$m->clear_buffer;
-		$r->content_type($args{'-type'});
+		SVN::Web::mod_perl_output(@_);
 	    },
 ) : (
-	    out	=> sub {
-		$m->print(@_);
-	    },
-	    header_out => sub { 1 },
+	    output_sub	=> \&SVN::Web::mod_perl_output,
 ),
-	    tmpdir => $config->{tmpdir},
+	    tmpdir => $tmpdir,
 	    params => \%ARGS,
 	    script => "${RT::WebURL}Foundry/Project/Source/index.html",
-	}, $config)
+	});
     };
     print "$@";
     last unless $@;

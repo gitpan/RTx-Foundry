@@ -86,7 +86,7 @@ my $error_data;
    }
 
    sub OutputStat {
-use BFD;d"STAT!!", $_[1];
+# use BFD;d"STAT!!", $_[1];
    }
 
    sub OutputInfo {
