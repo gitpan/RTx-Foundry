@@ -1,4 +1,6 @@
 #!/usr/local/bin/perl
+# $File: //depot/RT/osf/sbin/openfoundry-svn-start-commit $ $Author: autrijus $
+# $Revision: #2 $ $Change: 9862 $ $DateTime: 2004/02/02 22:20:33 $
 
 use strict;
 use FindBin;

@@ -1,4 +1,6 @@
 #!/usr/local/bin/perl -w
+# $File: //depot/RT/osf/sbin/openfoundry-vcp $ $Author: autrijus $
+# $Revision: #4 $ $Change: 9862 $ $DateTime: 2004/02/02 22:20:33 $
 
 use FindBin;
 use lib "$FindBin::Bin/openfoundry-lib";
@@ -608,7 +610,7 @@ sub find_help_modules {
             return if -d $_;
             return unless /\.(pm|pod)\Z/i;
 
-            my $mod_name = File::Spec->abs2rel( $File::Find::name, $vcp_dir );
+            my $mod_name = File::Spec->abs2rel( $File: //depot/RT/osf/sbin/openfoundry-vcp $vcp_dir );
 
             $mod_name =~ s{[:\\/]+}{::}g;
             $mod_name =~ s{\.(pm|pod)}{}i;

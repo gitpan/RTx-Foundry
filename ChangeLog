@@ -1,5 +1,14 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #5 $ $Change: 9651 $ $DateTime: 2004/01/10 13:46:44 $
+# $Revision: #6 $ $Change: 9903 $ $DateTime: 2004/02/04 19:01:19 $
+
+[Changes for 0.00_07 - Feburary 5, 2004]
+
+Fix setup problems; added the INSTALL document.
+
+[Changes for 0.00_06 - Feburary 2, 2004]
+
+Maintainence release.  First attempt at making the VCS system
+generally configurable.
 
 [Changes for 0.00_05 - January 10, 2003]
 

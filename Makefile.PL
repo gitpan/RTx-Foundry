@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # $File: //depot/RT/osf/Makefile.PL $ $Author: autrijus $
-# $Revision: #5 $ $Change: 9830 $ $DateTime: 2004/02/01 15:50:47 $
+# $Revision: #7 $ $Change: 9904 $ $DateTime: 2004/02/04 19:02:17 $
 
 use 5.008;
 use inc::Module::Install;
@@ -18,6 +18,9 @@ installation; all other environments are unsupported.
 More detailed installation guides will be available in
 English soon, including how to set up your RT_SiteConfig.pm
 based on the sample etc/RT_SiteConfig.pm shipped here.
+
+Meanwhile, read the "INSTALL" file for how to quickly set
+up OpenFoundry on a FreeBSD system.
 
 ##############################################################
 .
@@ -52,4 +55,5 @@ features( 'SVN2CVS support' => [
 ] );
 
 auto_install( -default => 0 );
+include('ExtUtils/AutoInstall.pm');
 &WriteAll( check_nmake => 0, sign => 1 );

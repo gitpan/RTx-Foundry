@@ -1,0 +1,54 @@
+OpenFoundry Quick Start (FreeBSD only)
+======================================
+
+In the main host "db.example.org", make and launch two clean FreeBSD Jails:
+"vcs.example.org" and "www.example.org".
+
+In DB, make sure that:
+
+    /home/svn and /home/cvs are shared across VCS and WWW
+    PostgreSQL is running and allows access from VCS and WWWW
+
+In WWW, do this as root:
+
+    cd /usr
+    fetch -q -o - http://p4.elixus.org/snap/rt-ports.tar.gz | tar zxf -
+    fetch -q -o - http://p4.elixus.org/snap/sympa-ports.tar.gz | tar zxf -
+
+    cd /usr/ports/lang/perl5.8
+    make install
+    use.perl port
+
+    cd /usr/ports/www/openfoundry/
+    make install -DINITIAL_INSTALL DB_TYPE=Pg DB_HOST=db.example.org \
+		 DB_DBA_USER=pgsql MASTER_SITE_OVERRIDE='' -DWITH_APACHE2 
+
+    vim /usr/local/rt3/etc/RT_SiteConfig.pm
+    echo "Include /usr/local/rt3/local/etc/Foundry/httpd.conf.mod_perl2" \
+	>> /usr/local/etc/apache2/httpd.conf
+
+    /usr/local/etc/rc.d/sympa start
+    /usr/local/etc/rc.d/apache2.sh start
+
+In VCS, do this as root:
+
+    cd /usr
+    fetch -q -o - http://p4.elixus.org/snap/rt-ports.tar.gz | tar zxf -
+
+    cd /usr/ports/lang/perl5.8
+    make install
+    use.perl port
+
+    cd /usr/ports/devel/openfoundry-vcs/
+    make install -DINITIAL_INSTALL DB_TYPE=Pg DB_HOST=db.example.org \
+		 DB_DBA_USER=pgsql MASTER_SITE_OVERRIDE='' \
+		 RT_URL=http://www.example.org
+
+    echo "Port 2222" >> /etc/ssh/sshd_config
+
+    /usr/local/etc/rc.d/sshdcvs.sh start
+    /usr/local/etc/rc.d/openfoundry-vcs.sh start
+
+Reboot both jails, and you will have a fully functioning OpenFoundry system.
+Enjoy!
+

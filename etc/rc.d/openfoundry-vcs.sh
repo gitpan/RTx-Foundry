@@ -18,7 +18,7 @@ case "$1" in
 			echo "openfoundry-cvs2svn isn't running"
 		fi
 		if [ -f /tmp/openfoundry/syncdata.lock ]; then
-			/bin/kill `cat /tmp/openfoundry/syncdata.lock` > /dev/null 2>&1 && echo -n ' openfoundry-cvs2svn'
+			/bin/kill `cat /tmp/openfoundry/syncdata.lock` > /dev/null 2>&1 && echo -n ' openfoundry-syncdata'
 		else
 			echo "openfoundry-syncdata isn't running"
 		fi

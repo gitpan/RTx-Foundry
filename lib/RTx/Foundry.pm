@@ -1,8 +1,8 @@
 # $File: //depot/RT/osf/lib/RTx/Foundry.pm $ $Author: autrijus $
-# $Revision: #9 $ $Change: 9840 $ $DateTime: 2004/02/01 19:13:31 $
+# $Revision: #12 $ $Change: 9903 $ $DateTime: 2004/02/04 19:01:19 $
 
 package RTx::Foundry;
-$RTx::Foundry::VERSION = '0.00_06';
+$RTx::Foundry::VERSION = '0.00_07';
 
 1;
 
@@ -12,8 +12,8 @@ RTx::Foundry - Base classes for the OpenFoundry system
 
 =head1 VERSION
 
-This document describes version 0.00_06 of RTx::Foundry, released
-January 10, 2004.
+This document describes version 0.07 of RTx::Foundry, released
+February 5, 2004.
 
 =head1 SYNOPSIS
 

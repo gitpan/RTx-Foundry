@@ -1,5 +1,5 @@
 name: RTx-Foundry
-version: 0.00_06
+version: 0.00_07
 abstract: Base classes for the OpenFoundry system
 author: Autrijus Tang <autrijus@autrijus.org>
 license: gpl

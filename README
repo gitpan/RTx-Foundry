@@ -1,5 +1,5 @@
 # $File: //depot/RT/osf/README $ $Author: autrijus $
-# $Revision: #5 $ $Change: 9653 $ $DateTime: 2004/01/10 13:49:49 $
+# $Revision: #6 $ $Change: 9903 $ $DateTime: 2004/02/04 19:01:19 $
 
 This is the README file for RTx::Foundry, the base classes for
 the OpenFoundry online collaboration system.

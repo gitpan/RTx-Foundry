@@ -15,16 +15,17 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 17e3b0eea99abffe6ac71e65627413236e0b117a COPYING
-SHA1 309f76d0a703ca2129a5f12b0ba4cc8bfab8f2a9 ChangeLog
-SHA1 f8b4c413f46c3971967980ad7059d0d8740d1a65 MANIFEST
-SHA1 23c3656f9aa4eec99d4d5ed69358e2f12bcb0deb META.yml
-SHA1 5dd16003766218565c7a9644479f375edcb0236d Makefile.PL
-SHA1 23923f5dc92d489387b08a89b2ce0578bbd531d0 README
+SHA1 2c288faa8138c9b7e9140d6be93fd9ee9aacca6a ChangeLog
+SHA1 588641be7922b93952ccd3bdd69167e3c9f6c88d INSTALL
+SHA1 f586c1f31e2a732d6eba2e3d2352b6c9695a3bc9 MANIFEST
+SHA1 80e37c2958dbc4bf5d7ffcd1d6aed8fcf1a5d982 META.yml
+SHA1 3b0968503c0fe42b1418071532d92d9ea0328bf7 Makefile.PL
+SHA1 cf1da5d528011a0d97db92b36303c7a2880de7c5 README
 SHA1 723eb046639eedae30e6a9e93852750d9ddca428 etc/RT_SiteConfig.pm
 SHA1 b91a7a9fc2f75d9dc5ba74a553d99ced450d1a9a etc/httpd.conf.mod_perl2
 SHA1 e04b30fa869e69296d5684e4ba817fb0914f8e11 etc/initialdata
-SHA1 0542c6d9ce34d9bf24aa50eb6b49804579f0e762 etc/openfoundry.conf.sample
-SHA1 bd1862416b0616558f61af78d967b14931163444 etc/rc.d/openfoundry-vcs.sh
+SHA1 5f17997e39ecc66ef139cb822c32519ac8ad9446 etc/openfoundry.conf.sample
+SHA1 9f6940ef2fc8bd9e78883a140dea9c5abba52349 etc/rc.d/openfoundry-vcs.sh
 SHA1 4e0513b49d5fc00583376b90253c4edf8b7d0e63 etc/sitemap.yml
 SHA1 22fae782cc48469e6a5298a7d2d9c17eea895d19 html/Callbacks/Foundry/Elements/Footer/Default
 SHA1 e158c7d88c1ff5d73722faf8ba0f573cb4399611 html/Callbacks/Foundry/Elements/Login/Header
@@ -229,9 +230,11 @@ SHA1 3f5e9f4b4c2d14dee27655bc2dca741d23cf0924 html/Foundry/User/index.html
 SHA1 b5693cb6c1be15e7a8d0bce9882f3545c1d92996 html/Foundry/autohandler
 SHA1 0624bfdaf15ea49a73fd4e7e7a719665eda2a08b html/Foundry/index.html
 SHA1 f855cb5eba769be4944cfdddb5aacb60f71455bc html/Foundry/layout.txt
+SHA1 516611014c1018d65b0b7188b77d216a7be44238 inc/ExtUtils/AutoInstall.pm
 SHA1 d78c824a321715b390518287a8929623d7a55050 inc/Module/Install.pm
 SHA1 e69e76e2d33f34a90382c6ab74ebf9cf2dc858e5 inc/Module/Install/AutoInstall.pm
 SHA1 adfc45c82642d3726cc2c871c49062c000ccb0e4 inc/Module/Install/Base.pm
+SHA1 8119fb04681f0085c6b466f592adc8d408861610 inc/Module/Install/Include.pm
 SHA1 876226cc896a285b2409db88d9033071c68cec50 inc/Module/Install/Makefile.pm
 SHA1 2a0dd241db019def435fde8537e600a182750824 inc/Module/Install/Metadata.pm
 SHA1 6c236fe4870329e5b9e29bbf16fdd252618600fd inc/Module/Install/RTx.pm
@@ -243,11 +246,12 @@ SHA1 1093470960e95d72fec1214edcf49f977e9e01ca lib/RT/EmailParser_Local.pm
 SHA1 dffdbd989eb2d672ac1bf9099903b940510a2795 lib/RT/Queue_Local.pm
 SHA1 92f7fe53c25dd1265d0175452e3f9336f6bd667c lib/RT/Tickets_Local.pm
 SHA1 759f0d3f16d310cb52ecaf8612d3111b7d990bc8 lib/RT/User_Local.pm
-SHA1 06c71112cbdf15229887568b2dce92d7af906ec9 lib/RTx/Foundry.pm
+SHA1 b6918f65198f9ec39932f361b076d9ab8fb58a42 lib/RTx/Foundry.pm
 SHA1 2a3880ca09b9213225ab76a54306dcc404887382 po/zh_cn.po
 SHA1 0a1eca52b9c86fcd4ba2cbe8a4821ac5b113b277 po/zh_tw.po
-SHA1 d7d580b5a092c189fb755083df5ebe28a32576ea sbin/openfoundry-cvs-commitcheck
-SHA1 9bc60a1a36bd70cb42fe017e25cee1016b2d29fd sbin/openfoundry-cvs2svn
+SHA1 01cb31f71ca79f506346997f57e4584159f9cd39 sbin/openfoundry-cvs-commitcheck
+SHA1 5e89060b29d3033aea3897fdd298e1ac6677c3d6 sbin/openfoundry-cvs2svn
+SHA1 12cacf5840ec19e6d04cd99658032bcc0b1f5203 sbin/openfoundry-initvcs
 SHA1 8f8f749f0b89cff84aa2b0e554122cbb2c0410e5 sbin/openfoundry-lib/VCP.pm
 SHA1 c07e467fac0e26e312d60fc7b504517275424137 sbin/openfoundry-lib/VCP/Branch.pm
 SHA1 ff75b87728f9fef7f3659b754ac830c7ccf20a26 sbin/openfoundry-lib/VCP/Branches.pm
@@ -307,9 +311,9 @@ SHA1 210e9cd3212b112db2426b91d3980b3b2f1493c8 sbin/openfoundry-lib/VCP/Utils/p4.
 SHA1 77e2ac07bcaa9bfa24b448d9662bacd247fe57bf sbin/openfoundry-lib/VCP/Utils/svn.pm
 SHA1 1e8813b7950ee5c2a2bdc68affc202e7d48c4119 sbin/openfoundry-lib/VCP/Utils/vss.pm
 SHA1 504519c842b7202250315ef562069e4ce10da99c sbin/openfoundry-svn-pre-revprop-change
-SHA1 47182912facadb3fcfe001a875acafd55fd71fe5 sbin/openfoundry-svn-start-commit
-SHA1 9b3899423c744d4a060661dba3bda8b9d733d307 sbin/openfoundry-syncdata
-SHA1 6f7b467f928897ff2ce29d7ba080da8e871b1d06 sbin/openfoundry-vcp
+SHA1 a0b785933085283d138ceeeefe72d783ef54e57c sbin/openfoundry-svn-start-commit
+SHA1 1556d6b612fd14b1484b6d69ef926cde2405a8c5 sbin/openfoundry-syncdata
+SHA1 a0c2bfb0ccd49f999ac1a6acad2882e4badd1dea sbin/openfoundry-vcp
 SHA1 4eda8f1c8d7a47b8e091a0f36c8b20ea9ba54efb t/0-signature.t
 SHA1 c10a0ad24906bb6d75f3558206e26a72fa235042 var/README
 SHA1 cf79e56cb65c29c81342c79c8a779430c2c9e5da var/kwiki/.default/config.yaml
@@ -799,7 +803,7 @@ SHA1 939e7660261159dd485e2edb35f24142170bed3d var/kwiki/.global/template/slide_p
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.3 (FreeBSD)
 
-iD8DBQFAHWDUtLPdNzw1AaARAsPRAJ0VC44EQB5jsWpJrZtwEuql+S7zjACdHlQh
-/3Q1GYATFA1xmqWvwtSCT1k=
-=AkPp
+iD8DBQFAIUIAtLPdNzw1AaARAnH/AJ9rGMGOkDu89mf2Q1ZUAg5taJatngCfQi4Z
+Icd2qK/BeJQlLnNeHMpgnvw=
+=9VfL
 -----END PGP SIGNATURE-----

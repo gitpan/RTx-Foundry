@@ -209,13 +209,16 @@ html/Foundry/Trove/List
 html/Foundry/User/autohandler
 html/Foundry/User/index.html
 html/Foundry/User/List
+inc/ExtUtils/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
+inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/RTx.pm
 inc/Module/Install/WriteAll.pm
+INSTALL
 lib/RT/Action/SendEmail_Local.pm
 lib/RT/CustomField_Local.pm
 lib/RT/CustomFields_Local.pm
@@ -232,6 +235,7 @@ po/zh_tw.po
 README
 sbin/openfoundry-cvs-commitcheck
 sbin/openfoundry-cvs2svn
+sbin/openfoundry-initvcs
 sbin/openfoundry-lib/VCP.pm
 sbin/openfoundry-lib/VCP/Branch.pm
 sbin/openfoundry-lib/VCP/Branches.pm

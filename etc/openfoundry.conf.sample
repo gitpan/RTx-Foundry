@@ -1,9 +1,13 @@
-# This is a sample only.  Please modify it according to your local setup
+# This is a sample only.  Please modify it according to your local setup.
 
-$ENV{RT_URL}	    = 'http://rt.openfoundry.org';
-$ENV{RT_DSN}	    = 'dbi:Pg:dbname=rt3;host=ssh.openfoundry.org;user=pgsql';
-$ENV{SVNREPOS}	    = '/home/svn';
-$ENV{CVSROOT}	    = '/home/cvs';
-$ENV{CVSUSER}	    = 'cvs';
-$ENV{CVSGROUP}	    = 'cvs';
+$ENV{DB_TYPE}		= 'mysql';
+$ENV{DB_HOST}		= 'localhost';
+$ENV{DB_PORT}		= '';
+$ENV{DB_DBA_USER}	= 'root';
+$ENV{DB_DBA_PASSWORD}	= '';
+$ENV{RT_URL}		= 'http://rt.openfoundry.org';
+$ENV{SVNREPOS}		= '/home/svn';
+$ENV{CVSROOT}		= '/home/cvs';
+$ENV{CVSUSER}		= 'cvs';
+$ENV{CVSGROUP}		= 'cvs';
 
