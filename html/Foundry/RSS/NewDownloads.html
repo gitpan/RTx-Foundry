@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns="http://my.netscape.com/rdf/simple/0.9/">
+
+<channel>
+<title><% $RT::rtname %> - New Downloads</title>
+<link><% $RT::WebBaseURL %></link>
+<description><% $RT::Organization %></description>
+</channel>
+% while (my $tick =$tickets->Next) {
+<item>
+<title><% $tick->QueueObj->Name %> - <%$tick->Subject|n%></title>
+<link><% $RT::WebBaseURL %>/Foundry/Project/Download/?Queue=<%$tick->Queue%>?<% $tick->Subject %></link>
+</item>
+% }
+</rdf:RDF>
+% $m->abort;
+<%INIT>
+$r->content_type('text/xml');
+
+my $tickets = RT::Tickets->new($RT::SystemUser);
+if ($Queue) {
+    $tickets->LimitQueue(VALUE => $Queue);
+}
+else {
+    $tickets->LimitToEnabledQueues;
+}
+
+$tickets->LimitType( VALUE => 'release' );
+$tickets->LimitStatus( VALUE => 'resolved' );
+$tickets->OrderBy( FIELD => 'Starts', ORDER => 'DESC' );
+
+$tickets->RowsPerPage($Limit);
+</%INIT>
+<%ARGS>
+$Queue => undef
+$Limit => 3
+</%ARGS>

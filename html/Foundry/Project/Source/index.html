@@ -22,7 +22,7 @@ $repos  ||= eval { $QueueObj->OriginObj->CustomFieldValue('UnixName') } || 'loca
 $action ||= 'browse';
 $path   ||= '';
 
-return if $m->cache_self( key => join('/', $repos, $action, $path), '1m' );
+#return if $m->cache_self( key => join('/', $repos, $action, $path), '1m' );
 
 my $is_verbatim = ($action =~ /^(?:checkout|diff)$/);
 
@@ -46,10 +46,24 @@ $is_verbatim ? (
         params => \%ARGS,
         script => "${RT::WebURL}Foundry/Project/Source/index.html",
     });
+    1;
 };
-print "$@";
 
-$m->abort if $is_verbatim;
+$m->print($@) if $@;
+
+if ($is_verbatim) {
+    $m->abort;
+}
+else {
+    if (!$RT::SubversionHost) {
+        $RT::SubversionHost = $ENV{WEB_HOST} || $RT::WebHost;
+        $RT::SubversionHost =~ s/rt|www/svn/i;
+    }
+
+    my $uri = "http://svn.openfoundry.org/$repos/";
+    $m->print("<hr>");
+    $m->print(loc("Subversion Repository"), ": <a href='$uri'>$uri</a>");
+}
 </%PERL>
 <%ATTR>
 AutoFlush => 0

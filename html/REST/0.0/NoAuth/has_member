@@ -1,0 +1,23 @@
+%# GET 'http://rt.openfoundry.org/REST/0.0/NoAuth/has_member?Queue=General&User=autrijus'
+OK
+<%INIT>
+return($m->print("OK\n")) if $User eq 'root';
+
+$Type =~ /^(?:Admin)?Cc$/ or $m->abort(400);
+
+my $QueueObj = RT::Queue->new($RT::SystemUser);
+$QueueObj->LoadByUnixName($Queue);
+$QueueObj->Id or $m->abort(403);
+
+my $UserObj = RT::User->new($RT::SystemUser);
+$UserObj->LoadByCol( Name => $User );
+$UserObj->Id or $m->abort(403);
+
+$m->abort(403) unless $QueueObj->AdminCc->HasMember($UserObj->PrincipalObj)
+                   or $QueueObj->Cc->HasMember($UserObj->PrincipalObj);
+</%INIT>
+<%ARGS>
+$Queue => ''
+$User => ''
+$Type => 'AdminCc';
+</%ARGS>

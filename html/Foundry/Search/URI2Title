@@ -1,0 +1,25 @@
+<%INIT>
+return (Downloads => $Title) if $Title ne 'OSSF';
+return undef if $URI =~ /Queue=$/;
+my $id = $1 if $URI =~ /id=(\d+)/;
+my $queue = $1 if $URI =~ /Queue=(\d+)/;
+my $page = $1 if $URI =~ /\?(\w+)$/;
+
+return undef if $page =~ /^Kwiki[A-Z]/;
+
+if ($URI =~ m{/Project/(\w+)(?:/(\d+))?}) {
+    $queue = $2 if $2;
+    return ($1 => ($id ? "#$id" : $page || (($1 eq 'Wiki') ? 'HomePage' : $queue ? "#$queue" : $URI)));
+}
+elsif ($URI =~ m{/Foundry/(\w+)}) {
+    return ($1 => ($queue ? "#$queue" : undef));
+}
+
+return undef;
+#return (Foo => $URI);
+
+</%INIT>
+<%ARGS>
+$URI
+$Title
+</%ARGS>

@@ -16,7 +16,7 @@
       <table border="0" cellspacing="0" cellpadding="4" class="poptable" width="100%">
         <tr> 
           <td valign="top"> 
-% $m->call_next(%ARGS, QueueObj => $QueueObj, ProjectRole => $ProjectRole) unless $r->uri =~ /Admin/ and !$ProjectRole;
+% $m->call_next(%ARGS, QueueObj => $QueueObj, ProjectRole => $ProjectRole) unless ($r->uri =~ m{/Admin/} and !$ProjectRole) or ($r->uri =~ m{/Download/} and $DownloadRole < 0);
 	  </td>
 	</tr>
       </table>
@@ -46,6 +46,13 @@ my $IsAdmin = $QueueObj->HasAdminCc($UserObj)
 my $ProjectRole = (
     $IsAdmin ? 'admin' : ($QueueObj->HasCc($UserObj) ? 'member' : '')
 );
+my $DownloadRole = $ProjectRole ? 2 : ($UserObj->Name ne 'guest') ? 1 : 0;
+
+if ($QueueObj->DownloadACL('role') gt "$DownloadRole-zzz-very-unreadable") {
+    # No download for you!
+    splice( @RT::Tabs, -2 );
+    $DownloadRole = -1;
+}
 
 my %Skips;
 if ($ProjectRole) {

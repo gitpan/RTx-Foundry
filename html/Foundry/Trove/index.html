@@ -1,14 +1,14 @@
 %# Never call a man a fool; borrow from him.
 
+	<tr>
+% my $Callback;
 % if (@$Map2) {
-	<tr> 
-	    <td><& /Edit/Elements/Tabs, Name => 'Map2', Map => $Map2, URL => "?Type=$Type&Value=" . CGI::Util::escape($Value) &></td>
-	</tr>
+%     $Callback = ($Type eq 'ACM Level 2') ? sub { $m->comp('ACMLevel2') } : sub { $m->comp('Tabs2', Name => 'Map2', Map => $Map2, URL => "?Type=$Type&Value=" . CGI::Util::escape($Value) ) };
 % } else {
 %     $Queues->LimitToEnabled
 % }
-	<tr> 
-	    <td class="tableEmboss">
+	    <td valign='top'><& Tabs, Text => $Type, Callback => $Callback &></td>
+	    <td class="tableEmboss" width="100%">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="4">
 		<tr> 
 		    <td bgcolor="#A3DEF1"> 
@@ -29,6 +29,8 @@ $QueueObj->Load('NewProject');
 my $CF = $QueueObj->CustomField($Type);
 my $CFValues = $CF->Values;
 my $Queues = RT::Queues->new($session{'CurrentUser'});
+
+$Map2 = [ 'foo' ] if $Type eq 'ACM Level 2';
 
 while (my $V = $CFValues->Next) {
     my $Values = RT::TicketCustomFieldValues->new($session{'CurrentUser'});

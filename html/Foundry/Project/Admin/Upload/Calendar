@@ -1,0 +1,73 @@
+%# It is better for civilization to be going down the drain than to be
+%# coming up it.  -- Henry Allen
+
+% $m->comp('ProcessEvents' => %ARGS);
+
+<table width="100%" border="0" cellspacing="1" cellpadding="2" bgcolor="#AAE3DE">
+    <tr> 
+      <td class="tableTitle"><nobr><&|/l&>Calendar</&> - <% $Parent->Subject %></nobr></td>
+    </tr>
+    <tr><td bgcolor="white">
+% $m->print($cal->as_HTML);
+    </td></tr>
+</table>
+
+% $m->comp('ModifyEvents' => %ARGS);
+
+<%INIT>
+use Date::Calc;
+use HTML::CalendarMonthSimple;
+
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday) = gmtime();
+$Year = $ARGS->{Year} || ($year += 1900);
+$Month = $ARGS->{Month} || ($mon + 1);
+
+$Year = sprintf("%04s", $Year);
+$Month = sprintf("%02s", $Month);
+
+my @prev = Date::Calc::Add_Delta_YM($Year, $Month, 1, 0, -1);
+my @next = Date::Calc::Add_Delta_YM($Year, $Month, 1, 0, 1);
+my $Release = $Parent->Id;
+
+my $QueueObj = RT::Queue->new($session{CurrentUser});
+$QueueObj->Load($Queue);
+my $Events = $QueueObj->FunctionItems('Events');
+$Events->Limit( FIELD => 'Resolution', VALUE => $Release );
+$Events->OrderBy( FIELD => 'Subject', ORDER => 'ASC' );
+
+my $cal = HTML::CalendarMonthSimple->new( year => $Year, month => $Month );
+$cal->header("
+<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>
+    <td align='left'><a href='?Queue=$Queue;Release=$Release;View=Calendar;Year=$prev[0];Month=$prev[1]'>&lt;&lt;</a></td>
+    <td align='center'><font size='+2'>$Year-$Month</td>
+    <td align='right'><a href='?Queue=$Queue;Release=$Release;View=Calendar;Year=$next[0];Month=$next[1]'>&gt;&gt;</a></td>
+</tr></table>
+");
+$cal->showweekdayheaders(0);
+$cal->bgcolor('#eeeeee');
+$cal->headercolor('#ffffff');
+$cal->weekendcolor('#ffeeee');
+$cal->todaycolor('#ffccff');
+$cal->width('100%');
+
+while (my $item = $Events->Next) {
+    my $start = $item->CustomFieldValue('EventStarts');
+    my $due = $item->CustomFieldValue('EventDue');
+    $start =~ /^$Year\D$Month\D(\d+)$/ or next;
+
+    my $owner = $item->OwnerObj->Name;
+    my $subject = $item->Subject;
+    RT::Interface::Web::EscapeUTF8( \$owner );
+    RT::Interface::Web::EscapeUTF8( \$subject );
+
+    $cal->addcontent($1, "<span title='$subject: $start - $due'><nobr>$subject <em>($owner)</em></nobr></span><br>");
+}
+</%INIT>
+<%ARGS>
+$Draw => 0
+$Queue
+$Parent
+$Year => undef
+$Month => undef
+$ARGS
+</%ARGS>

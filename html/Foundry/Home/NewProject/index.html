@@ -109,6 +109,8 @@ if ($ARGS{id} and $Step == 1) {
 
     push @Error, loc('ID must be 3-15 characters of lower-case letters or digits, beginning with a letter')
 	unless !$UnixName or $UnixName =~ /^[a-z][0-9a-z]{2,14}$/;
+    push @Error, loc('ID must not be an existing subdomain name')
+	if $UnixName =~ /^(?:www|mail|users|db|cvs|svn|lists|ftp|rt)$/;
     push @Error, loc('Project Name must be at most 40 charaters')
 	unless !$ProjectName or length($ProjectName) <= 40;
     push @Error, loc('Public Description must be at most 255 charaters')

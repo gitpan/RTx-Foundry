@@ -82,7 +82,7 @@ our ($Get, $Post) = map {
 	$rv =~ s{\b\('(/wws[^']*')}{('$RT::BaseURL$1}gi;
 	$rv =~ s{\bHREF="(/wws[^>]*>)}{<A HREF="$RT::BaseURL$1}gi;
 	$rv =~ s{\bACTION="(/wws[^>]*>)}{ACTION="$RT::BaseURL$1}gi;
-	$rv =~ s{\bHREF="(?! )([^/][^>]*>)}{<A HREF="$RT::BaseURL$base$1}gi;
+	$rv =~ s{\bHREF="(?! |\w+:)([^/][^>]*>)}{<A HREF="$RT::BaseURL$base$1}gi;
 	$rv =~ s{\bSRC="/icons/sympa}{SRC="/Foundry/Icons}gi;
 	$rv =~ s{(<INPUT TYPE=")button(".*?)OnClick="request_confirm.*?"(.*?>)}{${1}submit$2}gis;
 	$rv =~ s{.*<!-- end menu.tt2 -->}{}s;

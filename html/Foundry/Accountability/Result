@@ -1,0 +1,40 @@
+%# This is your fortune.
+<div class="AccountingResult">
+
+% my $rows = sum(values %$List);
+<h3><% $Title %></h3>
+<table>
+<tr>
+% for (@$ListProp) {
+ <td align="<% $_->{align} %>"><% $_->{title} %></td>
+% }
+</tr>
+% for ((sort { $List->{$b} <=> $List->{$a} } keys %$List)[0..$Limit]) {
+<tr>
+  <td><% $_ %></td>
+% if($AsPercentage) {
+  <td align="right"><% sprintf('%2.2f%%',(100*$List->{$_}/$rows)) %></td>
+% } else {
+  <td align="right"><% $List->{$_} %></td>
+% }
+</tr>
+% }
+</table>
+
+
+</div>
+
+<%INIT>
+use List::Util qw(sum);
+</%INIT>
+<%ARGS>
+$Begin	    => 0
+$ARGS	    => {}
+$List         => []
+$ListProp     => []
+$LinkSub
+$Title        => ''
+$Type         => ''
+$AsPercentage => 1
+$Limit        => 10
+</%ARGS>

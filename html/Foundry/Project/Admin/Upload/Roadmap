@@ -1,0 +1,22 @@
+%# The average woman would rather have beauty than brains, because the
+%# average man can see better than he can think.
+<table border="2" width="100%">
+<thead><tr>
+<th><&|/l&>Milestone</&></th>
+<th><&|/l&>Start</&></th>
+<th><&|/l&>Ideal Release</&></th>
+<th><&|/l&>Actual Release</&></th>
+</tr></thead>
+<tbody>
+% while (my $item = $Tickets->Next) {
+<tr height="20">
+<td><% eval { $item->Subject } %></td>
+<td><% eval { $item->ToldObj->AsDate } %></td>
+<td><% eval { $item->DueObj->AsDate } %></td>
+<td><% eval { $item->StartsObj->AsDate } %></td>
+</tr>
+% }
+</td>
+<%ARGS>
+$Tickets
+</%ARGS>

@@ -1,0 +1,62 @@
+%# So far as I can remember, there is not one word in the Gospels in
+%# praise of intelligence.
+%#                -- Bertrand Russell
+</form><form action="/Foundry/Search" method="get">
+<h3><&|/l&>Simple Query</&></h3>
+<input name="Query">
+<input type="hidden" name="SearchType" value="Simple">
+<input type="Submit">
+<hr>
+<ul>
+% foreach my $item (@$List) {
+%     my ($type, $title) = $m->comp('URI2Title', Title => $item->{title}, URI => $item->{URL});
+%     defined($title) or next;
+<li><a href="<% $item->{URL} %>">
+<% loc($type) %>: <% $title %></a>
+%     if ($item->{cachedSize}) {
+(<% $item->{cachedSize} %>)
+%     }
+<br>
+<% $item->{snippet} |n %>
+</li>
+% }
+</ul>
+% return $List;
+<%INIT>
+use Net::Google;
+use constant LOCAL_GOOGLE_KEY => "9MpUIv5QFHI79jSbKVIVCt/kaLXfv2id";
+
+my $List;
+
+if (-e '/tmp/google.yml') {
+    require YAML;
+    open my $fh, '<:utf8', '/tmp/google.yml';
+    $List = YAML::Load(do { local $/; <$fh> });
+    close $fh;
+}
+else {
+
+my $google = Net::Google->new( key => LOCAL_GOOGLE_KEY);
+my $search = $google->search;
+
+$search->filter(0);
+$search->max_results(1000);
+$search->query(
+    'site:rt.openfoundry.org',
+    '-"total * total"',
+    $Query,
+);
+
+$List = [ map +{
+    URL         => $_->URL,
+    snippet     => $_->snippet,
+    title       => $_->title,
+    cachedSize  => $_->cachedSize,
+}, @{$search->results} ];
+
+}
+
+</%INIT>
+<%ARGS>
+$Query
+</%ARGS>

@@ -1,0 +1,52 @@
+<& Header, TabText => 'Top Projects' &>
+
+Total Projects: <% $TotalProjects %><br/>
+Total Members:  <% $TotalMembers  %><br/>
+Total Tickets:  <% $TotalTickets %><br/>
+<hr>
+
+<h3><% loc('Top Projects') %></h3>
+% for (sort {$QueueTickets->{$b} <=> $QueueTickets->{$a}} keys %$QueueTickets) {
+%   $QueueObj->Load($_);
+
+<div class="TopProject" onClick="MM_goToURL('self','project.html?QueueId=<% $_ %>');return document.MM_returnValue">
+<h4><% $QueueObj->Name %></h4>
+<span>Tickets: <% $QueueTickets->{$_} %></span><br />
+<span>Members: <% $ProjectMembers->{$_} %></span><br />
+</div>
+
+% }
+
+<style>
+<!--
+.TopProject {
+  width: 120px;
+  margin: 1px;
+  padding: 1px;
+  float: left;
+  border: 1px outset white;
+}
+.TopProject:hover {
+  background: #D1FAFC;
+  cursor:hand;
+}
+-->
+</style>
+
+
+<& Footer &>
+<%INIT>
+;;; #_#
+
+my ($ProjectAcc, $TotalProjects,$TotalMembers) = $m->comp('ProjectAcc');
+
+my $ProjectMembers = $ProjectAcc->result('queue');
+
+my $TicketAcc      = $m->comp('TicketAcc');
+my $QueueTickets   = $TicketAcc->result('Queue');
+my $TotalTickets   = $TicketAcc->result('tickets')->{'tickets'};
+
+my $QueueObj       = RT::Queue->new($session{'CurrentUser'});
+
+</%INIT>
+

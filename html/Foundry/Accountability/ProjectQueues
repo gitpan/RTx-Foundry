@@ -1,0 +1,58 @@
+<%PERL>
+my $Queues = RT::Queues->new($session{'CurrentUser'});
+$Queues->LimitToEnabled;
+return $Queues;
+
+# my $QueueObj = RT::Queue->new($session{'CurrentUser'});
+# $QueueObj->Load('NewProject');
+# my $CF = $QueueObj->CustomField($Type);
+# my $CFValues = $CF->Values;
+# while (my $V = $CFValues->Next) {
+#     my $Values = RT::TicketCustomFieldValues->new($session{'CurrentUser'});
+#     $Values->LimitToCustomField( $CF->Id );
+#     $Values->Limit( FIELD => 'Content', VALUE => $V->Name );
+# 
+#     my $alias = $Values->Join(
+# 	TYPE   => 'left',
+# 	ALIAS1 => 'main',
+# 	FIELD1 => 'Ticket',
+# 	TABLE2 => 'Tickets',
+# 	FIELD2 => 'id'
+#     );
+#     $Values->Limit(
+# 	ALIAS	   => $alias,
+# 	FIELD      => 'Status',
+# 	OPERATOR   => '=',
+# 	VALUE      => 'resolved',
+#     );
+#     my $alias2 = $Values->Join(
+# 	TYPE   => 'left',
+# 	ALIAS1 => $alias,
+# 	FIELD1 => 'id',
+# 	TABLE2 => 'Queues',
+# 	FIELD2 => 'DefaultDueIn'
+#     );
+#     $Values->Limit(
+# 	ALIAS	   => $alias2,
+# 	FIELD      => 'Id',
+# 	OPERATOR   => '>',
+# 	VALUE      => '0',
+#     );
+#     $Values->Limit(
+# 	ALIAS	   => $alias2,
+# 	FIELD      => 'Disabled',
+# 	OPERATOR   => '=',
+# 	VALUE      => '0',
+#     );
+# 
+#     while (my $Value = $Values->Next) {
+# 	my $Queue = RT::Queue->new($session{'CurrentUser'});
+# 	$Queue->LoadByCols( DefaultDueIn => $Value->Ticket);
+# 	$Queues->Limit( ENTRYAGGREGATOR => 'OR',  FIELD => 'DefaultDueIn', VALUE => $Value->Ticket );
+#     }
+# }
+
+</%PERL>
+<%ARGS>
+$Type => 'Overview'
+</%ARGS>

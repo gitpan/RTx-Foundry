@@ -1,0 +1,27 @@
+%# Captain Penny's Law:
+%# 	You can fool all of the people some of the time, and some of
+%# the people all of the time, but you Can't Fool Mom.
+<%INIT>
+if ($ARGS->{id} eq 'new' and length($ARGS->{Subject})) {
+    my $Event = $QueueObj->CreateFunctionItem(Events => $ARGS);
+    my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
+    $Event->__Set( Field => 'Resolution', Value => $Parent->Id );
+
+    foreach my $field (qw( EventStarts EventDue )) {
+        $Event->SetCustomFieldValue( $field => $Now->AsDate )
+            if !$Event->CustomFieldValue($field);
+    }
+}
+else {
+    foreach my $key (sort keys %$ARGS) {
+        $key =~ /^DeleteItem-(\d+)(?:\.x)?$/ or next;
+        my $Item = $QueueObj->LoadFunctionItem(Events => $1) or next;
+        $Item->Delete;
+    }
+}
+</%INIT>
+<%ARGS>
+$Parent => undef
+$QueueObj
+$ARGS
+</%ARGS>

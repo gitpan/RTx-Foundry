@@ -1,0 +1,42 @@
+</form>
+<form action="index.html" method="post">
+<input type='hidden' name='Queue' value='<% $QueueObj->Id %>'>
+<h3><&|/l&>Member-writable admin areas</&>:</h3>
+<ul>
+% my %MemberACL = map { ($_ => 1) } $QueueObj->FunctionsACL('member');
+% foreach my $item ($QueueObj->FunctionsMap) {
+<li><label>
+<input type="checkbox" name="SetACL-<% $item->[0] %>" <% $MemberACL{$item->[0]} && 'checked' %>><% loc($item->[1]) %>
+</label></li>
+% }
+</ul>
+
+<h3><&|/l&>Who can see the download area</&>:</h3>
+
+% my $DownloadRole = $QueueObj->DownloadACL('role');
+% my $DownloadCollect = $QueueObj->DownloadACL('collect');
+% foreach my $role ('0-anybody', '1-registered', '2-member') {
+<label><input type="radio" name="SetDownload-role" <% ($DownloadRole eq $role) && 'checked' %> value="<% $role %>"><% loc(ucfirst(substr($role, 2))) %></label>
+% }
+<br>
+<label>
+<input type="checkbox" name="SetDownload-collect" <% $DownloadCollect && 'checked' %> value='*'><&|/l&>Force user to fill in information before downloading</&>
+</label>
+
+<p>
+<input type="submit" name="UpdateACL" value="<&|/l&>Submit</&>">
+<%INIT>
+if ($UpdateACL) {
+    my @ACL;
+    foreach my $key (sort keys %ARGS) {
+        $key =~ /^SetACL-(.+)$/ or next;
+        push @ACL, $1;
+    }
+    $QueueObj->SetAttribute("ACL-member" => join(' ', @ACL));
+    $QueueObj->SetDownloadACL($_ => $ARGS{"SetDownload-$_"}) for qw( role collect );
+}
+</%INIT>
+<%ARGS>
+$QueueObj
+$UpdateACL => 0
+</%ARGS>

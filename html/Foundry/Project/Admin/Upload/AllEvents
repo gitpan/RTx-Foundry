@@ -1,0 +1,5 @@
+%# The average woman would rather have beauty than brains, because the
+%# average man can see better than he can think.
+<%INIT>
+return $m->comp('Events', AllEvents => 1, %ARGS);
+</%INIT>

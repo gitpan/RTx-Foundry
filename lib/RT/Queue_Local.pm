@@ -128,4 +128,21 @@ sub LoadFunctionItem {
     return $Item;
 }
 
+my %DefaultDownloadACL = (
+    role => '0-anybody',
+    collect => 0,
+);
+
+sub DownloadACL {
+    my ($self, $function) = @_;
+    my $rv = $self->Attribute("Download-$function");
+    return ( defined($rv) ? $rv : $DefaultDownloadACL{$function} );
+}
+
+sub SetDownloadACL {
+    my ($self, $function, $value) = @_;
+    $value = $DefaultDownloadACL{$function} unless defined $value;
+    $self->SetAttribute("Download-$function", $value);
+}
+
 1;

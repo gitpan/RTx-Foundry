@@ -1,5 +1,15 @@
 #!/usr/local/bin/perl
-# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 7949 2004-09-21T05:06:49.161788Z autrijus  $
+# $Id: /bazaar/local/RTx-Foundry/sbin/foundry-syncdata 9128 2004-10-14T03:22:36.227039Z autrijus  $
+
+#
+# exec myself, take care the PID file
+#
+if (my $interval = shift) {
+    while (my $pid = fork) {
+        sleep $interval;
+        waitpid($pid, 0);
+    }
+}
 
 # inhibit l10n
 use Locale::Maketext::Lexicon;
@@ -9,6 +19,7 @@ use strict;
 use FindBin;
 use DBI;
 use SVK;
+use URI;
 use File::Spec;
 use File::Copy;
 use File::Path;
@@ -230,6 +241,15 @@ sub set_mirror {
     $old_remote = $1 if ($output =~ m!^/\Q$name\E/\s+(.*)!m);
     delete $svk->{output};
 
+    if (my $n = $remote and my $o = $old_remote) {
+        # URI-wise comparison
+        $n =~ s{/+$}{}; $o =~ s{/+$}{};
+
+        return if URI::eq(
+            URI->new($n),
+            URI->new($o),
+        );
+    }
     return if $remote eq $old_remote;
 
     if (!$remote) {
@@ -240,7 +260,7 @@ sub set_mirror {
 
     my $svn_name = "$svn_base/$name"; 
 
-    if (-e "$svn_name/db/0") {
+    if (-e "$svn_name/db/revs/0") {
 	print "==> Moving away old /$name/\n";
 	rename($svn_name => "$svn_name.".time()) or return(warn $!);
 
@@ -277,13 +297,4 @@ foreach my $name (sort keys %sync) {
 
 };
 
-#
-# exec myself, take care the PID file
-#
-if (my $interval = shift) {
-    warn $@ if $@;
-    $interval = 1 if $interval < 1;
-    sleep $interval;
-    exec($^X, $0, $interval);
-}
 die $@ if $@;

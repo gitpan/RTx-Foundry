@@ -1,0 +1,16 @@
+<%INIT>
+use GD::Graph::bars3d;
+
+my $gd = GD::Graph::bars3d->new($Width,$Height);
+$gd->set(transparent=>1);
+my $img = $gd->plot([$Label,$Data]);
+$r->content_type('image/png');
+$m->clear_buffer;
+$m->print($img->png);
+</%INIT>
+<%ARGS>
+$Width
+$Height
+$Label
+$Data
+</%ARGS>

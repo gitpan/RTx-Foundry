@@ -15,7 +15,7 @@ xmlns="http://my.netscape.com/rdf/simple/0.9/">
 <title><% $QueueObj->Name %></title>
 <link><% $RT::WebBaseURL %>/Foundry/Project/Download/?Queue=<% $QueueObj->Id %></link>
 </item>
-%     last if ++$count == 3;
+%     last if ++$count == $Limit;
 % }
 </rdf:RDF>
 % $m->abort;
@@ -27,3 +27,6 @@ $Queues->UnLimit;
 $Queues->Limit( FIELD => 'Disabled', OPERATOR => '=', VALUE => '0');
 $Queues->OrderBy( FIELD => 'Id', ORDER => 'DESC' );
 </%INIT>
+<%ARGS>
+$Limit => 3
+</%ARGS>

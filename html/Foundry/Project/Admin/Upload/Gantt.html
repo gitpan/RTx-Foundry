@@ -1,0 +1,78 @@
+<%INIT>
+use File::Temp;
+use File::Spec;
+use Project::Gantt;
+use Project::Gantt::Skin;
+use Image::Dot;
+
+$r->content_type('image/png');
+
+my $QueueObj = RT::Queue->new($session{CurrentUser});
+$QueueObj->Load($Queue);
+my $Events = $QueueObj->FunctionItems('Events');
+$Events->Limit( FIELD => 'Resolution', VALUE => $Release );
+$Events->OrderBy( FIELD => 'Subject', ORDER => 'ASC' );
+
+if (!$Events->Count ) {
+    $m->print(Image::Dot::dot_PNG_RGBA(0, 0, 0, 0));
+    return;
+}
+
+my $filename = (
+    File::Temp::tempfile(
+        File::Spec->catfile(File::Spec->tmpdir, 'XXXXXXXX'),
+        OPEN => 0,
+        SUFFIX => '.png'
+    )
+)[1];
+
+my $skin = Project::Gantt::Skin->new(
+    font => '/usr/X11R6/lib/X11/fonts/TrueType/ming_uni.ttf',
+    background => 'transparent',
+    doTitle => 0,
+);
+my $chart = Project::Gantt->new(
+    description => loc('Release Plans'),
+    mode        => 'days',
+    file        => $filename,
+    skin        => $skin,
+);
+
+my %res;
+my $me= $chart->addResource( name => $session{CurrentUser}->Name );
+
+# walk ticket tree?
+# my $trip = $chart->addSubProject( description => 'Vacation');
+
+while (my $item = $Events->Next) {
+    my $Owner = $item->OwnerObj;
+    my $res = ($res{$Owner->Id} ||= $chart->addResource( name => $Owner->Name ));
+    my $start = $item->CustomFieldValue('EventStarts');
+    my $end = $item->CustomFieldValue('EventDue');
+    $start =~ s/\D/-/g; $end =~ s/\D/-/g;
+
+    $chart->addTask(
+        description =>      $item->Subject,
+        resource    =>      $res,
+        start       =>      $start,
+        end         =>      $end,
+    );
+}
+
+$chart->display();
+
+open my $fh, $filename or die $!;
+binmode($fh);
+$m->print(do { local $/; <$fh> });
+close $fh;
+unlink $filename;
+
+$m->abort;
+</%INIT>
+<%ARGS>
+$Release
+$Queue
+</%ARGS>
+<%FLAGS>
+inherit => '/autohandler'
+</%FLAGS>

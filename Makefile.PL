@@ -13,11 +13,11 @@ unsupported.
 You may obtain a copy of the rt3-elixus tree by checking
 out from this URL, using SVK or Subversion:
 
-  http://svn.autrijus.org/104/trunk/rt/
+    http://svn.autrijus.org/104/trunk/rt/
 
-For SVK support, grab a copy of VCP-0.9-clkao here:
+For SVK support, grab a copy of VCP-0.9-autrijus here:
 
-  http://wagner.elixus.org/~clkao/VCP-0.9-clkao-20040919.tar.gz
+    http://search.cpan.org/dist/VCP-autrijus-snapshot/
 
 More detailed installation guides will be available in
 English soon, including how to set up your RT_SiteConfig.pm
@@ -47,17 +47,21 @@ requires(
     'Project::Gantt'            => 0,
     'HTML::CalendarMonthSimple' => 0,
     'DBIx::SearchBuilder'       => 0,
+    'Template'                  => 0,
+    'Image::Dot'                => 0,
 );
 
 features( 'SVK support' => [
     -default => 0,
     'Data::UUID'	    => 0,
     'VCP'		    => 0.9,
+    'SVN::Simple::Edit'	    => 0,
     'SVN::Mirror'	    => 0.46,
     'SVK'		    => 0.21,
     'Proc::PID_File'	    => 0,
     'VCP::Dest::svk'	    => 0,
     'VCP::Source::cvsbk'    => 0,
+    'URI'		    => 0,
 ] );
 
 auto_install( -default => 0 );

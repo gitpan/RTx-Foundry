@@ -1,0 +1,17 @@
+<& /Foundry/Elements/Header, Title => 'Foundry Statistics' &>
+<table width="97%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr> 
+    <td><& Tab, Text => $TabText &></td>
+  </tr>
+  <tr> 
+    <td width="100%">
+      <table border="0" cellspacing="5" cellpadding="5" class="poptable" width="100%">
+        <tr> 
+          <td valign="top">
+
+<%ARGS>
+$TabText => 'Site Accounting'
+</%ARGS>
+<%FLAGS>
+inherit => undef
+</%FLAGS>

@@ -1,0 +1,28 @@
+<%ONCE>
+use FreezeThaw qw(freeze thaw);
+</%ONCE>
+<%INIT>
+;;; # Really ? Really!
+my ($deLabel,$deData);
+
+# Default Graph
+if($Label eq 'ENOLABEL' or $Data  eq 'ENODATA') {
+    $deLabel = [qw(Foo Bar Jar Loo)];
+    $deData =  [qw(100 200 150 175)];
+} else {
+    @$deLabel = thaw($Label);
+    @$deData = thaw($Data);
+}
+
+$m->call_next(%ARGS, Label => $deLabel, Data => $deData, Height => $Height, Width => $Width);
+
+</%INIT>
+<%ARGS>
+$Label  => 'ENOLABEL'
+$Data   => 'ENODATA'
+$Width  => 700
+$Height => 300
+</%ARGS>
+<%FLAGS>
+inherit => undef
+</%FLAGS>

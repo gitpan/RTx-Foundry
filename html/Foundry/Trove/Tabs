@@ -1,0 +1,28 @@
+%# If you want your spouse to listen and pay strict attention to every
+%# word you say, talk in your sleep.
+
+<ul style='padding-left: 10px; padding-top: 10px; list-style-type: none'>
+% while (my ($k, $v) = splice(@Tabs, 0, 2)) {
+  <li><nobr>
+%   if ($k eq $Text) {
+    <a href="<% $v %>" style="color: black; font-weight: bold"><b><% loc($k) %></b></a>
+%     if ($Callback) {
+%         $Callback->();
+%     }
+%   } elsif ($Skips->{$k}) {
+    <% loc($k) %>
+%   } else {
+    <a href="<% $v %>" style="text-decoration: underline"><% loc($k) %></a>
+%   }
+  </nobr></li>
+% }
+</ul>
+<%INIT>
+my @Tabs = @RT::Tabs;
+</%INIT>
+<%ARGS>
+$Text => ''
+$Callback => undef
+$Skips => {}
+$Recurse => 0
+</%ARGS>

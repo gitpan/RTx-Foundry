@@ -1,0 +1,20 @@
+%# "I am not an Economist.  I am an honest man!"
+%#		-- Paul McCracken
+<hr>
+
+</form>
+<form action="/Foundry/Project/Admin/Upload/" method="post">
+<input type="hidden" name="Queue" value="<% $QueueObj->Id %>">
+<input type="hidden" name="Release" value="<% $Parent->Id %>">
+<input type="hidden" name="View" value="<% $ARGS->{View} || 'Events' %>">
+<h3><&|/l&>Create a new event</&></h3>
+<& /Work/Tickets/Create.html,
+    Queue => 'ProjectEvents',
+    NoUI => 1,
+    NoCF => { Attachments => 1, Content => 1 } &>
+</form>
+<%ARGS>
+$Parent => undef
+$QueueObj
+$ARGS
+</%ARGS>

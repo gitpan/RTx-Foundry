@@ -59,8 +59,7 @@ document.getElementById('SelectResolution').selectedIndex = 2;
 </p></td><td><img src="/img/arrow_DarkBlue.png" width="5" height="9" align="absmiddle"></td><td>
 <input class="wro" readonly type="text" name="CcAddresses" size="70" style="width:565" value="<% $Ticket->CcAddresses %>">
 % unless ($IsRequestor) {
-<input type="button" value="<&|/l&>Edit</&>" onclick="<&
-    /Edit/Elements/NewWindow, ("/Work/Tickets/ModifyPeople.html?IsWork=1&id=" . $Ticket->Id), 650, 500 &>" style="width:50px">
+<input type="button" value="<&|/l&>Edit</&>" onclick="<& /Edit/Elements/NewWindow, ("/Work/Tickets/ModifyPeople.html?IsWork=1&id=" . $Ticket->Id), 650, 500 &>" style="width:50px">
 % }
 % } else {
 </p></td><td><img src="/img/arrow_DarkBlue.png" width="5" height="9" align="absmiddle"></td><td>

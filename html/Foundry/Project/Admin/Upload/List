@@ -1,6 +1,6 @@
 %# What this world needs is a good five-dollar plasma weapon.
 
-<input type="hidden" name="id" value="<% eval { $Item->Id } %>">
+<input type="hidden" name="Release" value="<% eval { $Item->Id } %>">
   <table width="100%" border="0" cellspacing="1" cellpadding="2" bgcolor="#AAE3DE">
     <tr> 
       <td colspan="4" class="tableTitle"><nobr><&|/l&>Version</&></nobr></td>
@@ -8,10 +8,11 @@
     <tr><td align="left" colspan="4">
 	<nobr><&|/l&>Version Number</&>: <input name="Subject" value="<% eval{ $Item->Subject } %>" size="10"></nobr>
 % my $Now = RT::Date->new($session{'CurrentUser'}); $Now->SetToNow;
-	<nobr><&|/l&>Release Date</&>: <input name="Starts" style="cursor: hand" size=10 value="<% eval{ $Item->StartsObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+	<nobr><&|/l&>Start Date</&>: <input name="Told" style="cursor: hand" size=10 value="<% $Item and  eval{ $Item->ToldObj->Unix > 1 and $Item->ToldObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+	<nobr><&|/l&>Ideal Release</&>: <input name="Due" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->DueObj->Unix > 1 and $Item->DueObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
+	<nobr><&|/l&>Actual Release</&>: <input name="Starts" style="cursor: hand" size=10 value="<% $Item and eval{ $Item->StartsObj->Unix > 1 and $Item->StartsObj->AsDate } || $Now->AsDate %>" <& /Work/Elements/Date &> ></nobr>
 % my $status = eval { $Item->Status };
 % if ($status and $status ne 'new') {
-	<br>
 	<nobr><&|/l&>Status</&>:
 	<select name="Status">
 %           foreach my $key ('open', 'resolved', 'deleted') {
@@ -33,7 +34,7 @@
     </tr>
 % foreach my $item (@{$List}[$Begin .. $Begin + $Size - 1]) {
 %     my $bg = (($Item and $item and $item->Id == $Item->Id) ? '#ffffcc' : 'ffffff');
-%     my $url = "$URL?Queue=$Queue&id=" . ($IDMap->{$item->Id} || $item->Id) if $item;
+%     my $url = "$URL?Queue=$Queue;Release=" . ($IDMap->{$item->Id} || $item->Id) if $item;
     <tr bgcolor='<% $bg %>'
 %     if ($item) {
 	onMouseOver="this.style.backgroundColor='#D1FAFC'" 

@@ -2,23 +2,24 @@
 %# you would have received further instructions as to what to do and where
 %# to go.
 <div align="center">
-% if (!$Parent) {
+<h2><&|/l&>Tools for all releases:</&></h2>
 
-<h2><&|/l&>Please select or create a version on the left side first.</&></h2>
+%   foreach my $View (@GlobalViews) {
+<h3><a href="?Queue=<% $Queue %>;Release=<% $Parent && $Parent->Id %>;View=<% $View %>"><% loc($View) %></a></h3>
+%   }
 
-% } else {
+% return unless $Parent;
 
 <h2><&|/l&>Available tools for this release:</&></h2>
 
 %   foreach my $View (@Views) {
-<h3><a href="?Queue=<% $Queue %>;id=<% $Parent->Id %>;View=<% $View %>"><% loc($View) %></a></h3>
+<h3><a href="?Queue=<% $Queue %>;Release=<% $Parent->Id %>;View=<% $View %>"><% loc($View) %></a></h3>
 %   }
-
-% }
 </div>
 <%INIT>
-my @Views = qw( Upload Gantt Calendar );
-return $m->comp($View, %ARGS) if grep {$_ eq $View} @Views;
+my @GlobalViews = qw( Roadmap AllEvents );
+my @Views = qw( Upload Events Gantt Calendar );
+return $m->comp($View, %ARGS) if grep {$_ eq $View} (@GlobalViews, @Views);
 </%INIT>
 <%ARGS>
 $View => ''

@@ -1,0 +1,36 @@
+<&|/l&>Available repositories</&>:
+<ul>
+% my @empty;
+% my $base = "$RT::VarPath/Foundry/svn";
+% opendir(my($dh), $base);
+% foreach my $dir (sort readdir ($dh)) {
+%     $dir =~ /^\w/ or next;
+%     $dir =~ /\./ and next;
+%     open my $fh, "$base/$dir/db/current" or next;
+%     my $is_mirrored = (-s "$base/$dir/db/revprops/2" == 116) ? ', read-only' : '';
+%     my ($rev) = (<$fh> =~ /^(\d+)/g) or next;
+%     if ($rev > ($is_mirrored ? 2 : 0)) {
+<li><a href='<% $dir %>'><% $dir %></a> (rev. <% $rev %>)</li>
+%     } else {
+%         push @empty, $dir;
+%     }
+% }
+</ul>
+<hr>
+<&|/l&>Empty repositories</&>:
+<p>
+% foreach my $dir (@empty) {
+<a href='<% $dir %>'><% $dir %></a>
+% }
+</p>
+<hr>
+<&|/l&>To work with a repository, please use one of these tools</&>:
+<ul>
+<li><a href="http://svk.elixus.org/">SVK</a></li>
+<li><a href="http://subversion.tigris.org/">Subversion</a></li>
+</ul>
+<%INIT>
+</%INIT>
+<%FLAGS>
+inherit => '/autohandler'
+</%FLAGS>

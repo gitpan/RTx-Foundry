@@ -1,3 +1,13 @@
+[Changes for 0.00_14 - October 16, 2004]
+
+Switched to SVK for synchronizing internal CVS and remote
+CVS/SVN/Perforce repositories.
+
+Includes Kang Ming-Liu's new "Site Statistics" framework.
+
+A myriad of project planning interfaces, including Gantt
+chart and calendar.
+
 [Changes for 0.00_11 - September 9, 2004]
 
 Snapshot release before refactoring into RT 3.3.

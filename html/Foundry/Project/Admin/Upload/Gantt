@@ -1,0 +1,21 @@
+%# It is better for civilization to be going down the drain than to be
+%# coming up it.  -- Henry Allen
+
+% $m->comp('ProcessEvents' => %ARGS);
+
+<table width="100%" border="0" cellspacing="1" cellpadding="2" bgcolor="#AAE3DE">
+    <tr> 
+      <td class="tableTitle"><nobr><&|/l&>Gantt</&> - <% $Parent->Subject %></nobr></td>
+    </tr>
+    <tr><td bgcolor="white">
+        <img src="Gantt.html?Queue=<% $Queue %>;Release=<% $Parent->Id %>;Draw=png">
+    </td></tr>
+</table>
+
+% $m->comp('ModifyEvents' => %ARGS);
+
+<%ARGS>
+$Draw => 0
+$Queue
+$Parent
+</%ARGS>

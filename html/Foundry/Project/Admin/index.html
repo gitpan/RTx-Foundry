@@ -34,7 +34,7 @@
 <%INIT>
 my @Error;
 
-if ($ARGS{'Action-Submit'}) {
+if ($ARGS{'Action-Submit'} or grep /AddMoreEntry-/, keys %ARGS) {
     $QueueObj->SetDisabled($Enabled ? 0 : 1) if $DoEnabled;
 
     my $id = $QueueObj->OriginObj->Id;
@@ -59,6 +59,8 @@ if ($ARGS{'Action-Submit'}) {
     ) unless !$ProjectName or length($ProjectName) <= 40;
 
     if (!@Error) {
+	my $Entries = $m->comp('/Work/Tickets/Elements/ProcessEntryUpdates', TicketObj => $QueueObj->OriginObj, %ARGS);
+	$ARGS{"Ticket-$id-CustomField-$_-Values"} = $Entries->{$_} foreach keys %{$Entries};
 	ProcessTicketCustomFieldUpdates( ARGSRef => \%ARGS );
 	if ($ProjectName ne $QueueObj->Name) {
 	    $QueueObj->SetName($ProjectName);

@@ -1,7 +1,17 @@
-<&|/l&>No search to operate on.</&>
+%# <&|/l&>No search to operate on.</&>
+</form><form action="/Foundry/Search" method="get">
+<b><&|/l&>Simple Query</&></b>:
+<input name="Query">
+<input type="hidden" name="SearchType" value="Simple">
+<input type="Submit">
+<hr>
+</form><form action="/Foundry/Search" method="get">
+<b><&|/l&>Advanced Query</&> - <&|/l&>Tracker</&></b>
+<& /Work/Search/index.html, %ARGS, NoUI => 1, TicketRow => '/Foundry/Search/TicketRow' &>
+</form>
 <%INIT>
 $Query =~ s/^\s+|\s+$//g;
-if (length($Query) and $SearchType =~ /^(?:Project|User|Ticket)$/) {
+if (length($Query) and $SearchType =~ /^(?:Project|User|Ticket|Simple|Advanced)$/) {
     my $List = $m->comp($SearchType, Query => $Query);
     if ($List) {
 	return $m->comp('/Foundry/Trove/List', ARGS => \%ARGS, Begin => $Begin, List => $List)
@@ -10,7 +20,8 @@ if (length($Query) and $SearchType =~ /^(?:Project|User|Ticket)$/) {
 	    if $SearchType eq 'Ticket';
 	return $m->comp('/Foundry/User/List', ARGS => \%ARGS, Begin => $Begin, List => $List)
 	    if $SearchType eq 'User';
-	return $m->print(loc("Under Construction."));
+	return $m->print(loc("Under Construction."))
+            unless $SearchType eq 'Simple';
     }
     return if defined $List;
     return $m->print(loc("Cannot find any matching items."));

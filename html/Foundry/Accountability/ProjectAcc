@@ -1,0 +1,33 @@
+<%INIT>
+;;; ### 
+
+use Algorithm::Accounting;
+
+my $QueueAcc = Algorithm::Accounting->new
+    (fields => [qw(queue user users)],
+     field_groups => [ [qw(queue users)], ] );
+
+my $Queues = $m->comp('ProjectQueues');
+
+my $TotalProjects;
+
+while(my $QueueObj = $Queues->Next) {
+    $TotalProjects++;
+    my $Members = $QueueObj->AdminCc->MembersObj;
+    while (my $watcher = $Members->Next) {
+	$QueueAcc->append_data([[ $QueueObj->Id, $watcher->MemberObj->Object->Name ,1]]);
+    }
+    $Members = $QueueObj->Cc->MembersObj;
+    while (my $watcher = $Members->Next) {
+	$QueueAcc->append_data([[ $QueueObj->Id, $watcher->MemberObj->Object->Name ,1]]);
+    }
+}
+
+my $TotalMembers = $QueueAcc->result->[2]->{1};
+
+return ($QueueAcc,$TotalProjects,$TotalMembers);
+
+</%INIT>
+<%FLAGS>
+inherit => undef
+</%FLAGS>

@@ -1,0 +1,8 @@
+<%ARGS>
+$Data
+$Title => "Rainbow Pizza"
+</%ARGS>
+<%INIT>
+use Imager::Graph::Pie;
+
+</INIT>

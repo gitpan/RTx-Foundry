@@ -30,11 +30,12 @@ my @Tabs= (
 'Homepage'	    => '/Foundry/',
 ($RT::Guest ? 'Member Login' : 'My Page')	    => '/Foundry/Home/',
 'Project Directory' => "/Foundry/Trove/",
-#'Search'	    => "/Foundry/Search/",
+'Search'	    => "/Foundry/Search/",
 );
 if ($session{CurrentUser}->UserObj->HasRight(Object => $RT::System, Right => 'SuperUser')) {
     push @Tabs, (
 'Site Admin'	    => "/Edit/?SiteAdmin",
+'Foundry Statistics'    => "/Foundry/Accounting/",
     )
 };
 if ($Text and !grep {$_ eq $Text} @Tabs) {

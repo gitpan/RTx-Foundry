@@ -1,10 +1,971 @@
 msgid ""
 msgstr ""
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Autrijus Tang <autrijus@autrijus.org>\n"
 "Language-Team: Chinese <members@ourinet.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: html/Foundry/Project/Admin/Stats/ByName:5
+msgid "#"
+msgstr ""
+
+#: html/Foundry/Project/Tracker/Update.html:74
+msgid ""
+"(Sends a blind carbon-copy of this update to a comma-delimited list of email "
+"addresses. Does <b>not</b> change who will receive future updates.)"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Members/index.html:59
+msgid "(one or more)"
+msgstr "(可填入多项)"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Verify.html:25
+msgid "--the %1 staff."
+msgstr "--%1 工作人员敬上"
+
+#: html/Foundry/User/index.html:28
+msgid "About Me"
+msgstr "自我描述"
+
+#: html/Foundry/Project/Admin/autohandler:44
+msgid "Access control"
+msgstr "权限控管"
+
+#: html/Foundry/Project/Admin/Upload/List:13
+#: html/Foundry/Project/Admin/Upload/Roadmap:8
+msgid "Actual Release"
+msgstr "实际释出"
+
+#: html/Foundry/Project/Admin/Members/index.html:73
+#: html/Foundry/Project/index.html:27 html/Foundry/Trove/List:13
+msgid "Admin"
+msgstr "项目管理员"
+
+#: html/Foundry/Project/Admin/Members/index.html:10
+#: html/Foundry/Project/Admin/Stats/index.html:12
+msgid "Admins"
+msgstr "项目管理员"
+
+#: html/Foundry/Search/index.html:9
+msgid "Advanced Query"
+msgstr "进阶搜寻"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Verify.html:19
+msgid ""
+"As a registered user, you can participate fully in the activities on the "
+"site. You may now post messages to the project message forums, post bugs for "
+"software in %1, sign on as a project developer, or even start your own "
+"project."
+msgstr ""
+"作为已注册的使用者，您可以完整参与 %1 的活动，包括在项目讨论区发表留言、提出"
+"瑕疵回报、登录成为开发者，甚至开始您自己的项目。"
+
+#: html/Foundry/Subversion/index.html:1
+msgid "Available repositories"
+msgstr "已启用的档案库"
+
+#: html/Foundry/Project/Admin/Upload/Info:13
+msgid "Available tools for this release:"
+msgstr "可选用的版本规划工具："
+
+#: html/Foundry/Project/Jobs.html:7 html/Foundry/Project/News.html:9
+msgid "Back to Previous"
+msgstr "回上页"
+
+#: lib/RT/Queue_Local.pm:78
+msgid "Basics"
+msgstr "摘要"
+
+#: html/Foundry/Project/Admin/Upload/Calendar:8
+msgid "Calendar"
+msgstr "行事历"
+
+#: html/Foundry/Search/index.html:27
+msgid "Cannot find any matching items."
+msgstr "找不到符合的项目。"
+
+#. ($ARGS{Name})
+#: html/Foundry/Project/Admin/CustomField/index.html:19
+msgid "Cannot save as '%1', because it is a reserved name."
+msgstr "无法储存为 '%1'，因为它是系统保留的名称。"
+
+#: html/Foundry/Project/Admin/Upload/index.html:61
+msgid "Cannot upload; the filename already exists in this release."
+msgstr "无法上传；此档案已存在于这个释出版本中。"
+
+#: html/Foundry/Project/Tracker/Update.html:57
+msgid "Cc"
+msgstr "副本"
+
+#: html/Foundry/Home/NewProject/ShowSteps:8
+msgid "Code License"
+msgstr "程序码授权"
+
+#: html/Foundry/Home/Guest/Elements/ShowRegister:7
+#: html/Foundry/Home/NewProject/ShowSteps:10
+msgid "Completing first-time registration"
+msgstr "初步完成注册手续"
+
+#: html/Foundry/Home/Guest/Elements/ShowRegister:8
+msgid "Confirm Login"
+msgstr "确认登入"
+
+#: html/Foundry/Project/Tracker/Update.html:103
+msgid "Confirm Submit"
+msgstr "确认送出"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Register.html:17
+msgid "Congratulations. You have registered on %1."
+msgstr "恭喜您成功注册 %1 的帐号。"
+
+#: html/Foundry/Project/Tracker/Update.html:81
+msgid "Content"
+msgstr "内容"
+
+#: html/Foundry/Home/NewProject/ShowSteps:9
+msgid "Content License"
+msgstr "图文授权"
+
+#: html/Foundry/Project/Admin/Upload/ModifyEvents:10
+msgid "Create a new event"
+msgstr "新增事件"
+
+#: html/Foundry/Project/Jobs.html:5 html/Foundry/Project/News.html:7
+#: html/Foundry/Project/Tracker/List:7
+msgid "Created"
+msgstr "建立日期"
+
+#: html/Foundry/Home/NewProject/index.html:53
+#: html/Foundry/Project/Admin/index.html:21
+msgid "Creative Commons License Wizard"
+msgstr "Creative Commons 授权条款选择指引"
+
+#: html/Foundry/Project/Tracker/Update.html:23
+msgid "Current Status"
+msgstr "目前状态"
+
+#: html/Foundry/Project/Admin/Forum/index.html:5
+#: html/Foundry/Project/Forum/index.html:6
+msgid "Current mailing lists"
+msgstr "现有通信论坛"
+
+#: html/Foundry/Project/Admin/Upload/index.html:93
+msgid "Date format invalid."
+msgstr "日期格式错误。"
+
+#: html/Foundry/Project/Admin/Upload/Upload:23
+#: html/Foundry/Project/Admin/Upload/Upload:42
+#: html/Foundry/Project/Download/List:9
+msgid "Description"
+msgstr "描述"
+
+#: html/Foundry/Project/Admin/Stats/index.html:14
+#: html/Foundry/Project/Download/List:12 html/Foundry/Trove/List:11
+msgid "Download #"
+msgstr "下载数"
+
+#: html/Foundry/Project/Admin/Upload/Events:15
+msgid "Due"
+msgstr "截止"
+
+#: html/Foundry/Project/Admin/Members/index.html:23
+msgid "Edit Staff"
+msgstr "编辑团队成员"
+
+#: html/Foundry/Subversion/index.html:19
+msgid "Empty repositories"
+msgstr "空的档案库"
+
+#: html/Foundry/Project/Admin/index.html:26
+msgid "Enabled (Unchecking this box disables this queue)"
+msgstr "启用(取消勾选将停用此项目)"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Verify.html:23
+msgid ""
+"Enjoy the site, and please provide us with feedback on ways that we can "
+"improve %1."
+msgstr "欢迎您的使用，并请不吝赐教。"
+
+#: html/Foundry/Project/Admin/Upload/Events:12
+msgid "Event"
+msgstr "事件"
+
+#: html/Foundry/Project/Admin/Upload/Upload:38
+msgid "Existing Files"
+msgstr "此版本现有档案"
+
+#: html/Foundry/Project/Admin/Upload/List:28
+msgid "Existing Versions"
+msgstr "现有版本"
+
+#: html/Foundry/Project/Admin/Jobs/index.html:7
+msgid "Existing job offer"
+msgstr "现有徵人启事"
+
+#: html/Foundry/Project/Admin/News/index.html:7
+msgid "Existing news items"
+msgstr "现有新闻"
+
+#: html/Foundry/Project/Admin/Upload/Upload:12
+#: html/Foundry/Project/Admin/Upload/Upload:15
+msgid "File"
+msgstr "档案"
+
+#: html/Foundry/Project/Admin/Upload/Upload:41
+#: html/Foundry/Project/Download/List:8
+msgid "File Name"
+msgstr "档名"
+
+#: html/Foundry/Project/Admin/Members/index.html:25
+msgid "Find people whose"
+msgstr "寻找人员的"
+
+#: html/Foundry/Project/Admin/ACL/index.html:23
+msgid "Force user to fill in information before downloading"
+msgstr "强迫使用者在下载前填入个人信息"
+
+#: lib/RT/Queue_Local.pm:82
+msgid "Forums"
+msgstr "通信论坛"
+
+#: html/Foundry/Elements/News:7
+msgid "Foundry News"
+msgstr "Foundry 新闻"
+
+#: html/Foundry/Project/Admin/Upload/Gantt:8
+msgid "Gantt"
+msgstr "甘特图"
+
+#: lib/RT/Queue_Local.pm:84
+msgid "Help Wanted"
+msgstr "徵人"
+
+#: html/Foundry/index.html:11
+msgid "HomePage"
+msgstr "首页"
+
+#: html/Foundry/Elements/Footer:7 html/Foundry/Elements/Top:15
+#: html/Foundry/Home/Guest/Register.html:40
+#: html/Foundry/Home/NewProject/index.html:88
+msgid "Homepage"
+msgstr "首页"
+
+#: html/Foundry/Home/Elements/ShowTerm:9
+msgid "I Agree"
+msgstr "我同意"
+
+#: html/Foundry/Home/Elements/ShowTerm:10
+msgid "I Do Not Agree"
+msgstr "不同意"
+
+#: html/Foundry/Home/NewProject/index.html:110
+#: html/Foundry/Project/Admin/index.html:55
+msgid ""
+"ID must be 3-15 characters of lower-case letters or digits, beginning with a "
+"letter"
+msgstr "ID 必须为 3-15 个小写英文字母或数字，并以字母开头"
+
+#: html/Foundry/Home/NewProject/index.html:112
+msgid "ID must not be an existing subdomain name"
+msgstr "ID 不能与系统既有的子域名重复"
+
+#: html/Foundry/Project/Admin/Upload/List:12
+#: html/Foundry/Project/Admin/Upload/Roadmap:7
+msgid "Ideal Release"
+msgstr "预订释出"
+
+#. ($olw_link.loc("OSSF License Wizard").'</a>')
+#: html/Foundry/Home/NewProject/index.html:38
+#: html/Foundry/Project/Admin/index.html:20
+msgid ""
+"If you're not sure which free/open source software license you'd like to "
+"adopt, you might also like to utilize our %1. Please note that the "
+"suggestion provided by the Wizard is for your reference only."
+msgstr ""
+"如果您尚不确定项目程序码应该选择何种授权条款，您可使用自由软体铸造场所提供的 "
+"%1，但此仅供您作为参考之用。"
+
+#. ($ccw_link.loc('Creative Commons License Wizard').'</a>')
+#: html/Foundry/Home/NewProject/index.html:53
+#: html/Foundry/Project/Admin/index.html:21
+msgid ""
+"If you're not sure which open content license you'd like to adopt, you might "
+"also like to utilize the %1. Please note that the suggestion provided by the "
+"wizard is for your reference only."
+msgstr ""
+"如果您尚不确定项目内的图文应该选择何种授权条款，我们建议您使用Creative "
+"Commons所提供的 %1，但此仅供您作为参考之用。"
+
+#: html/Foundry/Home/Guest/index.html:8
+msgid "If you've forgotten your password, we can"
+msgstr "如果您忘记了口令，我们可以"
+
+#: html/Foundry/Home/Guest/Verify.html:12
+msgid ""
+"In order to complete your registration, login now. Your account will then be "
+"activated for normal logins."
+msgstr "请现在登入一次，以完成注册程序。登入后，您的帐号即可如常使用。"
+
+#: html/Foundry/Home/NewProject/index.html:34
+#: html/Foundry/Home/NewProject/index.html:49
+msgid ""
+"In order to eliminate the possible legal disputes, please let us remind you "
+"that you attach a copy of the license that is chosen for the very version "
+"you're releasing when you release the project."
+msgstr ""
+"当您在实际释出项目成果时，仍请您在其中包含一份该释出版本的授权条款文件，以减"
+"少未来所可能发生的法律争议。"
+
+#: html/Foundry/Home/NewProject/index.html:46
+msgid ""
+"In this step, you will choose a open content license, under which the "
+"content (eg. the documentation of your code, graphs, pictures, etc.), other "
+"than the code, of your project will be licensed. If you'd like to multiple-"
+"license your project, please fill in the license you'd like to choose in the "
+"\\\"other\\\" column. If your project contains only code, please click on \\"
+"\"project contains only code\\\"."
+msgstr ""
+"在这个步骤中，您需要选择项目将来释出时，该项目除了程序码之外的其它著作类型"
+"（例如：程序的说明文件、图片），所将采用的开放授权条款，如您欲以多重授权"
+"（multiple-licenses）方式释出，请同时于‘其它图文授权’中填写您另采用之授权方"
+"式，若您的项目只有程序码，则请您选择‘项目仅包含程序码’。"
+
+#: html/Foundry/Home/NewProject/index.html:31
+msgid ""
+"In this step, you will choose free/open source software license, under which "
+"the code (including source code and object code) of your project will be "
+"licensed. If you'd like to multiple-license your project, please fill in the "
+"license you'd like to choose in the \\\"other\\\" column. If your project "
+"contains no code, please click on \\\"project contains no code\\\"."
+msgstr ""
+"在这个步骤中，您需要选择项目将来释出时，该项目的程序码（包含原始码及其目的"
+"码）所将采用的自由软体授权条款，如您欲以多重授权（multiple licenses）方式释"
+"出，请同时于‘其它程序授权’中填写您另采用之授权方式，若您的项目并不包含程序"
+"码，则请您选择‘项目不包含程序码’。"
+
+#: html/Foundry/Home/Guest/Recover.html:24
+msgid "Invalid data"
+msgstr "数据不符记录。"
+
+#: html/Foundry/Home/Guest/Register.html:62
+#: html/Foundry/Home/Preferences/index.html:30
+#: html/Foundry/Home/Preferences/index.html:43
+msgid "Invalid email address"
+msgstr "无效的电子邮件帐号"
+
+#. ($obj)
+#: html/Foundry/Project/Admin/Members/index.html:142
+msgid "Invalid email address: %1"
+msgstr "无效的电子邮件帐号: %1"
+
+#: html/Foundry/Home/Guest/Elements/Login:4
+#: html/Foundry/Home/Guest/Verify.html:48
+msgid "Invalid login."
+msgstr "登入失败。"
+
+#. ($email)
+#: html/Foundry/Project/Admin/Members/index.html:190
+msgid "Invitation sent to %1"
+msgstr "成功送出了给 %1 的邀请函"
+
+#: html/Foundry/Project/Admin/Members/index.html:55
+msgid "Invite External Staff"
+msgstr "邀请外部成员"
+
+#: html/Foundry/Project/Admin/Members/index.html:65
+msgid "Invite Letter"
+msgstr "邀请函"
+
+#: html/Foundry/User/index.html:36
+msgid "Involved Projects"
+msgstr "参与项目"
+
+#: html/Foundry/Project/Jobs.html:1
+msgid "Job"
+msgstr "徵人"
+
+#: html/Foundry/Project/Tracker/List:8
+msgid "Last Updated"
+msgstr "前次更新"
+
+#: html/Foundry/index.html:21
+msgid "Latest Jobs"
+msgstr "徵人启事"
+
+#: html/Foundry/index.html:19
+msgid "Latest News"
+msgstr "最新消息"
+
+#: html/Foundry/Project/index.html:11
+msgid "Latest Release"
+msgstr "最新释出版本"
+
+#: html/Foundry/Elements/Top:22 html/Foundry/Home/Guest/Recover.html:8
+msgid "Login"
+msgstr "登入"
+
+#: html/Foundry/User/index.html:9
+msgid "Login Name"
+msgstr "登入名"
+
+#: html/Foundry/Elements/Top:27
+msgid "Logout"
+msgstr "注销"
+
+#: html/Foundry/Project/Admin/Members/index.html:71
+#: html/Foundry/Project/index.html:31
+msgid "Member"
+msgstr "成员"
+
+#: html/Foundry/User/index.html:25
+msgid "Member Since"
+msgstr "注册日期"
+
+#: html/Foundry/Project/Admin/ACL/index.html:4
+msgid "Member-writable admin areas"
+msgstr "可由项目成员写入的设定区域"
+
+#: html/Foundry/Home/Elements/Quicksearch:15
+#: html/Foundry/Project/Admin/Members/index.html:12
+#: html/Foundry/Project/Admin/Stats/index.html:13 lib/RT/Queue_Local.pm:79
+msgid "Members"
+msgstr "成员"
+
+#: html/Foundry/Project/Admin/Upload/Events:17
+#: html/Foundry/Project/Admin/Upload/Roadmap:5
+msgid "Milestone"
+msgstr "里程版本"
+
+#: html/Foundry/Home/Guest/Register.html:54
+#: html/Foundry/Home/NewProject/index.html:105
+#: html/Foundry/Project/Admin/index.html:51
+msgid "Missing mandatory fields"
+msgstr "缺少必要的字段"
+
+#: html/Foundry/Home/Elements/Quicksearch:9
+msgid "My Projects"
+msgstr "我的项目"
+
+#: html/Foundry/Home/Guest/Register.html:56
+msgid ""
+"Name must be 3-15 characters of digits, letters or underscore, beginning "
+"with a letter"
+msgstr "请使用 3-15 个由英文字母开头的数字、字母或底线作为登入名"
+
+#: html/Foundry/Project/Admin/Forum/index.html:18
+msgid "New mailing list"
+msgstr "新增通信论坛"
+
+#: html/Foundry/Project/Tracker/autohandler:67
+msgid "New ticket"
+msgstr "新增申请单"
+
+#: html/Foundry/Elements/News:17 html/Foundry/Project/News.html:1
+#: lib/RT/Queue_Local.pm:80
+msgid "News"
+msgstr "新闻"
+
+#: html/Foundry/Home/NewProject/DualCustomFields:45
+#: html/Foundry/Home/NewProject/EditCustomFields:14
+msgid "Next Step"
+msgstr "下一步"
+
+#: html/Foundry/Search/index.html:1
+msgid "No search to operate on."
+msgstr "没有可运作的查询。"
+
+#: html/Foundry/Home/NewProject/index.html:38
+#: html/Foundry/Project/Admin/index.html:20
+msgid "OSSF License Wizard"
+msgstr "自由软体授权指引"
+
+#: html/Foundry/Elements/NewsLetter:18
+msgid "OpenFoundry Newsletter"
+msgstr "OpenFoundry 电子报"
+
+#: html/Foundry/Elements/Top:10
+msgid "OpenFoundry System"
+msgstr "OpenFoundry 系统"
+
+#: html/Foundry/Home/MyRequests.html:14 html/Foundry/Home/MyTickets.html:14
+#: html/Foundry/Project/Admin/Stats/index.html:5
+#: html/Foundry/Project/Tracker/autohandler:55
+msgid "Overview"
+msgstr "综览"
+
+#: html/Foundry/Home/Elements/Quicksearch:14
+#: html/Foundry/Project/Admin/Upload/Events:13
+#: html/Foundry/Project/Tracker/List:22
+#: html/Foundry/Project/Tracker/SelectSearch:21
+#: html/Foundry/Project/Tracker/Update.html:15
+msgid "Owner"
+msgstr "负责人"
+
+#. ($RT::MinimumPasswordLength)
+#: html/Foundry/Home/Guest/Recover.html:32
+#: html/Foundry/Home/Guest/Register.html:60
+msgid "Password must be at least %1 letters"
+msgstr "口令长度至少需为 %1 个字符"
+
+#: html/Foundry/Home/Guest/Register.html:58
+msgid "Passwords do not match"
+msgstr "口令检查不符"
+
+#: html/Foundry/Project/Admin/Members/index.html:77
+msgid "Past Invitees"
+msgstr "受邀者现况"
+
+#: html/Foundry/Project/Admin/Stats/index.html:24
+msgid "Pending"
+msgstr "待处理"
+
+#: html/Foundry/Project/Admin/Stats/index.html:6
+msgid "Pending issues"
+msgstr "待处理事项数"
+
+#: html/Foundry/User/index.html:16
+msgid "Personal Homepage"
+msgstr "个人首页"
+
+#: html/Foundry/User/index.html:6
+msgid "Personal Info"
+msgstr "个人信息"
+
+#: html/Foundry/Project/Admin/Members/index.html:152
+msgid "Please use the form above to add this staff directly"
+msgstr "请直接利用上方的表单，加入这位团队成员"
+
+#: html/Foundry/Project/Admin/Jobs/index.html:23
+msgid "Post a job offer"
+msgstr "刊登徵人启事"
+
+#: html/Foundry/Project/Admin/News/index.html:23
+msgid "Post a news item"
+msgstr "刊登一则新闻"
+
+#: html/Foundry/Project/Forum/List.html:18
+msgid "Post an article"
+msgstr "发表新文章"
+
+#: html/Foundry/Elements/Top:25
+msgid "Preferences"
+msgstr "偏好"
+
+#: html/Foundry/Elements/Footer:9 html/Foundry/Policy/index.html:6
+msgid "Privacy"
+msgstr "隐私权政策"
+
+#: html/Foundry/Project/Tracker/SelectSearch:37
+msgid "Process Status"
+msgstr "处理情况"
+
+#: html/Foundry/Home/Elements/Quicksearch:13
+#: html/Foundry/Project/Tracker/List:28
+msgid "Project"
+msgstr "项目"
+
+#: html/Foundry/Project/Doc/autohandler:7
+#: html/Foundry/Project/Tracker/autohandler:16 html/Foundry/Trove/List:5
+msgid "Project Name"
+msgstr "项目标题"
+
+#: html/Foundry/Project/Admin/index.html:67
+msgid "Project Name has been modified.  Please reload page to see the change."
+msgstr "项目名称已更改。请重新加载页面，方能看见变更。"
+
+#: html/Foundry/Home/NewProject/index.html:114
+#: html/Foundry/Project/Admin/index.html:58
+msgid "Project Name must be at most 40 charaters"
+msgstr "项目标题长度必须为 40 个字元以下"
+
+#: html/Foundry/Project/index.html:24
+msgid "Project Staff"
+msgstr "项目团队"
+
+#. ($QueueCount)
+#: html/Foundry/Elements/Stats:7
+msgid "Projects: %1"
+msgstr "项目: %1 项"
+
+#: html/Foundry/Trove/List:6
+msgid "Public Description"
+msgstr "公开描述"
+
+#: html/Foundry/Home/NewProject/index.html:116
+msgid "Public Description must be at most 255 charaters"
+msgstr "公开描述长度必须为 255 个字元以下"
+
+#: html/Foundry/User/List:6 html/Foundry/User/index.html:12
+msgid "Real Name"
+msgstr "真实姓名"
+
+#: html/Foundry/Elements/Top:20
+msgid "Register"
+msgstr "注册新帐号"
+
+#: html/Foundry/Trove/List:12
+msgid "Registration Date"
+msgstr "注册日期"
+
+#: html/Foundry/Home/Guest/Elements/ShowRegister:6
+#: html/Foundry/Home/NewProject/ShowSteps:7
+msgid "Registration Info"
+msgstr "填写注册信息"
+
+#: html/Foundry/Home/Guest/Elements/ShowRegister:9
+msgid "Registration Successful"
+msgstr "注册完成"
+
+#: html/Foundry/Project/Admin/Upload/List:32
+#: html/Foundry/Project/Download/List:7
+msgid "Release Date"
+msgstr "释出日期"
+
+#: html/Foundry/Project/Admin/Upload/Gantt.html:35 lib/RT/Queue_Local.pm:81
+msgid "Release Plans"
+msgstr "规划释出"
+
+#: html/Foundry/Project/Admin/Stats/index.html:15
+msgid "Requested issues"
+msgstr "提出事项数"
+
+#: html/Foundry/Project/Admin/Stats/ByName:4
+#: html/Foundry/Project/Tracker/List:19
+msgid "Requestor"
+msgstr "申请人"
+
+#. ($Ticket->id, $Ticket->Subject)
+#: html/Foundry/Project/Tracker/Update.html:154
+msgid "Resolve ticket #%1 (%2)"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Stats/index.html:16
+#: html/Foundry/Project/Admin/Stats/index.html:7
+msgid "Resolved issues"
+msgstr "解决事项数"
+
+#: html/Foundry/Project/Tracker/Update.html:52
+msgid "Response to requestors"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Members/index.html:31
+#: html/Foundry/Project/Admin/Members/index.html:68
+#: html/Foundry/Project/Admin/Members/index.html:80
+#: html/Foundry/User/index.html:38
+msgid "Role"
+msgstr "角色"
+
+#: html/Foundry/Project/Admin/Members/index.html:47
+msgid "Save"
+msgstr ""
+
+#: html/Foundry/Project/Tracker/SelectSearch:18
+msgid "Search"
+msgstr "搜寻"
+
+#: lib/RT/CustomField_Local.pm:11
+msgid "SelectResolution"
+msgstr "解决选项"
+
+#: lib/RT/CustomField_Local.pm:12
+msgid "SelectVersion"
+msgstr "版本选项"
+
+#: html/Foundry/Search/Simple:5 html/Foundry/Search/index.html:3
+msgid "Simple Query"
+msgstr ""
+
+#: html/Foundry/Policy/autohandler:5 html/Foundry/Policy/index.html:3
+msgid "Site Policy"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Upload/Upload:43
+#: html/Foundry/Project/Download/List:11
+msgid "Size"
+msgstr "大小"
+
+#: html/Foundry/Project/Admin/Stats/index.html:17
+msgid "Source checkin"
+msgstr "源码签入笔数"
+
+#: html/Foundry/Project/Admin/Stats/index.html:18
+msgid "Source checkout"
+msgstr "源码签出笔数"
+
+#: html/Foundry/Project/Admin/Upload/Events:14
+#: html/Foundry/Project/Admin/Upload/Roadmap:6
+msgid "Start"
+msgstr "开始"
+
+#: html/Foundry/Project/Admin/Upload/List:11
+msgid "Start Date"
+msgstr ""
+
+#: html/Foundry/Elements/Stats:5 html/Foundry/Project/Admin/autohandler:48
+msgid "Statistics"
+msgstr "统计信息"
+
+#: html/Foundry/Home/MyRequests.html:18 html/Foundry/Home/MyTickets.html:18
+#: html/Foundry/Project/Admin/Members/index.html:81
+#: html/Foundry/Project/Admin/Upload/List:16
+#: html/Foundry/Project/Admin/Upload/List:33
+#: html/Foundry/Project/Admin/Upload/Upload:28
+#: html/Foundry/Project/Tracker/List:9
+msgid "Status"
+msgstr "现况"
+
+#. (loc($Type))
+#: html/Foundry/Project/Tracker/SelectSearch:7
+msgid "Submit new %1"
+msgstr "新增 %1"
+
+#: html/Foundry/Elements/NewsLetter:6
+msgid "Subscribe to OpenFoundry Newsletter"
+msgstr "订阅 OpenFoundry 电子报"
+
+#: html/Foundry/Elements/Footer:11 html/Foundry/Policy/index.html:7
+msgid "Term of Use"
+msgstr "使用条款"
+
+#: html/Foundry/Home/Guest/Elements/ShowRegister:5
+#: html/Foundry/Home/NewProject/ShowSteps:6
+msgid "Term of Use Agreement"
+msgstr "申请同意书"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/NewProject/index.html:65
+msgid "Thank you for choosing %1."
+msgstr "感谢您选用 %1。"
+
+#: html/Foundry/Project/Forum/List.html:15
+msgid "The archive is currently empty."
+msgstr "目前本论坛尚无内容。"
+
+#. ($email)
+#: html/Foundry/Project/Admin/Members/index.html:151
+msgid "The email address %1 already exists"
+msgstr "电子邮件帐号 %1 已有人使用"
+
+#: html/Foundry/Home/Guest/Recover.html:7
+msgid "The new value has been set."
+msgstr ""
+
+#: html/Foundry/Home/Guest/Register.html:68
+msgid "This account already exists"
+msgstr "此帐号已经存在"
+
+#: html/Foundry/Home/Guest/Register.html:80
+#: html/Foundry/Home/Preferences/index.html:37
+msgid "This email address already exists"
+msgstr "此电子邮件帐号已有人使用"
+
+#: html/Foundry/Project/Admin/Members/index.html:191
+msgid "This invitation will expire in 14 days."
+msgstr "这份邀请将在 14 天后失效。"
+
+#: html/Foundry/Project/Admin/Members/index.html:166
+msgid "This person has already received an invitation letter"
+msgstr "这位人士已经收到过邀请函了"
+
+#: html/Foundry/Project/Forum/index.html:15
+msgid "This project does not have any mailing lists yet."
+msgstr "本项目目前没有通信论坛。"
+
+#. ($ARGS{id})
+#: html/Foundry/Project/Tracker/autohandler:68
+msgid "Ticket #%1"
+msgstr "待办事项 #%1"
+
+#: html/Foundry/Home/MyTickets.html:16
+msgid "Tickets I own"
+msgstr "我的待办事项"
+
+#: html/Foundry/Home/MyRequests.html:16
+msgid "Tickets I requested"
+msgstr "最新送出的申请单"
+
+#: html/Foundry/Project/Forum/List.html:6
+msgid "To post a message to all the list members, send email to"
+msgstr "若要寄送邮件给所有论坛成员，请寄信到"
+
+#: html/Foundry/Project/Forum/List.html:8
+msgid "To subscribe to this mailing list, send email to"
+msgstr "若要订阅这个论坛，请寄信到"
+
+#: html/Foundry/Project/Forum/List.html:10
+msgid "To unsubscribe from this mailing list, send email to"
+msgstr "若要退订这个论坛，请寄信到"
+
+#: html/Foundry/Subversion/index.html:26
+msgid "To work with a repository, please use one of these tools"
+msgstr "请使用下列工具之一，对这些档案库进行存取"
+
+#: html/Foundry/Project/Admin/Upload/Info:5
+msgid "Tools for all releases:"
+msgstr "综览所有版本的规划工具："
+
+#: html/Foundry/Elements/TopDownloads:8
+msgid "Top Downloads"
+msgstr "下载排行"
+
+#: html/Foundry/Project/Admin/Stats/index.html:26
+msgid "Total #"
+msgstr "总数"
+
+#: html/Foundry/Search/index.html:9
+msgid "Tracker"
+msgstr "待办事项"
+
+#: lib/RT/Queue_Local.pm:83
+msgid "Tracker Fields"
+msgstr "待办事项字段"
+
+#: html/Foundry/Project/Admin/Stats/index.html:22
+msgid "Tracker Statistics"
+msgstr "待办事项分类统计"
+
+#: html/Foundry/Project/Download/List:10 html/Foundry/Project/Tracker/List:16
+msgid "Type"
+msgstr ""
+
+#: html/Foundry/Search/index.html:23
+msgid "Under Construction."
+msgstr "此功能建置中。"
+
+#: html/Foundry/Home/Guest/autohandler:26
+msgid "Unverified account.  Please verify your account first."
+msgstr "此帐号尚未确认。请先确认您的帐号。"
+
+#: html/Foundry/Project/Tracker/Update.html:46
+msgid "Update Type"
+msgstr ""
+
+#. ($Ticket->id, $Ticket->Subject)
+#: html/Foundry/Project/Tracker/Update.html:156
+msgid "Update ticket #%1 (%2)"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Members/index.html:30
+msgid "User"
+msgstr "使用者"
+
+#. ($UserCount)
+#: html/Foundry/Elements/Stats:10
+msgid "Users: %1"
+msgstr "使用者: %1 人"
+
+#: html/Foundry/Project/Admin/Upload/List:6
+msgid "Version"
+msgstr "版本"
+
+#: html/Foundry/Project/Admin/Upload/List:31
+#: html/Foundry/Project/Admin/Upload/List:9
+#: html/Foundry/Project/Download/List:6
+msgid "Version Number"
+msgstr "版本号"
+
+#: html/Foundry/Project/Admin/Upload/index.html:90
+msgid ""
+"Version number must start with digit and consist of only digits, letters, "
+"dot and underscores, and does not end with a dot."
+msgstr ""
+"版本号开头须为‘数字’，以‘数字’加‘点’加‘英文字母’为组合，‘点’不可为"
+"结尾。"
+
+#: html/Foundry/Project/Admin/ACL/index.html:14
+msgid "Who can see the download area"
+msgstr ""
+
+#: html/Foundry/Home/NewProject/index.html:63
+msgid "Within 72 hours, you will receive notification of further instructions."
+msgstr "在 72 小时之内，您将会收到结果通知。"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Verify.html:17
+msgid ""
+"You are now a registered user on %1, the online development environment for "
+"Open Source projects."
+msgstr "您已成功注册为开放源码发展平台‘%1’的使用者。"
+
+#: html/Foundry/Home/Guest/Reminder.html:4
+msgid "You are now being sent a confirmation email to reset your password."
+msgstr "您将会收到一封确认邮件。请到其中的网址设定您的新口令。"
+
+#: html/Foundry/Home/Guest/Register.html:19
+msgid ""
+"You are now being sent a confirmation email to verify your email address.  "
+"Activate your account by either visiting the link sent to you in this email, "
+"or replying to that email."
+msgstr "您将会收到一封确认邮件。请到其中的网址完成注册手续，或直接回信即可。"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/Guest/Verify.html:21
+msgid ""
+"You should take some time to read through the Site Documentation so that you "
+"may take full advantage of %1."
+msgstr "请详读 %1 的说明手册，以进一步了解 %1 的服务。"
+
+#. ($RT::Organization)
+#: html/Foundry/Home/NewProject/index.html:62
+msgid "Your project has been submitted to the %1 administrators."
+msgstr "您的项目已送交 %1 管理员处理。"
+
+#: html/Foundry/Home/Guest/autohandler:19
+msgid "Your username or password is incorrect"
+msgstr ""
+
+#: html/Foundry/Project/Tracker/FilterStatus:6
+msgid "all"
+msgstr "全部显示"
+
+#: html/Foundry/Project/Tracker/Tabs:11
+msgid "defect"
+msgstr "瑕疵(Bug)"
+
+#: html/Foundry/Project/Tracker/Tabs:13
+msgid "enhancement"
+msgstr "改进"
+
+#: html/Foundry/Project/Admin/Stats/index.html:18
+#: html/Foundry/Project/Admin/Stats/index.html:77
+msgid "n/a"
+msgstr "尚无信息"
+
+#: html/Foundry/Project/Admin/Members/EditQueueWatchers:4
+#: html/Foundry/Project/Tracker/List:24
+#: html/Foundry/Project/Tracker/SelectOwner:5
+#: html/Foundry/Project/index.html:20
+msgid "none"
+msgstr ""
+
+#: html/Foundry/Project/Tracker/Tabs:12
+msgid "patch"
+msgstr "修正建议"
+
+#: html/Foundry/Home/Guest/index.html:9
+msgid "send you a reminder"
+msgstr "送出提示信"
+
+#: html/Foundry/Project/Tracker/FilterStatus:8
+msgid "unresolved"
+msgstr ""
+
+#: html/Foundry/Project/Admin/Upload/Upload:30
+msgid "uploaded"
+msgstr "已上载"
+
+#. ('subscribe')
+#. ('unsubscribe')
+#: html/Foundry/Project/Forum/List.html:11
+#: html/Foundry/Project/Forum/List.html:9
+msgid "with the subject '%1'"
+msgstr "，信件标题请填 '%1' 即可"
 
 msgid "       Owner: %1"
 msgstr "      负责人: %1"
@@ -611,7 +1572,7 @@ msgid "Release Files"
 msgstr "释出档案"
 
 msgid "Release Plans"
-msgstr "版本规划"
+msgstr "规划释出"
 
 msgid "Version Number"
 msgstr "版本号"

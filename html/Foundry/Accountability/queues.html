@@ -1,0 +1,29 @@
+<%PERL> 
+ my $QueueAcc = Algorithm::Accounting->new
+   (fields => [qw(queue user users)],
+    field_groups => [ [qw(queue users)], ] );
+ my $TotalProjects =0;
+ while(my $QueueObj = $Queues->Next) {
+   $TotalProjects++;
+   my $Members = $QueueObj->AdminCc->MembersObj;
+   while (my $watcher = $Members->Next) {
+     $QueueAcc->append_data([[ $QueueObj->Name, $watcher->MemberObj->Object->Name ,'users']]);
+   }
+   $Members = $QueueObj->Cc->MembersObj;
+   while (my $watcher = $Members->Next) {
+     $QueueAcc->append_data([[ $QueueObj->Name, $watcher->MemberObj->Object->Name ,'users']]);
+   }
+ }
+ my $result = $QueueAcc->result;
+</%PERL>
+<& Result, Title => 'Project-Members', List => $result->[0] &>
+<& Result, Title => 'Members-Projects', List => $result->[1] &>
+<%INIT>
+use Algorithm::Accounting;
+my $Queues = $m->comp('ProjectQueues',Type => $Type);
+</%INIT>
+<%ARGS>
+$Type   => 'Overview'
+$Value	=> undef
+$Begin	=> 0
+</%ARGS>
