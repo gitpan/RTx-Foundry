@@ -38,7 +38,7 @@ sub entry_form {
         my $key = $_->{revision};
         push @values, $key;
         $selected = $key if $key eq $current_revision;
-        $labels{$key} = "$_->{file_rev} ($_->{date}) $_->{edit_by}";
+        $labels{$key} = "$_->{revision} ($_->{date}) $_->{edit_by}";
     }
 
     my $prompt = $self->loc("Revision Diffs for <a href='%1'>%2</a>:", ($self->script . '?' . $self->escape($page_id)), $page_id);

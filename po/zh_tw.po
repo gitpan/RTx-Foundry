@@ -1005,3 +1005,15 @@ msgstr "這份邀請將在 14 天後失效。"
 msgid "(Contact project admins if you don't want to receive mails in this project.)"
 msgstr "(若您不想再收到有關此專案的訊息，請聯絡專案管理者將您的帳號移除即可。)"
 
+msgid "Submit new %1"
+msgstr "新增 %1"
+
+msgid "About me"
+msgstr "自我描述"
+
+msgid "Backend"
+msgstr "後端"
+
+msgid "All Architectures"
+msgstr "所有硬體"
+

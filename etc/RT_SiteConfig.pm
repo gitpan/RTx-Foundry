@@ -49,6 +49,7 @@ Set($UseFriendlyFromLine, 0);
 Set($UseTransactionBatch, 1);
 Set($TrustTextAttachments, 1);
 Set($MinimumPasswordLength, 6);
+Set($SkipEmptyTabs, 0); # set to 1 to gray out project tabs with no contents 
 
 #use MasonX::Profiler;
 #@MasonParameters = (preamble => 'my $p = MasonX::Profiler->new($m, $r);');

@@ -25,7 +25,7 @@
 <tr><td class="tableTitle"><nobr><&|/l&>Member Since</&></nobr></td>
     <td bgcolor="white"><% eval { $UserObj->OriginObj->CreatedObj->ISO } %></td></tr>
 % if ($UserObj->IsPublic('Intro')) {
-<tr><td class="tableTitle"><nobr><&|/l&>Self Introduction</&></nobr></td>
+<tr><td class="tableTitle"><nobr><&|/l&>About Me</&></nobr></td>
     <td bgcolor="white"><% $UserObj->OriginObj->Transactions->First->Content %></td></tr>
 % }
 </table>

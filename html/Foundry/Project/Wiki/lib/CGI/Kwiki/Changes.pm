@@ -52,10 +52,11 @@ sub changes {
                 $page_id =~ s/.*[\/\\](.*)/$1/;
                 $page_id = $self->unescape($page_id);
                 my $metadata = $self->metadata->get($page_id);
-                my $edit_by = $metadata->{edit_by} or next;
+                my $edit_by = $metadata->{edit_by} || '&nbsp;';
                 my $edit_time = $metadata->{edit_time} || '&nbsp;';
-		my $script = $self->script;
-                $html .= qq{<td class="page-id" nowrap="1"><a href="$script?$page_id">$page_id</a></td>\n};
+                my $script = $self->script;
+                my $url = "$script?" . $self->escape($page_id);
+                $html .= qq{<td class="page-id" nowrap="1"><a href="$url">$page_id</a></td>\n};
                 $html .= qq{<td class="edit-by" nowrap="1">$edit_by</td>\n};
                 $html .= qq{<td class="edit-time" nowrap="1">$edit_time GMT</td>\n};
                 $html .= qq{</tr>\n};

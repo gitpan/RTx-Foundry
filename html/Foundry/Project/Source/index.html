@@ -12,7 +12,7 @@ my $tmpdir = File::Spec->tmpdir . '/svn';
 mkdir $tmpdir unless -d $tmpdir;
 
 my $config = {
-    reposparent	    => "$RT::VarPath/foundry/svn",
+    reposparent	    => "$RT::VarPath/Foundry/svn",
     tmpdir	    => $tmpdir,
     templatedir	    => "$basepath/template",
     map ( "\L$_\E_class" => "SVN::Web::$_" ),

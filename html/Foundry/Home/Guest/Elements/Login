@@ -8,6 +8,7 @@
 
 <%METHOD Draw>
 % my ($f1, $f2, $submit) = map $m->base_comp->attr($_), qw(Field1 Field2 Submit);
+<SCRIPT Language="JavaScript" Src="/NoAuth/auth.js"></SCRIPT>
 <TABLE BORDER="0">
 % foreach ($f1, $f2) {
     <TR>
@@ -24,7 +25,10 @@
 % }
     <TR>
 	<TD colspan=2 align="center">
-	    <input type=submit value="<% loc($submit) %>" name="Do-Login">
+	    <input type=hidden name="auth_digest" value="">
+	    <input type=hidden name="auth_nonce" value="">
+	    <input type=hidden name="auth_created" value="">
+	    <input type=submit value="<% loc($submit) %>" name="Do-Login" onclick="this.disabled = true; auth_populate(this.form); this.form.submit();">
 	</TD>
     </TR>
 </TABLE>

@@ -43,7 +43,8 @@ sub search {
     my $script = $self->script;
     for my $page_id (sort @results) {
         $page_id =~ s/.*?([$WORD\-:]+)\n/$1/;
-        $result .= qq{<a href="$script?$page_id">$page_id</a><br>\n};
+        my $url = "$script?" . $self->escape($page_id);
+        $result .= qq{<a href="$url">$page_id</a><br>\n};
     }
     return $result;
 }

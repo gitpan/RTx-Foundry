@@ -42,7 +42,8 @@ sub import {
 	utime $now, $now, $local;
     }
     my $script = $self->script;
-    my $result .= qq{<a href="$script?$page_id">$page_id</a><br>\n};
+    my $url = "$script?" . $self->escape($page_id);
+    my $result .= qq{<a href="$url">$page_id</a><br>\n};
     return $result;
 }
 

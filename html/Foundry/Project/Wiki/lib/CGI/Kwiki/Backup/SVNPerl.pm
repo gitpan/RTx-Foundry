@@ -159,7 +159,9 @@ sub fetch {
 
     my $stream = SVN::Fs::file_contents($root, $repo_page_id);
     local $/;
-    return <$stream>;
+    my $log = <$stream>;
+    utf8::decode($log) if defined &utf8::decode;
+    return $log;
 }
 
 sub diff {

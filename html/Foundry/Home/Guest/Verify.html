@@ -45,7 +45,7 @@ if ($no_login) {
 	$m->comp('/Foundry/Elements/CheckInvitations', User => $user);
     }
     else {
-	$m->note( error => loc('Invalid login.') );
+	$m->notes( error => loc('Invalid login.') );
     }
 }
 

@@ -13,12 +13,16 @@ use constant LOCK_DIR => 'metabase/lock';
 
 sub file_path {
     my ($self, $page_id) = @_;
-    DB_DIR . '/' . $self->escape($page_id);
+    my $file = (DB_DIR . '/' . $self->escape($page_id));
+    chmod 0660, $file if -e $file and !-w $file;
+    return $file;
 }
 
 sub lock_path {
     my ($self, $page_id) = @_;
-    LOCK_DIR . '/' . $self->escape($page_id);
+    my $file = (LOCK_DIR . '/' . $self->escape($page_id));
+    chmod 0660, $file if -e $file and !-w $file;
+    return $file;
 }
 
 sub lock {
@@ -27,17 +31,17 @@ sub lock {
     my $lock_handle = *LOCK;
     my $lock_file = $self->lock_path($page_id);
     open $lock_handle, "> $lock_file"
-      or die "Can't open lock file $lock_file\n:$!";
+      or warn "Can't open lock file $lock_file\n:$!";
     $self->lock_handle(*LOCK);
-    flock($lock_handle, LOCK_EX) 
-      or die "Can't lock $page_id\n:$!";
+    eval { flock($lock_handle, LOCK_EX) }
+      or warn "Can't lock $page_id\n:$!";
 }
 
 sub unlock {
     my ($self, $page_id) = @_;
     my $lock_handle = $self->lock_handle;
-    flock($lock_handle, LOCK_UN) 
-      or die "Can't unlock $page_id\n:$!";
+    eval { flock($lock_handle, LOCK_UN) }
+      or warn "Can't unlock $page_id\n:$!";
     close $lock_handle;
 }
 

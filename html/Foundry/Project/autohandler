@@ -46,20 +46,21 @@ my %Skips;
 if ($IsMember) {
     push @RT::Tabs, ( 'Project Admin' => '/Foundry/Project/Admin/' . $s );
 }
-elsif ( my $UnixName = $QueueObj->OriginObj->CustomFieldValue('UnixName') ) {
+elsif ( $RT::SkipEmptyTabs ) {
+    my $UnixName = $QueueObj->OriginObj->CustomFieldValue('UnixName') or return;
     # XXX - refactor this to somewhere else
-    if (-e "$RT::VarPath/foundry/sympa") {
-	$Skips{'Forums'}++ unless glob("$RT::VarPath/foundry/sympa/expl/$UnixName-*");
+    if (-e "$RT::VarPath/Foundry/sympa") {
+	$Skips{'Forums'}++ unless glob("$RT::VarPath/Foundry/sympa/expl/$UnixName-*");
     }
-    if (-e "$RT::VarPath/foundry/kwiki") {
+    if (-e "$RT::VarPath/Foundry/kwiki") {
 	require File::Compare;
 	$Skips{'Wiki'}++ unless File::Compare::compare(
-	    "$RT::VarPath/foundry/kwiki/.default/database/HomePage",
-	    "$RT::VarPath/foundry/kwiki/$UnixName/database/HomePage",
+	    "$RT::VarPath/Foundry/kwiki/.default/database/HomePage",
+	    "$RT::VarPath/Foundry/kwiki/$UnixName/database/HomePage",
 	);
     }
-    if (-e "$RT::VarPath/foundry/svn") {
-	if (open my $fh, "/usr/depot/rt3/var/foundry/svn/$UnixName/db/revisions") {
+    if (-e "$RT::VarPath/Foundry/svn") {
+	if (open my $fh, "/usr/depot/rt3/var/Foundry/svn/$UnixName/db/revisions") {
 	    local $/ = \32768;
 	    my $rev = <$fh>;
 	    close $fh;

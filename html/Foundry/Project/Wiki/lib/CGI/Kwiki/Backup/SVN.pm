@@ -55,7 +55,7 @@ sub new {
     $self->shell("$svn co -q file://$url " . $self->database->file_path(''));
     $user_name = 'kwiki-install';
     for my $page_id ($self->database->pages) {
-	$self->add($page_id);
+        $self->add($page_id);
     }
     $self->commit_all;
 
@@ -101,7 +101,7 @@ sub history {
     binmode(RLOG, ':utf8') if $self->use_utf8;
     my $history = [];
     while (<RLOG>) {
-        /^rev\s+(\d+):\s+(\S+)\s+\|\s+(.+?)\s+\(/ or next;
+        /^(?:r|rev\s+)(\d+)\s*[:\|]\s+(\S+)\s+\|\s+(.+?)\s+\(/ or next;
         my $entry = {
             revision => $1,
             edit_by => $2,
@@ -123,8 +123,8 @@ sub _build_history {
     my $count = @$history;
     $self->{revisions} = {};
     for (@$history) {
-	$_->{file_rev} = $count--;
-	$self->{revisions}{$_->{revision}} = $_->{file_rev};
+        $_->{file_rev} = $count--;
+        $self->{revisions}{$_->{revision}} = $_->{file_rev};
     }
     return $history;
 }

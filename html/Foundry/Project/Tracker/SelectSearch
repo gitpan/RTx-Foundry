@@ -4,7 +4,7 @@
   <tr>
     <td align="right">
 % if ($Type) {
-    <&|/l&>Add</&> <% loc($Type) %>
+    <&|/l, loc($Type)&>Submit new [_1]</&>
     </td>
     <td align="right">
 	<input type="hidden" name="Type" value="<% $Type %>">

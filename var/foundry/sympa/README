@@ -1,8 +1,0 @@
-# $File: //depot/RT/osf/var/foundry/sympa/README $ $Author: autrijus $
-# $Revision: #1 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
-
-If you have a local sympa installation, replace this directory
-by a symbolic to the sympa home directory, like this:
-
-    ln -s -f /usr/local/sympa /usr/local/rt3/var/foundry/sympa
-

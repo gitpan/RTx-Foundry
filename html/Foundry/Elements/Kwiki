@@ -3,7 +3,7 @@
 %#	on his back, you've got something.
 <%INIT>
 my $basepath = $m->fetch_comp("/Foundry/Project/Wiki/index.html")->source_dir;
-my $pwd = "$RT::VarPath/foundry/kwiki/$Repository";
+my $pwd = "$RT::VarPath/Foundry/kwiki/$Repository";
 my $tag = $session{CurrentUser}->LanguageHandle->language_tag;
 
 local $ENV{REMOTE_USER} = $session{CurrentUser}->UserObj->Name;

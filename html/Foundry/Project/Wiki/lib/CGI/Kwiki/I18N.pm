@@ -70,7 +70,7 @@ sub load_loc {
 	1;
     " or die $@;
     
-    my $lh = eval { $pkg->get_handle() } or return;
+    my $lh = eval { $pkg->get_handle } or return;
     my $style = lc($args{Style});
     if ($style eq 'maketext') {
 	$Loc{$pkg} = $lh->can('maketext');

@@ -12,7 +12,7 @@
 </table>
 <%INIT>
 my $page = CGI::Util::escape(Encode::encode_utf8(loc("News")));
-my $file = "$RT::VarPath/foundry/kwiki/.global/database/$page";
+my $file = "$RT::VarPath/Foundry/kwiki/.global/database/$page";
 open(my($fh), $file) or return;
 my @items = do {
     local $/;

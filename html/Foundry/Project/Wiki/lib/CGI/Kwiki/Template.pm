@@ -542,7 +542,7 @@ __slide_page__
   <script src="javascript/SlideShow.js"></script>
 </head>
 
-<body style="[% IF bgcolor %]background-color:[% bgcolor %];[% IF fgcolor %]color: [% fgcolor %];[% END %][% END %]">
+<body style="[% IF bgcolor %]background-color:[% bgcolor %];[% END %][% IF fgcolor %]color: [% fgcolor %];[% END %]">
 
 <div class="slide-body">
 <div class="blogbody">

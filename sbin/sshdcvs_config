@@ -1,0 +1,15 @@
+VersionAddendum ossf-cvs-hack
+GlobalForcedCommand /usr/bin/cvs server
+
+Port 22
+Protocol 2
+
+#SyslogFacility AUTH
+#LogLevel INFO
+RSAAuthentication no
+PubkeyAuthentication no
+PasswordAuthentication no
+PermitEmptyPasswords yes
+
+# Change to no to disable PAM authentication
+ChallengeResponseAuthentication yes

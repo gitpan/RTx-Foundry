@@ -1,5 +1,5 @@
 package CGI::Kwiki;
-$VERSION = '0.18';
+$VERSION = '0.19';
 @EXPORT = qw(attribute);
 @CHAR_CLASSES = qw($ADMIN $UPPER $LOWER $ALPHANUM $WORD $WIKIWORD);
 @EXPORT_OK = (@CHAR_CLASSES, qw(encode decode escape unescape));
@@ -79,7 +79,7 @@ sub run_cgi {
             $driver->encode($html);
             print $header, $html;
         }
-	last if $cgi_class eq 'CGI';
+        last if $cgi_class eq 'CGI';
     }
 }
 
@@ -107,7 +107,7 @@ sub handler {
     }
     else {
         $r->print($driver->cookie->header, $html);
-	$r->status(&OK || 200);
+        $r->status(&OK || 200);
     }
     return;
 }

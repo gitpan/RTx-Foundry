@@ -1,5 +1,12 @@
 # $File: //depot/RT/osf/ChangeLog $
-# $Revision: #3 $ $Change: 9321 $ $DateTime: 2003/12/15 06:17:38 $
+# $Revision: #4 $ $Change: 9443 $ $DateTime: 2003/12/25 15:23:06 $
+
+[Changes for 0.00_04 - December 25, 2003]
+
+Proper initialdata setup; this is now part of a fully
+functional install of the www/openfoundry/ FreeBSD port.
+
+It needs rt-elixus build 9441 or above to install.
 
 [Changes for 0.00_03 - December 15, 2003]
 

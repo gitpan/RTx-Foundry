@@ -1,14 +1,15 @@
 #line 1 "inc/Module/Install/RTx.pm - /usr/local/lib/perl5/site_perl/5.8.2/Module/Install/RTx.pm"
 # $File: //member/autrijus/Module-Install-RTx/lib/Module/Install/RTx.pm $ $Author: autrijus $
-# $Revision: #2 $ $Change: 9316 $ $DateTime: 2003/12/15 05:03:39 $ vim: expandtab shiftwidth=4
+# $Revision: #7 $ $Change: 9412 $ $DateTime: 2003/12/25 09:13:55 $ vim: expandtab shiftwidth=4
 
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.01';
+$Module::Install::RTx::VERSION = '0.03';
 
 use strict;
 use FindBin;
+use File::Basename;
 
 sub RTx {
     my ($self, $name) = @_;
@@ -26,7 +27,7 @@ sub RTx {
         local @INC = (
             @INC,
             $ENV{RTHOME},
-            map {( "$_/rt3/lib", "$_/lib/rt3" )} grep $_, @prefixes
+            map {( "$_/rt3/lib", "$_/lib/rt3", "$_/lib" )} grep $_, @prefixes
         );
         until ( eval { require RT; $RT::LocalPath } ) {
             warn "Cannot find the location of RT.pm that defines \$RT::LocalPath.\n";
@@ -42,8 +43,13 @@ sub RTx {
     $RT::LocalHtmlPath	||= $RT::MasonComponentRoot;
 
     my %path;
+    my $with_subdirs = $ENV{WITH_SUBDIRS};
+    @ARGV = grep { /WITH_SUBDIRS=(.*)/ ? (($with_subdirs = $1), 0) : 1 } @ARGV;
+    my %subdirs = map { $_ => 1 } split(/\s*,\s*/, $with_subdirs);
+
     foreach (qw(bin etc html po sbin var)) {
         next unless -d "$FindBin::Bin/$_";
+        next if %subdirs and !$subdirs{$_};
         $self->no_index( directory => $_ );
 
         no strict 'refs';
@@ -57,12 +63,21 @@ sub RTx {
 
     $self->postamble(<< ".");
 install ::
-\t\$(NOECHO) \$(PERL) -I. -MExtUtils::Install -e \"install({$args})\"
+\t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
+
+    if (-e 'etc/initialdata') {
+        print "For first-time installation, type 'make initialize-database'.\n";
+        my $lib_path = dirname($INC{'RT.pm'});
+        $self->postamble(<< ".");
+initialize-database ::
+\t\$(NOECHO) \$(PERL) -Ilib -I"$lib_path" "$RT::BasePath/sbin/rt-setup-database" --action=insert --datafile=etc/initialdata
+.
+    }
 }
 
 1;
 
 __END__
 
-#line 132
+#line 154
